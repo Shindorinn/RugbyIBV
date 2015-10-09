@@ -29,7 +29,6 @@ namespace INFOIBV
 
         public void LoadImage()
         {
-            Console.WriteLine("LOADING A IMAGE!");
 
             OpenFileDialog openImageDialog = new OpenFileDialog();
             openImageDialog.Filter = "Bitmap files|*.bmp;*.gif;*.png;*.tiff;*.jpeg";
