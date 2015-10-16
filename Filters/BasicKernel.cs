@@ -28,7 +28,9 @@ namespace INFOIBV.Filters
             return this.initializeWeights(this.width, this.height);
         }
 
-        private float[,] initializeWeights(int width, int height) 
+        private abstract float[,] initializeWeights(int width, int height);
+
+        private float[,] initializeDoNothingWeights(int width, int height) 
         {
             // This is an example do nothing kernel, all zeroes except the middle.
 
