@@ -16,6 +16,8 @@ namespace INFOIBV
         private Bitmap InputImage;
         private Bitmap OutputImage;
 
+        private FilterSelectorWindow fsWindow;
+
         public MainViewModel()
         {
             // Initial startup
@@ -23,15 +25,19 @@ namespace INFOIBV
 
             // Setup Commands
             LoadImageButton = new RelayCommand(a => LoadImage());
+            SelectFiltersButton = new RelayCommand(a => SelectFilters());
             ApplyButton = new RelayCommand(a => ApplyImage());
             SaveButton = new RelayCommand(a => SaveImage());
+
+            // Setup for FilterSelectorWindow with ViewModel
+            fsWindow = new FilterSelectorWindow() { DataContext = new FilterSelectorViewModel() };
         }
 
         public void LoadImage()
         {
 
             OpenFileDialog openImageDialog = new OpenFileDialog();
-            openImageDialog.Filter = "Bitmap files|*.bmp;*.gif;*.png;*.tiff;*.jpeg";
+            openImageDialog.Filter = "Bitmap files|*.bmp;*.gif;*.png;*.tiff;*.jpg;*.jpeg";
             openImageDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             
             if (openImageDialog.ShowDialog().Value)
@@ -55,6 +61,18 @@ namespace INFOIBV
                 }              
             }  
             
+        }
+
+        public void SelectFilters()
+        {
+            fsWindow.ShowDialog();
+
+            // Debug ?
+            Console.WriteLine("The follow filters have been selected: ");
+            foreach (var item in ((FilterSelectorViewModel) fsWindow.DataContext).ActiveFilters)
+	        {
+                Console.WriteLine("- {0}", item);
+	        }
         }
 
         public void ApplyImage()
@@ -125,7 +143,6 @@ namespace INFOIBV
                 OutputImage.Save(saveImageDialog.FileName);                 // Save the output image
         }
 
-
         #region Properties
         private RelayCommand _loadImageButton;
         public RelayCommand LoadImageButton
@@ -143,6 +160,12 @@ namespace INFOIBV
                 _imagePath = value;
                 OnPropertyChanged("ImagePath");
             }
+        }
+        private RelayCommand _selectFiltersButton;
+        public RelayCommand SelectFiltersButton
+        {
+            get { return _selectFiltersButton; }
+            private set { _selectFiltersButton = value; }
         }
 
         private RelayCommand _applyButton;

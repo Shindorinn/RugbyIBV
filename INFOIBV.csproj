@@ -59,8 +59,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FilterTypes.cs" />
+    <Compile Include="FilterSelectorViewModel.cs" />
+    <Compile Include="FilterSelectorWindow.xaml.cs">
+      <DependentUpon>FilterSelectorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="INPC.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Page Include="FilterSelectorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
