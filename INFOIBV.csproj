@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FilterFactory.cs" />
     <Compile Include="Filters\BasicKernel.cs" />
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\NormalizingKernel.cs" />
