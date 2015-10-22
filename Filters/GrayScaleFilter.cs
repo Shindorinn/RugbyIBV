@@ -28,8 +28,21 @@ namespace INFOIBV.Filters
         }
 
         private Color convertRGBtoGrayScale(Color toConvert)
-        {
-            throw new NotImplementedException();
+        { // https://en.wikipedia.org/wiki/Grayscale
+            // Y = 0.2162R + 0.7152G + 0.0722B
+            double weightR = 0.2162f;
+            double weightG = 0.7152f;
+            double weightB = 0.0722f;
+
+            double y = toConvert.R * weightR + toConvert.G * weightG + toConvert.B * weightB;
+
+            Console.WriteLine("y = " + y + " , Floored : " + Math.Floor(y));
+
+            byte[] grayValue = BitConverter.GetBytes(y);
+
+            Console.Write("grayValue = " + grayValue);
+
+            return Color.FromArgb((int)Math.Floor(y), (int)Math.Floor(y), (int)Math.Floor(y));;
         }
     }
 }
