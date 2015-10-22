@@ -73,7 +73,7 @@ namespace INFOIBV
             decoratedFilter = FilterFactory.Construct(((FilterSelectorViewModel)fsWindow.DataContext).ActiveFilters.ToList());
 
             // Debug ?
-            Console.WriteLine("The follow filters have been selected: ");
+            Console.WriteLine("The following filters have been selected: ");
             foreach (var item in ((FilterSelectorViewModel) fsWindow.DataContext).ActiveFilters)
 	        {
                 Console.WriteLine("- {0}", item);
