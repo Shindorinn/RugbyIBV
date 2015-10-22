@@ -6,15 +6,21 @@ using System.Text;
 
 namespace INFOIBV.Filters
 {
-    public abstract class BasicFilter
+    public abstract class BasicFilter : ApplicableFilter
     {
-        protected BasicFilter toDecorate;
+        protected BasicFilter decoratingFilter;
 
         public BasicFilter(BasicFilter toDecorate)
         {
-            this.toDecorate = toDecorate;
+            this.decoratingFilter = toDecorate;
         }
 
-        public abstract void apply(Bitmap imageToProcess);
+        public void apply(Bitmap imageToProcess)
+        {
+            if (this.decoratingFilter != null)
+            {
+                decoratingFilter.apply(imageToProcess);
+            }
+        }
     }
 }
