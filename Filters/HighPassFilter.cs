@@ -6,29 +6,23 @@ using System.Text;
 
 namespace INFOIBV.Filters
 {
-    public class HighPassFilter : BasicKernel
+    public class HighPassFilter : BasicFilter
     {
         private int thresholdValue;
 
-        public HighPassFilter(int thresholdValue) : base(1, 1){
+        public HighPassFilter(BasicFilter toDecorate, int thresholdValue) : base(toDecorate){
             this.thresholdValue = thresholdValue;
         }
 
         public override void apply(Bitmap imageToProcess)
         {
-            if (!(imageToProcess.Height >= this.height) &&
-                !(imageToProcess.Width >= this.width))
-            {
-                // The filter cannot be applied
-            }
-
+            base.apply(imageToProcess);
             for(int x = 0; x < imageToProcess.Width; x++){
                 for(int y = 0; y < imageToProcess.Height; y++){
-                    // We need to see how to compare colour of a pixel to the thresholdvalue
-                    //if (imageToProcess.GetPixel(x, y) < this.thresholdValue)
-                    //{
-                    //    imageToProcess.SetPixel(x, y, Color.Black);
-                    //}
+                    if (imageToProcess.GetPixel(x, y).R < this.thresholdValue)
+                    {
+                        imageToProcess.SetPixel(x, y, Color.Black);
+                    }
                 }
             }
             
