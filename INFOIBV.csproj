@@ -70,6 +70,7 @@
     <Compile Include="Filters\GrayScaleFilter.cs" />
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\NormalizingKernel.cs" />
+    <Compile Include="Filters\TresholdFilter.cs" />
     <Compile Include="FilterTypes.cs" />
     <Page Include="FilterSelectorWindow.xaml">
       <SubType>Designer</SubType>
