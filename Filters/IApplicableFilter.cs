@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace INFOIBV.Filters
 {
-    public interface ApplicableFilter
+    public interface IApplicableFilter
     {
         void apply(Bitmap imageToProcess);
     }

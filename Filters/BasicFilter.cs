@@ -6,7 +6,7 @@ using System.Text;
 
 namespace INFOIBV.Filters
 {
-    public abstract class BasicFilter : ApplicableFilter
+    public abstract class BasicFilter : IApplicableFilter
     {
         protected BasicFilter decoratingFilter;
 
