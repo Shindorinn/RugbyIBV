@@ -10,9 +10,8 @@ namespace INFOIBV
         private static readonly List<FilterType> Filters = new List<FilterType>()
         {
             // Some Dummy filtertypes
-             new FilterType(FilterType.Type.SmallKernel, "3x3 Kernel"),
-             new FilterType(FilterType.Type.MediumKernel, "5x5 Kernel"),
-             new FilterType(FilterType.Type.BlurryFilter, "Blurry"),
+             new FilterType(FilterType.Type.BasicKernel, "3x3 Kernel"),
+             new FilterType(FilterType.Type.GrayscaleFilter, "Grayscale"),
              new FilterType(FilterType.Type.HighPassFilter, "High-filter pass")
         };
 
@@ -26,9 +25,8 @@ namespace INFOIBV
     {
         public enum Type
         {
-            SmallKernel,
-            MediumKernel,
-            BlurryFilter,
+            BasicKernel,
+            GrayscaleFilter,
             HighPassFilter
         }
 
