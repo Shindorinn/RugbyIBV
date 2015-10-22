@@ -8,7 +8,13 @@ namespace INFOIBV.Filters
 {
     public class NormalizingKernel : BasicKernel
     {
-        public void apply(Bitmap imageToProcess)
+        public NormalizingKernel(int height, int width)
+            : base(height, width)
+        {
+            // Construct additional pylons?
+        }
+
+        public override void apply(Bitmap imageToProcess)
         {
             if(! (imageToProcess.Height >= this.height) &&
                ! (imageToProcess.Width >= this.width ) )
@@ -19,7 +25,7 @@ namespace INFOIBV.Filters
 
         }
 
-        private float[,] initializeWeights(int width, int height)
+        protected override float[,] initializeWeights(int width, int height)
         {
             // First initialize everything to 0,0
             // [y, x]

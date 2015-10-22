@@ -33,6 +33,11 @@ namespace INFOIBV.Filters
             }
             
         }
+
+        protected override float[,] initializeWeights(int width, int height)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

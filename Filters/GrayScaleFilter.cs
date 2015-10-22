@@ -8,6 +8,12 @@ namespace INFOIBV.Filters
 {
     public class GrayScaleFilter : BasicFilter
     {
+        public GrayScaleFilter(BasicFilter decorator)
+            : base(decorator)
+        {
+            // YOU MUST CONSTRUCT ADDITIONAL PYLONS!
+        }
+
         public override void apply(Bitmap imageToProcess)
         {
             base.apply(imageToProcess);
@@ -16,7 +22,7 @@ namespace INFOIBV.Filters
             {
                 for (int y = 0; y < imageToProcess.Height; y++)
                 {
-                    imageToProcess.SetPixel(x, y, this.convertRGBtoGrayScale(imageToProcess.GetPixel(x, y));
+                    imageToProcess.SetPixel(x, y, this.convertRGBtoGrayScale(imageToProcess.GetPixel(x, y)));
                 }
             }
         }

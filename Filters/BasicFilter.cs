@@ -15,7 +15,7 @@ namespace INFOIBV.Filters
             this.decoratingFilter = toDecorate;
         }
 
-        public void apply(Bitmap imageToProcess)
+        public virtual void apply(Bitmap imageToProcess)
         {
             if (this.decoratingFilter != null)
             {
