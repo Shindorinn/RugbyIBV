@@ -10,17 +10,10 @@ namespace INFOIBV
         private static readonly List<FilterType> Filters = new List<FilterType>()
         {
             // Some Dummy filtertypes
-             new FilterType("3x3 Kernel"),
-             new FilterType("5x5 Kernel"),
-             new FilterType("Blurry"),
-             new FilterType("High-filter pass")
-
-             /* if Name is needed
-             new FilterType("SmallKernel", "3x3 Kernel"),
-             new FilterType("MiddleKernel", "5x5 Kernel"),
-             new FilterType("Blurry", "Blurry"),
-             new FilterType("HighPass", "High-filter pass") 
-             */
+             new FilterType(FilterType.Type.SmallKernel, "3x3 Kernel"),
+             new FilterType(FilterType.Type.MediumKernel, "5x5 Kernel"),
+             new FilterType(FilterType.Type.BlurryFilter, "Blurry"),
+             new FilterType(FilterType.Type.HighPassFilter, "High-filter pass")
         };
 
         public static List<FilterType> GetAllFilters()
@@ -31,7 +24,7 @@ namespace INFOIBV
 
     public sealed class FilterType
     {
-        private enum Type
+        public enum Type
         {
             SmallKernel,
             MediumKernel,
@@ -39,13 +32,12 @@ namespace INFOIBV
             HighPassFilter
         }
 
-        // Don't know if name is needed
-        //public string Name { get; private set; }
+        public Type fType { get; private set; }
         public string Value { get; private set; }
 
-        public FilterType(/*string Name, */string Value)
+        public FilterType(Type fType, string Value)
         {
-            //this.Name = Name;
+            this.fType = fType;
             this.Value = Value;
         }
 
