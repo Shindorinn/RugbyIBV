@@ -1,4 +1,4 @@
-﻿<Window x:Class="INFOIBV.FilterSelectorWindow"
+﻿<Window x:Class="INFOIBV.Presentation.FilterSelectorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="FilterSelectorWindow" Closing="Prevent_Closing"

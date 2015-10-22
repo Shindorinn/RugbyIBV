@@ -38,8 +38,8 @@ namespace INFOIBV.Filters
 
             int grayValue = (int)Math.Floor(y);
 
-            Console.WriteLine("y = " + y + " , Floored : " + Math.Floor(y));
-            Console.Write("grayValue = " + grayValue);
+            //Console.WriteLine("y = " + y + " , Floored : " + Math.Floor(y));
+            //Console.Write("grayValue = " + grayValue);
 
             return Color.FromArgb(grayValue,grayValue,grayValue);
         }

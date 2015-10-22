@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace INFOIBV
+namespace INFOIBV.Utilities
 {
     public class INPC : INotifyPropertyChanged
     {

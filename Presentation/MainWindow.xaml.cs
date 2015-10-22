@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace INFOIBV
+namespace INFOIBV.Presentation
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
