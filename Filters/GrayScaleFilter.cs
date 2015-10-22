@@ -36,13 +36,12 @@ namespace INFOIBV.Filters
 
             double y = toConvert.R * weightR + toConvert.G * weightG + toConvert.B * weightB;
 
+            int grayValue = (int)Math.Floor(y);
+
             Console.WriteLine("y = " + y + " , Floored : " + Math.Floor(y));
-
-            byte[] grayValue = BitConverter.GetBytes(y);
-
             Console.Write("grayValue = " + grayValue);
 
-            return Color.FromArgb((int)Math.Floor(y), (int)Math.Floor(y), (int)Math.Floor(y));;
+            return Color.FromArgb(grayValue,grayValue,grayValue);
         }
     }
 }
