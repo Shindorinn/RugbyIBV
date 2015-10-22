@@ -95,6 +95,13 @@ namespace INFOIBV.Presentation
             MaxProgress = InputImage.Size.Width * InputImage.Size.Height;
 
             OutputImage = InputImage.Clone() as Bitmap;
+
+            /* Debug the kernel!
+            int size = 25;
+            BasicKernel bk = new BasicKernel(size, size, BasicKernel.initializeDoNothingWeights(size, size));
+            bk.apply(OutputImage);
+            */ 
+
             decoratedFilter.apply(OutputImage);
 
             NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(    // Display output image
