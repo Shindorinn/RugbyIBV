@@ -14,7 +14,7 @@ namespace INFOIBV.Filters
             this.thresholdValue = thresholdValue;
         }
 
-        public void apply(Bitmap imageToProcess)
+        public override void apply(Bitmap imageToProcess)
         {
             if (!(imageToProcess.Height >= this.height) &&
                 !(imageToProcess.Width >= this.width))

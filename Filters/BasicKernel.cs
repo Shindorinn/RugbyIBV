@@ -6,29 +6,26 @@ using System.Text;
 
 namespace INFOIBV.Filters
 {
-    public abstract class BasicKernel
+    public abstract class BasicKernel : BasicFilter
     {
-        protected BasicKernel decorator;
-
         protected int width;
         protected int height;
         protected float[,] weights; // Need a new name for this.
 
         public BasicKernel(int width, int height)
+            : this(width, height, null)
+        {
+        }
+
+        public BasicKernel(int width, int height, BasicFilter toDecorate)
+            : base(toDecorate)
         {
             // We should really check if the height and width are of odd value and above zero here.
-
+                     
             this.width = width;
             this.height = height;
-            this.weights = this.initializeWeights();
+            this.weights = this.initializeWeights();   
         }
-
-        public BasicKernel(int width, int height, BasicKernel toDecorate) : this(width, height)
-        {
-            this.decorator = toDecorate;
-        }
-                
-        public abstract void apply(Bitmap imageToProcess);
 
         protected float[,] initializeWeights()
         {
