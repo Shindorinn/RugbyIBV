@@ -27,17 +27,15 @@ namespace INFOIBV.Filters
         {
             this.decorator = toDecorate;
         }
-
-
-
+                
         public abstract void apply(Bitmap imageToProcess);
 
-        private float[,] initializeWeights()
+        protected float[,] initializeWeights()
         {
             return this.initializeWeights(this.width, this.height);
         }
 
-        private abstract float[,] initializeWeights(int width, int height);
+        protected abstract float[,] initializeWeights(int width, int height);
 
         private float[,] initializeDoNothingWeights(int width, int height) 
         {
