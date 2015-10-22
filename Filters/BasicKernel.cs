@@ -8,6 +8,8 @@ namespace INFOIBV.Filters
 {
     public abstract class BasicKernel
     {
+        protected BasicKernel decorator;
+
         protected int width;
         protected int height;
         protected float[,] weights; // Need a new name for this.
@@ -15,11 +17,18 @@ namespace INFOIBV.Filters
         public BasicKernel(int width, int height)
         {
             // We should really check if the height and width are of odd value and above zero here.
-            
+
             this.width = width;
             this.height = height;
             this.weights = this.initializeWeights();
         }
+
+        public BasicKernel(int width, int height, BasicKernel toDecorate) : this(width, height)
+        {
+            this.decorator = toDecorate;
+        }
+
+
 
         public abstract void apply(Bitmap imageToProcess);
 
