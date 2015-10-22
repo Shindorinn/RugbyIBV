@@ -63,7 +63,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\DoNothingKernel.cs" />
     <Compile Include="Filters\FilterFactory.cs" />
+    <Compile Include="Filters\GrayScaleKernel.cs" />
+    <Compile Include="Filters\IApplicableKernel.cs" />
     <Compile Include="Filters\LowPassFilter.cs" />
     <Compile Include="Filters\IApplicableFilter.cs" />
     <Compile Include="Filters\BasicFilter.cs" />

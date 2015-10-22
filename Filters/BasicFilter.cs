@@ -8,9 +8,9 @@ namespace INFOIBV.Filters
 {
     public abstract class BasicFilter : IApplicableFilter
     {
-        protected BasicFilter decoratingFilter;
+        protected IApplicableFilter decoratingFilter;
 
-        public BasicFilter(BasicFilter toDecorate)
+        public BasicFilter(IApplicableFilter toDecorate)
         {
             this.decoratingFilter = toDecorate;
         }
