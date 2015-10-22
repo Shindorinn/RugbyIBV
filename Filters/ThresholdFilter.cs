@@ -6,11 +6,11 @@ using System.Drawing;
 
 namespace INFOIBV.Filters
 {
-   public class TresholdFilter : BasicFilter
+   public class ThresholdFilter : BasicFilter
     {
        private int thresholdValue;
 
-       public TresholdFilter(BasicFilter toDecorate, int thresholdValue)
+       public ThresholdFilter(BasicFilter toDecorate, int thresholdValue)
            : base(toDecorate)
        {
            this.thresholdValue = thresholdValue;
