@@ -6,26 +6,15 @@ using System.Text;
 
 namespace INFOIBV.Filters
 {
-    public class NormalizingKernel : BasicKernel
+    public class NormalizingKernel
     {
         public NormalizingKernel(int height, int width)
-            : base(height, width)
+        
         {
             // Construct additional pylons?
         }
 
-        public override void apply(Bitmap imageToProcess)
-        {
-            if(! (imageToProcess.Height >= this.height) &&
-               ! (imageToProcess.Width >= this.width ) )
-            {
-                // The filter cannot be applied
-            }
-
-
-        }
-
-        protected override float[,] initializeWeights(int width, int height)
+        protected  float[,] initializeWeights(int width, int height)
         {
             // First initialize everything to 0,0
             // [y, x]
