@@ -59,34 +59,36 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="FilterFactory.cs" />
-    <Compile Include="Filters\BasicKernel.cs" />
-    <Compile Include="Filters\HighPassFilter.cs" />
-    <Compile Include="Filters\NormalizingKernel.cs" />
-    <Compile Include="FilterTypes.cs" />
-    <Compile Include="FilterSelectorViewModel.cs" />
-    <Compile Include="FilterSelectorWindow.xaml.cs">
-      <DependentUpon>FilterSelectorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="INPC.cs" />
-    <Compile Include="RelayCommand.cs" />
-    <Page Include="FilterSelectorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="FilterFactory.cs" />
+    <Compile Include="Filters\BasicFilter.cs" />
+    <Compile Include="Filters\BasicKernel.cs" />
+    <Compile Include="Filters\GrayScaleFilter.cs" />
+    <Compile Include="Filters\HighPassFilter.cs" />
+    <Compile Include="Filters\NormalizingKernel.cs" />
+    <Compile Include="FilterTypes.cs" />
+    <Page Include="FilterSelectorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="FilterSelectorWindow.xaml.cs">
+      <DependentUpon>FilterSelectorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FilterSelectorViewModel.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MainViewModel.cs" />
+    <Compile Include="INPC.cs" />
+    <Compile Include="RelayCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
