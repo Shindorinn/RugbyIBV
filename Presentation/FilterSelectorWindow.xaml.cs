@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace INFOIBV
+namespace INFOIBV.Presentation
 {
     /// <summary>
     /// Interaction logic for FilterSelectorWindow.xaml

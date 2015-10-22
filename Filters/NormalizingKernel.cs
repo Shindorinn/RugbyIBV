@@ -19,7 +19,7 @@ namespace INFOIBV.Filters
             if(! (imageToProcess.Height >= this.height) &&
                ! (imageToProcess.Width >= this.width ) )
             {
-                // The filter cannot be applied
+                // YOU SHALL NOT PASS!
             }
 
 

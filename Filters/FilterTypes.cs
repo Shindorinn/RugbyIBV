@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace INFOIBV
+namespace INFOIBV.Filters
 {
     public static class FilterTypes
     {
@@ -12,25 +12,25 @@ namespace INFOIBV
             // Some Dummy filtertypes
              new FilterType(FilterType.Type.BasicKernel, "3x3 Kernel"),
              new FilterType(FilterType.Type.GrayscaleFilter, "Grayscale"),
-             new FilterType(FilterType.Type.HighPassFilter32,  "High-filter pass 32"),
-             new FilterType(FilterType.Type.HighPassFilter64,  "High-filter pass 64"),
-             new FilterType(FilterType.Type.HighPassFilter96,  "High-filter pass 96"),
+             new FilterType(FilterType.Type.HighPassFilter32, "High-filter pass 32"),
+             new FilterType(FilterType.Type.HighPassFilter64, "High-filter pass 64"),
+             new FilterType(FilterType.Type.HighPassFilter96, "High-filter pass 96"),
              new FilterType(FilterType.Type.HighPassFilter128, "High-filter pass 128"),
              new FilterType(FilterType.Type.HighPassFilter160, "High-filter pass 160"),
              new FilterType(FilterType.Type.HighPassFilter192, "High-filter pass 192"),
              new FilterType(FilterType.Type.HighPassFilter224, "High-filter pass 224"),
              new FilterType(FilterType.Type.HighPassFilter256, "High-filter pass 256"),
-             new FilterType(FilterType.Type.LowPassFilter32,  "Low-filter pass 32"),
-             new FilterType(FilterType.Type.LowPassFilter64,  "Low-filter pass 64"),
-             new FilterType(FilterType.Type.LowPassFilter96,  "Low-filter pass 96"),
+             new FilterType(FilterType.Type.LowPassFilter32, "Low-filter pass 32"),
+             new FilterType(FilterType.Type.LowPassFilter64, "Low-filter pass 64"),
+             new FilterType(FilterType.Type.LowPassFilter96, "Low-filter pass 96"),
              new FilterType(FilterType.Type.LowPassFilter128, "Low-filter pass 128"),
              new FilterType(FilterType.Type.LowPassFilter160, "Low-filter pass 160"),
              new FilterType(FilterType.Type.LowPassFilter192, "Low-filter pass 192"),
              new FilterType(FilterType.Type.LowPassFilter224, "Low-filter pass 224"),
              new FilterType(FilterType.Type.LowPassFilter256, "Low-filter pass 256"),
-             new FilterType(FilterType.Type.ThresholdFilter32,  "Threshold 32"),
-             new FilterType(FilterType.Type.ThresholdFilter64,  "Threshold 64"),
-             new FilterType(FilterType.Type.ThresholdFilter96,  "Threshold 96"),
+             new FilterType(FilterType.Type.ThresholdFilter32, "Threshold 32"),
+             new FilterType(FilterType.Type.ThresholdFilter64, "Threshold 64"),
+             new FilterType(FilterType.Type.ThresholdFilter96, "Threshold 96"),
              new FilterType(FilterType.Type.ThresholdFilter128, "Threshold 128"),
              new FilterType(FilterType.Type.ThresholdFilter160, "Threshold 160"),
              new FilterType(FilterType.Type.ThresholdFilter192, "Threshold 192"),

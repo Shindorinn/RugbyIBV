@@ -1,4 +1,5 @@
 ﻿using INFOIBV.Filters;
+using INFOIBV.Utilities;
 
 using Microsoft.Win32;
 using System;
@@ -11,7 +12,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace INFOIBV
+namespace INFOIBV.Presentation
 {
     public class MainViewModel : INPC
     {

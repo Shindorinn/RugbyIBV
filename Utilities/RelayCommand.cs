@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace INFOIBV
+namespace INFOIBV.Utilities
 {
     public class RelayCommand : ICommand
     {

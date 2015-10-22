@@ -1,10 +1,13 @@
-﻿using System;
+﻿using INFOIBV.Filters;
+using INFOIBV.Utilities;
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace INFOIBV
+namespace INFOIBV.Presentation
 {
     public class FilterSelectorViewModel : INPC
     {

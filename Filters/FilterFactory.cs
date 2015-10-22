@@ -1,10 +1,9 @@
-﻿using INFOIBV.Filters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace INFOIBV
+namespace INFOIBV.Filters
 {
     public static class FilterFactory
     {

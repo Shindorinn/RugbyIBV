@@ -63,7 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FilterFactory.cs" />
+    <Compile Include="Filters\FilterFactory.cs" />
     <Compile Include="Filters\LowPassFilter.cs" />
     <Compile Include="Filters\IApplicableFilter.cs" />
     <Compile Include="Filters\BasicFilter.cs" />
@@ -72,26 +72,26 @@
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\NormalizingKernel.cs" />
     <Compile Include="Filters\ThresholdFilter.cs" />
-    <Compile Include="FilterTypes.cs" />
-    <Page Include="FilterSelectorWindow.xaml">
+    <Compile Include="Filters\FilterTypes.cs" />
+    <Page Include="Presentation\FilterSelectorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="FilterSelectorWindow.xaml.cs">
+    <Compile Include="Presentation\FilterSelectorWindow.xaml.cs">
       <DependentUpon>FilterSelectorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FilterSelectorViewModel.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Presentation\FilterSelectorViewModel.cs" />
+    <Page Include="Presentation\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Presentation\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="INPC.cs" />
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="Presentation\MainViewModel.cs" />
+    <Compile Include="Utilities\INPC.cs" />
+    <Compile Include="Utilities\RelayCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
