@@ -31,6 +31,14 @@ namespace INFOIBV
 
     public sealed class FilterType
     {
+        private enum Type
+        {
+            SmallKernel,
+            MediumKernel,
+            BlurryFilter,
+            HighPassFilter
+        }
+
         // Don't know if name is needed
         //public string Name { get; private set; }
         public string Value { get; private set; }
