@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using INFOIBV.Filters;
+
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,6 +19,7 @@ namespace INFOIBV
         private Bitmap OutputImage;
 
         private FilterSelectorWindow fsWindow;
+        private BasicFilter decoratedFilter;
 
         public MainViewModel()
         {
@@ -31,6 +34,7 @@ namespace INFOIBV
 
             // Setup for FilterSelectorWindow with ViewModel
             fsWindow = new FilterSelectorWindow() { DataContext = new FilterSelectorViewModel() };
+            decoratedFilter = null;
         }
 
         public void LoadImage()
@@ -66,6 +70,7 @@ namespace INFOIBV
         public void SelectFilters()
         {
             fsWindow.ShowDialog();
+            decoratedFilter = FilterFactory.Construct(((FilterSelectorViewModel)fsWindow.DataContext).ActiveFilters.ToList());
 
             // Debug ?
             Console.WriteLine("The follow filters have been selected: ");
@@ -88,39 +93,9 @@ namespace INFOIBV
             HasProgress = Visibility.Visible;
             MaxProgress = InputImage.Size.Width * InputImage.Size.Height;
 
+            OutputImage = InputImage.Clone() as Bitmap;
+            decoratedFilter.apply(OutputImage);
 
-
-
-            // Copy input Bitmap to array            
-            for (int x = 0; x < InputImage.Size.Width; x++)
-            {
-                for (int y = 0; y < InputImage.Size.Height; y++)
-                {
-                    Image[x, y] = InputImage.GetPixel(x, y);                // Set pixel color in array at (x,y)
-                }
-            }
-
-            //==========================================================================================
-            // TODO: include here your own code
-            // example: create a negative image
-            for (int x = 0; x < InputImage.Size.Width; x++)
-            {
-                for (int y = 0; y < InputImage.Size.Height; y++)
-                {
-                    System.Drawing.Color pixelColor = Image[x, y];          // Get the pixel color at coordinate (x,y)
-                    System.Drawing.Color updatedColor = System.Drawing.Color.FromArgb(255 - pixelColor.R, 255 - pixelColor.G, 255 - pixelColor.B); // Negative image
-                    Image[x, y] = updatedColor;                             // Set the new pixel color at coordinate (x,y)
-                    Progress = Progress++;                                  // Increment progress bar
-                }
-            }
-            //==========================================================================================
-
-            // Copy array to output Bitmap
-            for (int x = 0; x < InputImage.Size.Width; x++)
-                for (int y = 0; y < InputImage.Size.Height; y++)
-                    OutputImage.SetPixel(x, y, Image[x, y]);               // Set the pixel color at coordinate (x,y)
-
-            
             NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(    // Display output image
                                 OutputImage.GetHbitmap(),
                                 IntPtr.Zero,

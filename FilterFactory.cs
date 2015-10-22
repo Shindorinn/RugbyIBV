@@ -31,8 +31,7 @@ namespace INFOIBV
                 }
             }
 
-
-            return null;
+            return toBeDecoratedFilter;
         }
 
     }
