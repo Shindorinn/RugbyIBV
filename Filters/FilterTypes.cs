@@ -9,9 +9,22 @@ namespace INFOIBV.Filters
     {
         private static readonly List<FilterType> Filters = new List<FilterType>()
         {
-            // Some Dummy filtertypes
-             new FilterType(FilterType.Type.BasicKernel, "3x3 Kernel"),
              new FilterType(FilterType.Type.GrayscaleFilter, "Grayscale"),
+             
+             new FilterType(FilterType.Type.GrayscaleKernel, "Grayscale Kernel"),
+
+             new FilterType(FilterType.Type.DoNothingKernel3, "Do-Nothing-Kernel 3x3"),
+             new FilterType(FilterType.Type.DoNothingKernel5, "Do-Nothing-Kernel 5x5"),
+             new FilterType(FilterType.Type.DoNothingKernel7, "Do-Nothing-Kernel 7x7"),
+             new FilterType(FilterType.Type.DoNothingKernel25, "Do-Nothing-Kernel 25x25"),
+
+             new FilterType(FilterType.Type.NormalizingKernel3, "Normalizing Kernel 3x3"),
+             new FilterType(FilterType.Type.NormalizingKernel5, "Normalizing Kernel 5x5"),
+             new FilterType(FilterType.Type.NormalizingKernel7, "Normalizing Kernel 7x7"),
+             new FilterType(FilterType.Type.NormalizingKernel1x25, "Normalizing Kernel 1x25"),
+             new FilterType(FilterType.Type.NormalizingKernel25x1, "Normalizing Kernel 25x1"),
+             new FilterType(FilterType.Type.NormalizingKernel25, "Normalizing Kernel 25x25"),
+
              new FilterType(FilterType.Type.HighPassFilter32, "High-filter pass 32"),
              new FilterType(FilterType.Type.HighPassFilter64, "High-filter pass 64"),
              new FilterType(FilterType.Type.HighPassFilter96, "High-filter pass 96"),
@@ -20,6 +33,7 @@ namespace INFOIBV.Filters
              new FilterType(FilterType.Type.HighPassFilter192, "High-filter pass 192"),
              new FilterType(FilterType.Type.HighPassFilter224, "High-filter pass 224"),
              new FilterType(FilterType.Type.HighPassFilter256, "High-filter pass 256"),
+
              new FilterType(FilterType.Type.LowPassFilter32, "Low-filter pass 32"),
              new FilterType(FilterType.Type.LowPassFilter64, "Low-filter pass 64"),
              new FilterType(FilterType.Type.LowPassFilter96, "Low-filter pass 96"),
@@ -28,6 +42,7 @@ namespace INFOIBV.Filters
              new FilterType(FilterType.Type.LowPassFilter192, "Low-filter pass 192"),
              new FilterType(FilterType.Type.LowPassFilter224, "Low-filter pass 224"),
              new FilterType(FilterType.Type.LowPassFilter256, "Low-filter pass 256"),
+
              new FilterType(FilterType.Type.ThresholdFilter32, "Threshold 32"),
              new FilterType(FilterType.Type.ThresholdFilter64, "Threshold 64"),
              new FilterType(FilterType.Type.ThresholdFilter96, "Threshold 96"),
@@ -48,8 +63,20 @@ namespace INFOIBV.Filters
     {
         public enum Type
         {
-            BasicKernel,
             GrayscaleFilter,
+
+            GrayscaleKernel,
+            DoNothingKernel3,
+            DoNothingKernel5,
+            DoNothingKernel7,
+            DoNothingKernel25,
+            NormalizingKernel3,
+            NormalizingKernel5,
+            NormalizingKernel7,
+            NormalizingKernel1x25,
+            NormalizingKernel25x1,
+            NormalizingKernel25,
+
             HighPassFilter32,
             HighPassFilter64,
             HighPassFilter96,
@@ -58,6 +85,7 @@ namespace INFOIBV.Filters
             HighPassFilter192,
             HighPassFilter224,
             HighPassFilter256,
+
             LowPassFilter32,
             LowPassFilter64,
             LowPassFilter96,
@@ -66,6 +94,7 @@ namespace INFOIBV.Filters
             LowPassFilter192,
             LowPassFilter224,
             LowPassFilter256,
+
             ThresholdFilter32,
             ThresholdFilter64,
             ThresholdFilter96,

@@ -20,7 +20,7 @@ namespace INFOIBV.Presentation
         private Bitmap OutputImage;
 
         private FilterSelectorWindow fsWindow;
-        private BasicFilter decoratedFilter;
+        private IApplicableFilter decoratedFilter;
 
         public MainViewModel()
         {

@@ -8,7 +8,7 @@ namespace INFOIBV.Filters
 {
     public class GrayScaleFilter : BasicFilter
     {
-        public GrayScaleFilter(BasicFilter decorator)
+        public GrayScaleFilter(IApplicableFilter decorator)
             : base(decorator)
         {
             // YOU MUST CONSTRUCT ADDITIONAL PYLONS!

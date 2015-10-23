@@ -10,7 +10,7 @@ namespace INFOIBV.Filters
     {
        private int thresholdValue;
 
-       public ThresholdFilter(BasicFilter toDecorate, int thresholdValue)
+       public ThresholdFilter(IApplicableFilter toDecorate, int thresholdValue)
            : base(toDecorate)
        {
            this.thresholdValue = thresholdValue;

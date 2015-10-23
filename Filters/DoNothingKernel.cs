@@ -8,9 +8,9 @@ namespace INFOIBV.Filters
 {
     public class DoNothingKernel : BasicKernel
     {
-        public DoNothingKernel(IApplicableKernel decoratingKernel, int width, int height)
-            : base(decoratingKernel, width
-                , height, DoNothingKernel.initializeDoNothingWeights(width, height))
+        public DoNothingKernel(IApplicableFilter decoratingKernel, int width, int height)
+            : base(decoratingKernel, width, height,
+                DoNothingKernel.initializeDoNothingWeights(width, height))
         {
             // Zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz....
         }

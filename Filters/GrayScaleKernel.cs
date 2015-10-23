@@ -12,7 +12,7 @@ namespace INFOIBV.Filters
         private double weightG = 0.7152f;
         private double weightB = 0.0722f;
 
-        public GrayScaleKernel(IApplicableKernel decoratingKernel, int width, int height)
+        public GrayScaleKernel(IApplicableFilter decoratingKernel, int width = 1, int height = 1)
             : base(decoratingKernel, width, height, GrayScaleKernel.constructWeights())
         {
             // THE END IS COMING!
@@ -24,20 +24,13 @@ namespace INFOIBV.Filters
             // Monochrome
         }
 
-
         public override int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess)
-        {
-            return this.convertRGBtoGrayScale(imageToProcess.GetPixel(xCoordinate, yCoordinate));
-        }
-
-        private int convertRGBtoGrayScale(Color toConvert)
         { // https://en.wikipedia.org/wiki/Grayscale
+            Color toConvert = imageToProcess.GetPixel(xCoordinate, yCoordinate);
             // Y = 0.2162R + 0.7152G + 0.0722B
             double y = toConvert.R * weightR + toConvert.G * weightG + toConvert.B * weightB;
 
-            //int grayValue = (int)Math.Floor(y);
-            //grayValue
-            return (int)Math.Floor(y); ;
+            return (int)Math.Floor(y);
         }
 
         private static float[,] constructWeights()

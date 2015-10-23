@@ -8,7 +8,7 @@ namespace INFOIBV.Filters
 {
     public class NormalizingKernel : BasicKernel
     {
-        public NormalizingKernel(IApplicableKernel decoratingKernel, int width, int height)
+        public NormalizingKernel(IApplicableFilter decoratingKernel, int width, int height)
             : base(decoratingKernel, width, height, NormalizingKernel.constructWeights(width, height))
         {
             // Construct additional pylons?
@@ -33,7 +33,7 @@ namespace INFOIBV.Filters
                 for (int x = 0; x < this.width; x++)
                 {
                     int xOffset = x - midX;
-                    sum += imageToProcess.GetPixel(xCoordinate + xOffset, yCoordinate + yOffset).R * weights[x, y];
+                    sum += imageToProcess.GetPixel(xCoordinate + xOffset, yCoordinate + yOffset).R * weights[y, x];
                 }
             }
 
@@ -49,7 +49,7 @@ namespace INFOIBV.Filters
             {
                 for (int y = 0; y < height; y++)
                 {
-                    toReturn[y, x] = 1 / (height * width);
+                    toReturn[y, x] = 1.0f / ((float)(height * width));
                 }
             }
             return toReturn;

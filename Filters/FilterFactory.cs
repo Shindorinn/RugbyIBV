@@ -7,20 +7,52 @@ namespace INFOIBV.Filters
 {
     public static class FilterFactory
     {
-        public static BasicFilter Construct(List<FilterType> filters)
+        public static IApplicableFilter Construct(List<FilterType> filters)
         {
-            BasicFilter toBeDecoratedFilter = null;
+            IApplicableFilter toBeDecoratedFilter = null;
 
             foreach (FilterType filter in filters)
             {
                 switch (filter.fType)
                 {
-                    case FilterType.Type.BasicKernel:
-                        //toBeDecoratedFilter = new BasicKernel(3, 3, toBeDecoratedFilter);
-                        break;
                     case FilterType.Type.GrayscaleFilter:
                         toBeDecoratedFilter = new GrayScaleFilter(toBeDecoratedFilter);
                         break;
+
+                    case FilterType.Type.GrayscaleKernel:
+                        toBeDecoratedFilter = new GrayScaleKernel(toBeDecoratedFilter);
+                        break;
+                    case FilterType.Type.DoNothingKernel3:
+                        toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 3, 3);
+                        break;
+                    case FilterType.Type.DoNothingKernel5:
+                        toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 5, 5);
+                        break;
+                    case FilterType.Type.DoNothingKernel7:
+                        toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 7, 7);
+                        break;
+                    case FilterType.Type.DoNothingKernel25:
+                        toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 25, 25);
+                        break;
+                    case FilterType.Type.NormalizingKernel3:
+                        toBeDecoratedFilter = new NormalizingKernel(toBeDecoratedFilter, 3, 3);
+                        break;
+                    case FilterType.Type.NormalizingKernel5:
+                        toBeDecoratedFilter = new NormalizingKernel(toBeDecoratedFilter, 5, 5);
+                        break;
+                    case FilterType.Type.NormalizingKernel7:
+                        toBeDecoratedFilter = new NormalizingKernel(toBeDecoratedFilter, 7, 7);
+                        break;
+                    case FilterType.Type.NormalizingKernel1x25:
+                        toBeDecoratedFilter = new NormalizingKernel(toBeDecoratedFilter, 1, 25);
+                        break;
+                    case FilterType.Type.NormalizingKernel25x1:
+                        toBeDecoratedFilter = new NormalizingKernel(toBeDecoratedFilter, 25, 1);
+                        break;
+                    case FilterType.Type.NormalizingKernel25:
+                        toBeDecoratedFilter = new NormalizingKernel(toBeDecoratedFilter, 25, 25);
+                        break;
+
                     case FilterType.Type.HighPassFilter32:
                         toBeDecoratedFilter = new HighPassFilter(toBeDecoratedFilter, 32);
                         break;
@@ -45,6 +77,7 @@ namespace INFOIBV.Filters
                     case FilterType.Type.HighPassFilter256:
                         toBeDecoratedFilter = new HighPassFilter(toBeDecoratedFilter, 254);
                         break;
+
                     case FilterType.Type.LowPassFilter32:
                         toBeDecoratedFilter = new LowPassFilter(toBeDecoratedFilter, 32);
                         break;
@@ -69,6 +102,7 @@ namespace INFOIBV.Filters
                     case FilterType.Type.LowPassFilter256:
                         toBeDecoratedFilter = new LowPassFilter(toBeDecoratedFilter, 255);
                         break;
+
                     case FilterType.Type.ThresholdFilter32:
                         toBeDecoratedFilter = new ThresholdFilter(toBeDecoratedFilter, 32);
                         break;
