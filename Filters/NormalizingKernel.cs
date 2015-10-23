@@ -60,7 +60,7 @@ namespace INFOIBV.Filters
 
         public override double GetMaximumProgress(int imageWidth, int imageHeight) // Needs to be implemented by every class.
         {
-            return base.GetMaximumProgress(imageWidth, imageHeight) + ((imageWidth * imageHeight) * (this.width * this.height));
+            return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - (this.width - 1)) * (imageHeight - (this.height - 1))) * (this.width * this.height));
         }
     }
 }

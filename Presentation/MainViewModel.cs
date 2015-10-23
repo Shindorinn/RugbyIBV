@@ -51,18 +51,18 @@ namespace INFOIBV.Presentation
 
             if (openImageDialog.ShowDialog().Value)
             {
-                string file = openImageDialog.FileName;                     // Get the filename
-                ImagePath = file;                                           // Show filename
+                string file = openImageDialog.FileName; // Get the filename
+                ImagePath = file; // Show filename
                 if (InputImage != null)
-                    InputImage.Dispose();                                   // Reset image, clean it up
+                    InputImage.Dispose(); // Reset image, clean it up
 
-                InputImage = new Bitmap(file);                              // Create new Bitmap from file
+                InputImage = new Bitmap(file); // Create new Bitmap from file
                 if (InputImage.Size.Height <= 0 || InputImage.Size.Width <= 0 ||
                     InputImage.Size.Height > 512 || InputImage.Size.Width > 512)    // Dimension check
                     MessageBox.Show("Error in image dimensions (have to be > 0 and <= 512)");
                 else
                 {
-                    OldImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(    // Display input image
+                    OldImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap( // Display input image
                                        InputImage.GetHbitmap(),
                                        IntPtr.Zero,
                                        System.Windows.Int32Rect.Empty,
@@ -89,7 +89,7 @@ namespace INFOIBV.Presentation
 
         public void ApplyImage()
         {
-            if (InputImage == null || decoratedFilter == null) return;      // Get out if no input image or filter selected
+            if (InputImage == null || decoratedFilter == null) return; // Get out if no input image or filter selected
             if (OutputImage != null)
             {
                 OutputImage.Dispose(); // Reset output image
@@ -117,7 +117,7 @@ namespace INFOIBV.Presentation
                         for (int y = 0; y < InputImage.Size.Height; y++)
                             OutputImage.SetPixel(x, y, OutputColors[x, y]);
 
-                    NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(    // Display output image
+                    NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap( // Display output image
                                         OutputImage.GetHbitmap(),
                                         IntPtr.Zero,
                                         System.Windows.Int32Rect.Empty,
@@ -133,14 +133,14 @@ namespace INFOIBV.Presentation
         public void SaveImage()
         {
             if (OutputImage == null)
-                return;                                                     // Get out if no output image
+                return; // Get out if no output image
 
             SaveFileDialog saveImageDialog = new SaveFileDialog();
             saveImageDialog.Filter = "Bitmap file|*.bmp";
             saveImageDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
             if (saveImageDialog.ShowDialog().Value)
-                OutputImage.Save(saveImageDialog.FileName);                 // Save the output image
+                OutputImage.Save(saveImageDialog.FileName); // Save the output image
         }
 
         public Boolean IsNotBusy() // Necessary for buttons to go offline while work has to be done.
