@@ -18,25 +18,26 @@ namespace INFOIBV.Filters
             this.thresholdValue = thresholdValue;
         }
 
-        public override void apply(Bitmap imageToProcess, MainViewModel reportProgressTo)
+        public override Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
-            base.apply(imageToProcess, reportProgressTo);
-            for (int x = 0; x < imageToProcess.Width; x++)
+            imageToProcess = base.apply(imageToProcess, reportProgressTo);
+            for (int x = 0; x < imageToProcess.GetLength(0); x++)
             {
-                for (int y = 0; y < imageToProcess.Height; y++)
+                for (int y = 0; y < imageToProcess.GetLength(1); y++)
                 {
-                    if (imageToProcess.GetPixel(x, y).R < this.thresholdValue)
+                    if (imageToProcess[x, y].R < this.thresholdValue)
                     {
-                        imageToProcess.SetPixel(x, y, Color.Black);
+                        imageToProcess[x, y] = Color.Black;
                     }
                     else
                     {
-                        imageToProcess.SetPixel(x, y, Color.White);
+                        imageToProcess[x, y] = Color.White;
                     }
                     reportProgressTo.Progress++;
                 }
             }
 
+            return imageToProcess;
         }
 
         public override double GetMaximumProgress(int imageWidth, int imageHeight)

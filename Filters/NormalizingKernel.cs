@@ -22,7 +22,7 @@ namespace INFOIBV.Filters
             // No additional pylons?
         }
 
-        public override int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess, MainViewModel reportProgressTo)
+        public override int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
             float sum = 0;
             int midX = (this.width - 1) / 2;
@@ -35,7 +35,7 @@ namespace INFOIBV.Filters
                 for (int x = 0; x < this.width; x++)
                 {
                     int xOffset = x - midX;
-                    sum += imageToProcess.GetPixel(xCoordinate + xOffset, yCoordinate + yOffset).R * weights[y, x];
+                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[y, x];
                     reportProgressTo.Progress++;
                 }
             }

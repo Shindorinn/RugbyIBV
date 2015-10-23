@@ -16,18 +16,20 @@ namespace INFOIBV.Filters
             // YOU MUST CONSTRUCT ADDITIONAL PYLONS!
         }
 
-        public override void apply(Bitmap imageToProcess, MainViewModel reportProgressTo)
+        public override Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
-            base.apply(imageToProcess, reportProgressTo);
+            imageToProcess = base.apply(imageToProcess, reportProgressTo);
 
-            for (int x = 0; x < imageToProcess.Width; x++)
+            for (int x = 0; x < imageToProcess.GetLength(0); x++)
             {
-                for (int y = 0; y < imageToProcess.Height; y++)
+                for (int y = 0; y < imageToProcess.GetLength(1); y++)
                 {
-                    imageToProcess.SetPixel(x, y, this.convertRGBtoGrayScale(imageToProcess.GetPixel(x, y)));
+                    imageToProcess[x,y] = this.convertRGBtoGrayScale(imageToProcess[x, y]);
                     reportProgressTo.Progress++;
                 }
             }
+
+            return imageToProcess;
         }
 
         private Color convertRGBtoGrayScale(Color toConvert)
@@ -38,11 +40,7 @@ namespace INFOIBV.Filters
             double weightB = 0.0722f;
 
             double y = toConvert.R * weightR + toConvert.G * weightG + toConvert.B * weightB;
-
             int grayValue = (int)Math.Floor(y);
-
-            //Console.WriteLine("y = " + y + " , Floored : " + Math.Floor(y));
-            //Console.Write("grayValue = " + grayValue);
 
             return Color.FromArgb(grayValue,grayValue,grayValue);
         }

@@ -10,9 +10,9 @@ namespace INFOIBV.Filters
 {
     public class GrayScaleKernel : BasicKernel
     {
-        private double weightR = 0.2162f;
-        private double weightG = 0.7152f;
-        private double weightB = 0.0722f;
+        private readonly double weightR = 0.2162f;
+        private readonly double weightG = 0.7152f;
+        private readonly double weightB = 0.0722f;
 
         public GrayScaleKernel(IApplicableFilter decoratingKernel, int width = 1, int height = 1)
             : base(decoratingKernel, width, height, GrayScaleKernel.constructWeights())
@@ -26,10 +26,12 @@ namespace INFOIBV.Filters
             // Monochrome
         }
 
-        public override int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess, MainViewModel reportProgressTo)
+        public override int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo)
         { // https://en.wikipedia.org/wiki/Grayscale
-            Color toConvert = imageToProcess.GetPixel(xCoordinate, yCoordinate);
+            Color toConvert = imageToProcess[xCoordinate, yCoordinate];
+
             // Y = 0.2162R + 0.7152G + 0.0722B
+            // Kernel doorlopen?
             double y = toConvert.R * weightR + toConvert.G * weightG + toConvert.B * weightB;
             reportProgressTo.Progress++;
 
@@ -45,7 +47,7 @@ namespace INFOIBV.Filters
 
         public override double GetMaximumProgress(int imageWidth, int imageHeight)
         {
-            return base.GetMaximumProgress(imageWidth, imageHeight) + (imageWidth * imageHeight); // * 1
+            return base.GetMaximumProgress(imageWidth, imageHeight) + (imageWidth * imageHeight); // * 1 (1x1 kernel)
         }
     }
 }

@@ -10,6 +10,6 @@ namespace INFOIBV.Filters
 {
     public interface IApplicableKernel : IApplicableFilter
     {
-        int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess, MainViewModel reportProgressTo);
+        int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo);
     }
 }

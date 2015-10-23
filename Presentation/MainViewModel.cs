@@ -1,5 +1,6 @@
 ﻿using INFOIBV.Filters;
 using INFOIBV.Utilities;
+
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -96,18 +97,26 @@ namespace INFOIBV.Presentation
             }
 
             IsBusy = true;
-            OutputImage = new Bitmap(InputImage.Size.Width, InputImage.Size.Height); // Create new output image
+            OutputImage = new Bitmap(InputImage.Size.Width, InputImage.Size.Height);
+            System.Drawing.Color[,] InputColors = new System.Drawing.Color[InputImage.Size.Width, InputImage.Size.Height];
+            System.Drawing.Color[,] OutputColors;
+            for (int x = 0; x < InputImage.Size.Width; x++)
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                    InputColors[x, y] = InputImage.GetPixel(x, y);
 
             HasProgress = Visibility.Visible;
-            OutputImage = InputImage.Clone() as Bitmap;
             MaxProgress = decoratedFilter.GetMaximumProgress(InputImage.Size.Width, InputImage.Size.Height);
 
             ThreadPool.QueueUserWorkItem(o =>
             {
-                decoratedFilter.apply(OutputImage, this);
+                OutputColors = decoratedFilter.apply(InputColors, this);
 
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    for (int x = 0; x < InputImage.Size.Width; x++)
+                        for (int y = 0; y < InputImage.Size.Height; y++)
+                            OutputImage.SetPixel(x, y, OutputColors[x, y]);
+
                     NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(    // Display output image
                                         OutputImage.GetHbitmap(),
                                         IntPtr.Zero,

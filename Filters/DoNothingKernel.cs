@@ -23,10 +23,10 @@ namespace INFOIBV.Filters
             // *snore* Zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz..
         }
 
-        public override int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess, MainViewModel reportProgressTo)
+        public override int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
-            reportProgressTo.Progress++;
-            return imageToProcess.GetPixel(xCoordinate, yCoordinate).R;
+            reportProgressTo.Progress++; //Misschien hier de kernel van niks doorlopen. Just a thought...
+            return imageToProcess[xCoordinate, yCoordinate].R;
         }
 
         private static float[,] initializeDoNothingWeights(int width, int height)
@@ -55,7 +55,7 @@ namespace INFOIBV.Filters
 
         public override double GetMaximumProgress(int imageWidth, int imageHeight)
         {
-            return base.GetMaximumProgress(imageWidth, imageHeight) + (imageWidth * imageHeight);
+            return base.GetMaximumProgress(imageWidth, imageHeight) + (imageWidth * imageHeight); // * 1 if no kernel is used, otherwise WxH (Width x Height kernel)
         }
     }
 }

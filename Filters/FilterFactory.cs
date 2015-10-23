@@ -137,21 +137,3 @@ namespace INFOIBV.Filters
 
     }
 }
-
-/*
-switch (filter.fType)
-                {
-                    case FilterType.Type.BasicKernel:
-                        //toBeDecoratedFilter = new BasicKernel(3, 3, toBeDecoratedFilter);
-                        break;
-                    case FilterType.Type.GrayscaleFilter:
-                        toBeDecoratedFilter = new GrayScaleFilter(toBeDecoratedFilter);
-                        break;
-                    case FilterType.Type.HighPassFilter:
-                        toBeDecoratedFilter = new HighPassFilter(toBeDecoratedFilter, 128);
-                        break;
-                    default:
-                        Console.WriteLine("Error \"{0}\" filter not found.", filter.fType);
-                        break;
-                }
-*/

@@ -10,7 +10,6 @@ namespace INFOIBV.Filters
         private static readonly List<FilterType> Filters = new List<FilterType>()
         {
              new FilterType(FilterType.Type.GrayscaleFilter, "Grayscale"),
-             
              new FilterType(FilterType.Type.GrayscaleKernel, "Grayscale Kernel"),
 
              new FilterType(FilterType.Type.DoNothingKernel3, "Do-Nothing-Kernel 3x3"),

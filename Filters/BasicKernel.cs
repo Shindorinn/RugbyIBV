@@ -24,29 +24,31 @@ namespace INFOIBV.Filters
             this.weights = weights;
         }
 
-        public void apply(Bitmap imageToProcess, MainViewModel reportProgressTo)
+        public Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
             if (decoratingKernel != null)
             {
-                decoratingKernel.apply(imageToProcess, reportProgressTo);
+                imageToProcess = decoratingKernel.apply(imageToProcess, reportProgressTo);
             }
 
             int xOffset = (this.width - 1) / 2;
             int yOffset = (this.height - 1) / 2;
 
-            for (int y = yOffset; y < imageToProcess.Height - yOffset; y++)
+            for (int y = yOffset; y < imageToProcess.GetLength(0) - yOffset; y++) // GetLength(x), where x is the dimension, give you the length of the specified part of the array.
             {
-                for (int x = xOffset; x < imageToProcess.Width - xOffset; x++)
+                for (int x = xOffset; x < imageToProcess.GetLength(1) - xOffset; x++)
                 {
                     int sum = processPixel(x, y, imageToProcess, reportProgressTo);
-                    imageToProcess.SetPixel(x, y, Color.FromArgb(sum, sum, sum));
+                    imageToProcess[x, y] = Color.FromArgb(sum, sum, sum);
                 }
             }
+
+            return imageToProcess;
         }
 
-        public abstract int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess, MainViewModel reportProgressTo);
+        public abstract int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo);
 
-        public virtual double GetMaximumProgress(int imageWidth, int imageHeight) // Needs to be implemented by every class.
+        public virtual double GetMaximumProgress(int imageWidth, int imageHeight)
         {
             if (this.decoratingKernel != null)
                 return decoratingKernel.GetMaximumProgress(imageWidth, imageHeight);

@@ -10,7 +10,7 @@ namespace INFOIBV.Filters
 {
     public interface IApplicableFilter
     {
-        void apply(Bitmap imageToProcess, MainViewModel reportProgressTo);
+        Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo);
         double GetMaximumProgress(int imageWidth, int imageHeight);
     }
 }
