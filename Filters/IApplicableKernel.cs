@@ -1,4 +1,6 @@
-﻿using System;
+﻿using INFOIBV.Presentation;
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -8,6 +10,6 @@ namespace INFOIBV.Filters
 {
     public interface IApplicableKernel : IApplicableFilter
     {
-        int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess);
+        int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess, MainViewModel reportProgressTo);
     }
 }

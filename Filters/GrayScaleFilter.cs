@@ -1,8 +1,10 @@
-﻿using System;
+﻿using INFOIBV.Presentation;
+
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace INFOIBV.Filters
 {
@@ -14,15 +16,16 @@ namespace INFOIBV.Filters
             // YOU MUST CONSTRUCT ADDITIONAL PYLONS!
         }
 
-        public override void apply(Bitmap imageToProcess)
+        public override void apply(Bitmap imageToProcess, MainViewModel reportProgressTo)
         {
-            base.apply(imageToProcess);
+            base.apply(imageToProcess, reportProgressTo);
 
             for (int x = 0; x < imageToProcess.Width; x++)
             {
                 for (int y = 0; y < imageToProcess.Height; y++)
                 {
                     imageToProcess.SetPixel(x, y, this.convertRGBtoGrayScale(imageToProcess.GetPixel(x, y)));
+                    reportProgressTo.Progress++;
                 }
             }
         }
@@ -42,6 +45,11 @@ namespace INFOIBV.Filters
             //Console.Write("grayValue = " + grayValue);
 
             return Color.FromArgb(grayValue,grayValue,grayValue);
+        }
+
+        public override double GetMaximumProgress(int imageWidth, int imageHeight)
+        {
+            return base.GetMaximumProgress(imageWidth, imageHeight) + (imageWidth * imageHeight);
         }
     }
 }

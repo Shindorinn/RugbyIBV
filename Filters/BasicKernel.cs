@@ -1,4 +1,6 @@
-﻿using System;
+﻿using INFOIBV.Presentation;
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -22,11 +24,11 @@ namespace INFOIBV.Filters
             this.weights = weights;
         }
 
-        public void apply(Bitmap imageToProcess)
+        public void apply(Bitmap imageToProcess, MainViewModel reportProgressTo)
         {
             if (decoratingKernel != null)
             {
-                decoratingKernel.apply(imageToProcess);
+                decoratingKernel.apply(imageToProcess, reportProgressTo);
             }
 
             int xOffset = (this.width - 1) / 2;
@@ -36,12 +38,20 @@ namespace INFOIBV.Filters
             {
                 for (int x = xOffset; x < imageToProcess.Width - xOffset; x++)
                 {
-                    int sum = processPixel(x, y, imageToProcess);
+                    int sum = processPixel(x, y, imageToProcess, reportProgressTo);
                     imageToProcess.SetPixel(x, y, Color.FromArgb(sum, sum, sum));
                 }
             }
         }
 
-        public abstract int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess);
+        public abstract int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess, MainViewModel reportProgressTo);
+
+        public virtual double GetMaximumProgress(int imageWidth, int imageHeight) // Needs to be implemented by every class.
+        {
+            if (this.decoratingKernel != null)
+                return decoratingKernel.GetMaximumProgress(imageWidth, imageHeight);
+
+            return 0.0;
+        }
     }
 }

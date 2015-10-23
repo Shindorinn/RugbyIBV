@@ -1,14 +1,16 @@
 ﻿using INFOIBV.Filters;
 using INFOIBV.Utilities;
-
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -26,12 +28,13 @@ namespace INFOIBV.Presentation
         {
             // Initial startup
             HasProgress = Visibility.Hidden;
+            IsBusy = false;
 
             // Setup Commands
-            LoadImageButton = new RelayCommand(a => LoadImage());
-            SelectFiltersButton = new RelayCommand(a => SelectFilters());
-            ApplyButton = new RelayCommand(a => ApplyImage());
-            SaveButton = new RelayCommand(a => SaveImage());
+            LoadImageButton = new RelayCommand(a => LoadImage(), e => IsNotBusy());
+            SelectFiltersButton = new RelayCommand(a => SelectFilters(), e => IsNotBusy());
+            ApplyButton = new RelayCommand(a => ApplyImage(), e => IsNotBusy());
+            SaveButton = new RelayCommand(a => SaveImage(), e => IsNotBusy());
 
             // Setup for FilterSelectorWindow with ViewModel
             fsWindow = new FilterSelectorWindow() { DataContext = new FilterSelectorViewModel() };
@@ -40,16 +43,16 @@ namespace INFOIBV.Presentation
 
         public void LoadImage()
         {
-
+            IsBusy = true;
             OpenFileDialog openImageDialog = new OpenFileDialog();
             openImageDialog.Filter = "Bitmap files|*.bmp;*.gif;*.png;*.tiff;*.jpg;*.jpeg";
             openImageDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            
+
             if (openImageDialog.ShowDialog().Value)
             {
                 string file = openImageDialog.FileName;                     // Get the filename
                 ImagePath = file;                                           // Show filename
-                if (InputImage != null) 
+                if (InputImage != null)
                     InputImage.Dispose();                                   // Reset image, clean it up
 
                 InputImage = new Bitmap(file);                              // Create new Bitmap from file
@@ -63,59 +66,64 @@ namespace INFOIBV.Presentation
                                        IntPtr.Zero,
                                        System.Windows.Int32Rect.Empty,
                                        BitmapSizeOptions.FromWidthAndHeight(InputImage.Size.Width, InputImage.Size.Height));
-                }              
-            }  
-            
+                }
+            }
+            IsBusy = false;
         }
 
         public void SelectFilters()
         {
+            IsBusy = true;
             fsWindow.ShowDialog();
             decoratedFilter = FilterFactory.Construct(((FilterSelectorViewModel)fsWindow.DataContext).ActiveFilters.ToList());
+            IsBusy = false;
 
             // Debug ?
             Console.WriteLine("The following filters have been selected: ");
-            foreach (var item in ((FilterSelectorViewModel) fsWindow.DataContext).ActiveFilters)
-	        {
+            foreach (var item in ((FilterSelectorViewModel)fsWindow.DataContext).ActiveFilters)
+            {
                 Console.WriteLine("- {0}", item);
-	        }
+            }
         }
 
         public void ApplyImage()
         {
-            if (InputImage == null) return;                                 // Get out if no input image
-            if (OutputImage != null) 
-                OutputImage.Dispose();                                      // Reset output image
+            if (InputImage == null || decoratedFilter == null) return;      // Get out if no input image or filter selected
+            if (OutputImage != null)
+            {
+                OutputImage.Dispose(); // Reset output image
+                Progress = 0; // Reset progress
+            }
 
+            IsBusy = true;
             OutputImage = new Bitmap(InputImage.Size.Width, InputImage.Size.Height); // Create new output image
-            System.Drawing.Color[,] Image = new System.Drawing.Color[InputImage.Size.Width, InputImage.Size.Height]; // Create array to speed-up operations (Bitmap functions are very slow)
 
-            // Setup progress bar
             HasProgress = Visibility.Visible;
-            MaxProgress = InputImage.Size.Width * InputImage.Size.Height;
-
             OutputImage = InputImage.Clone() as Bitmap;
+            MaxProgress = decoratedFilter.GetMaximumProgress(InputImage.Size.Width, InputImage.Size.Height);
 
-            /* Debug the kernel!
-            int size = 25;
-            BasicKernel bk = new BasicKernel(size, size, BasicKernel.initializeDoNothingWeights(size, size));
-            bk.apply(OutputImage);
-            */ 
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                decoratedFilter.apply(OutputImage, this);
 
-            decoratedFilter.apply(OutputImage);
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(    // Display output image
+                                        OutputImage.GetHbitmap(),
+                                        IntPtr.Zero,
+                                        System.Windows.Int32Rect.Empty,
+                                        BitmapSizeOptions.FromWidthAndHeight(OutputImage.Size.Width, OutputImage.Size.Height));
 
-            NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(    // Display output image
-                                OutputImage.GetHbitmap(),
-                                IntPtr.Zero,
-                                System.Windows.Int32Rect.Empty,
-                                BitmapSizeOptions.FromWidthAndHeight(OutputImage.Size.Width, OutputImage.Size.Height));
+                    HasProgress = Visibility.Hidden;
+                    IsBusy = false;
+                }));
 
-            HasProgress = Visibility.Hidden;                                // Hide progress bar
+            });
         }
 
         public void SaveImage()
         {
-            if (OutputImage == null) 
+            if (OutputImage == null)
                 return;                                                     // Get out if no output image
 
             SaveFileDialog saveImageDialog = new SaveFileDialog();
@@ -126,7 +134,23 @@ namespace INFOIBV.Presentation
                 OutputImage.Save(saveImageDialog.FileName);                 // Save the output image
         }
 
+        public Boolean IsNotBusy() // Necessary for buttons to go offline while work has to be done.
+        {
+            return !IsBusy;
+        }
+
         #region Properties
+        private Boolean _isBusy;
+        public Boolean IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                CommandManager.InvalidateRequerySuggested(); // Makes every RelayCommand to be re-evaluated (a good thing!)
+            }
+        }
+
         private RelayCommand _loadImageButton;
         public RelayCommand LoadImageButton
         {

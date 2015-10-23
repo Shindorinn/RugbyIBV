@@ -1,4 +1,6 @@
-﻿using System;
+﻿using INFOIBV.Presentation;
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace INFOIBV.Filters
             // No additional pylons?
         }
 
-        public override int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess)
+        public override int processPixel(int xCoordinate, int yCoordinate, Bitmap imageToProcess, MainViewModel reportProgressTo)
         {
             float sum = 0;
             int midX = (this.width - 1) / 2;
@@ -34,6 +36,7 @@ namespace INFOIBV.Filters
                 {
                     int xOffset = x - midX;
                     sum += imageToProcess.GetPixel(xCoordinate + xOffset, yCoordinate + yOffset).R * weights[y, x];
+                    reportProgressTo.Progress++;
                 }
             }
 
@@ -53,6 +56,11 @@ namespace INFOIBV.Filters
                 }
             }
             return toReturn;
+        }
+
+        public override double GetMaximumProgress(int imageWidth, int imageHeight) // Needs to be implemented by every class.
+        {
+            return base.GetMaximumProgress(imageWidth, imageHeight) + ((imageWidth * imageHeight) * (this.width * this.height));
         }
     }
 }
