@@ -33,17 +33,18 @@ namespace INFOIBV.Filters
 
             int xOffset = (this.width - 1) / 2;
             int yOffset = (this.height - 1) / 2;
+            Color[,] imageToReturn = imageToProcess;
 
             for (int y = yOffset; y < imageToProcess.GetLength(0) - yOffset; y++) // GetLength(x), where x is the dimension, give you the length of the specified part of the array.
             {
                 for (int x = xOffset; x < imageToProcess.GetLength(1) - xOffset; x++)
                 {
                     int sum = processPixel(x, y, imageToProcess, reportProgressTo);
-                    imageToProcess[x, y] = Color.FromArgb(sum, sum, sum);
+                    imageToReturn[x, y] = Color.FromArgb(sum, sum, sum);
                 }
             }
 
-            return imageToProcess;
+            return imageToReturn;
         }
 
         public abstract int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo);
