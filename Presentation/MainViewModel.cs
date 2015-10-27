@@ -125,6 +125,11 @@ namespace INFOIBV.Presentation
 
                     HasProgress = Visibility.Hidden;
                     IsBusy = false;
+
+                    // Debug for Progressbar
+                    Console.WriteLine("Progress: {0}, MaxProgress: {1}", Progress, MaxProgress);
+                    Console.WriteLine("Procent: {0}", (Progress / MaxProgress) * 100);
+
                 }));
 
             });

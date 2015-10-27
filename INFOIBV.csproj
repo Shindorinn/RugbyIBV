@@ -64,11 +64,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\ApproximationKernel.cs" />
+    <Compile Include="Filters\CompassType.cs" />
     <Compile Include="Filters\DerivativeType.cs" />
     <Compile Include="Filters\CompassOperation.cs" />
     <Compile Include="Filters\Direction.cs" />
+    <Compile Include="Filters\FreiChenOperator.cs" />
     <Compile Include="Filters\Hamiltonian.cs" />
     <Compile Include="Filters\IsotropicKernel.cs" />
+    <Compile Include="Filters\KirschKernel.cs" />
     <Compile Include="Filters\PrewittKernel.cs" />
     <Compile Include="Filters\DoNothingKernel.cs" />
     <Compile Include="Filters\FilterFactory.cs" />
