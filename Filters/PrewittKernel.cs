@@ -10,12 +10,6 @@ namespace INFOIBV.Filters
 {
     public class PrewittKernel : BasicKernel
     {
-        public PrewittKernel(Direction compass)
-            : this(null, compass)
-        {
-            // A compass that doesn't point north?
-        }
-
         public PrewittKernel(IApplicableFilter decoratingKernel, Direction compass)
             : base(decoratingKernel, 3, 3, PrewittKernel.constructWeights(3, 3, compass))
         {
@@ -25,16 +19,13 @@ namespace INFOIBV.Filters
         public override int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
             float sum = 0;
-            int midX = (this.width - 1) / 2;
-            int midY = (this.height - 1) / 2;
-
             // Loop over Weights
             for (int y = 0; y < this.height; y++)
             {
-                int yOffset = y - midY;
+                int yOffset = y - 1;
                 for (int x = 0; x < this.width; x++)
                 {
-                    int xOffset = x - midX;
+                    int xOffset = x - 1;
                     sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[y, x];
                     reportProgressTo.Progress++;
                 }
@@ -57,7 +48,7 @@ namespace INFOIBV.Filters
                         case Direction.North:
                             if (y == 0)
                                 value = 1.0f;
-                            else if (y == height - 1)
+                            else if (y == 2)
                                 value = -1.0f;
                             break;
                         case Direction.NorthEast:
@@ -69,7 +60,7 @@ namespace INFOIBV.Filters
                         case Direction.East:
                             if (x == 0)
                                 value = -1.0f;
-                            else if (x == width - 1)
+                            else if (x == 2)
                                 value = 1.0f;
                             break;
                         case Direction.SouthEast:
@@ -81,7 +72,7 @@ namespace INFOIBV.Filters
                         case Direction.South:
                             if (y == 0)
                                 value = -1.0f;
-                            else if (y == height - 1)
+                            else if (y == 2)
                                 value = 1.0f;
                             break;
                         case Direction.SouthWest:
@@ -93,7 +84,7 @@ namespace INFOIBV.Filters
                         case Direction.West:
                             if (x == 0)
                                 value = 1.0f;
-                            else if (x == width - 1)
+                            else if (x == 2)
                                 value = -1.0f;
                             break;
                         case Direction.NorthWest:
@@ -112,7 +103,7 @@ namespace INFOIBV.Filters
 
         public override double GetMaximumProgress(int imageWidth, int imageHeight) // Needs to be implemented by every class.
         {
-            return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - (this.width - 1)) * (imageHeight - (this.height - 1))) * (this.width * this.height));
+            return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - 2) * (imageHeight - 2)) * 9);
         }
     }
 }

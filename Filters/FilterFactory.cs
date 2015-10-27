@@ -18,22 +18,20 @@ namespace INFOIBV.Filters
                     case FilterType.Type.GrayscaleFilter:
                         toBeDecoratedFilter = new GrayScaleFilter(toBeDecoratedFilter);
                         break;
-
                     case FilterType.Type.GrayscaleKernel:
                         toBeDecoratedFilter = new GrayScaleKernel(toBeDecoratedFilter);
                         break;
-                    case FilterType.Type.DoNothingKernel3:
+                    case FilterType.Type.DoNothingKernel:
                         toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 3, 3);
                         break;
-                    case FilterType.Type.DoNothingKernel5:
-                        toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 5, 5);
+
+                    case FilterType.Type.DerivativeKernelX:
+                        toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, AxisDirection.x);
                         break;
-                    case FilterType.Type.DoNothingKernel7:
-                        toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 7, 7);
+                    case FilterType.Type.DerivativeKernelY:
+                        toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, AxisDirection.y);
                         break;
-                    case FilterType.Type.DoNothingKernel25:
-                        toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 25, 25);
-                        break;
+
                     case FilterType.Type.NormalizingKernel3:
                         toBeDecoratedFilter = new NormalizingKernel(toBeDecoratedFilter, 3, 3);
                         break;

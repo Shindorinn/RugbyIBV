@@ -1,5 +1,6 @@
 ﻿namespace INFOIBV.Filters
 {
+    // For the CompassKernels
     public enum Direction
     {
         North,

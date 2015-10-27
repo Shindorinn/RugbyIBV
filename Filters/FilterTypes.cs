@@ -11,11 +11,10 @@ namespace INFOIBV.Filters
         {
              new FilterType(FilterType.Type.GrayscaleFilter, "Grayscale"),
              new FilterType(FilterType.Type.GrayscaleKernel, "Grayscale Kernel"),
-
-             new FilterType(FilterType.Type.DoNothingKernel3, "Do-Nothing-Kernel 3x3"),
-             new FilterType(FilterType.Type.DoNothingKernel5, "Do-Nothing-Kernel 5x5"),
-             new FilterType(FilterType.Type.DoNothingKernel7, "Do-Nothing-Kernel 7x7"),
-             new FilterType(FilterType.Type.DoNothingKernel25, "Do-Nothing-Kernel 25x25"),
+             new FilterType(FilterType.Type.DoNothingKernel, "Do-Nothing-Kernel"),
+             
+             new FilterType(FilterType.Type.DerivativeKernelX, "X Derivative Kernel"),
+             new FilterType(FilterType.Type.DerivativeKernelY, "Y Derivative Kernel"),
 
              new FilterType(FilterType.Type.NormalizingKernel3, "Normalizing Kernel 3x3"),
              new FilterType(FilterType.Type.NormalizingKernel5, "Normalizing Kernel 5x5"),
@@ -63,12 +62,12 @@ namespace INFOIBV.Filters
         public enum Type
         {
             GrayscaleFilter,
-
             GrayscaleKernel,
-            DoNothingKernel3,
-            DoNothingKernel5,
-            DoNothingKernel7,
-            DoNothingKernel25,
+            DoNothingKernel,
+
+            DerivativeKernelX,
+            DerivativeKernelY,
+
             NormalizingKernel3,
             NormalizingKernel5,
             NormalizingKernel7,
