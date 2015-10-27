@@ -30,17 +30,32 @@ namespace INFOIBV.Filters
                 for (int x = 0; x < this.width; x++)
                 {
                     int xOffset = x - midX;
-                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[y, x];
+                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[x,y];
                     reportProgressTo.Progress++;
                 }
             }
 
-            return (int)Math.Floor(sum);
+            if (this.type == DerivativeType.xy)
+            {
+                return (int)Math.Floor(sum) + 128;
+            }
+            else
+            {
+                return (int)Math.Floor(sum/18) + 128;
+            }
         }
         
         public override double GetMaximumProgress(int imageWidth, int imageHeight)
         {
-            return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - (4)) * (imageHeight - (4))) * (25));
+            if (this.type == DerivativeType.xy)
+            { // 3x3
+                return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - (2)) * (imageHeight - (2))) * (9));
+            }
+            else 
+            { // 1x5 or 5x1
+                return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - (4)) * (imageHeight - (4))) * (5));
+            }
+            
         }
 
         private static int getHeight(DerivativeType type)
