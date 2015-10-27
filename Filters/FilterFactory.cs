@@ -31,6 +31,9 @@ namespace INFOIBV.Filters
                     case FilterType.Type.DerivativeKernelY:
                         toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, DerivativeType.y);
                         break;
+                    case FilterType.Type.DerivativeKernelXY:
+                        toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, DerivativeType.xy);
+                        break;
 
                     case FilterType.Type.PrewittKernelN:
                         toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.North);
