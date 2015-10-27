@@ -18,8 +18,8 @@ namespace INFOIBV.Filters
 
         public override Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
-            DerivativeKernel xDerivative = new DerivativeKernel(null, AxisDirection.x);
-            DerivativeKernel yDerivative = new DerivativeKernel(null, AxisDirection.y);
+            DerivativeKernel xDerivative = new DerivativeKernel(null, DerivativeType.x);
+            DerivativeKernel yDerivative = new DerivativeKernel(null, DerivativeType.y);
 
 
 

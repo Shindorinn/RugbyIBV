@@ -64,7 +64,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\ApproximationKernel.cs" />
-    <Compile Include="Filters\AxisDirection.cs" />
+    <Compile Include="Filters\DerivativeType.cs" />
     <Compile Include="Filters\CompassOperation.cs" />
     <Compile Include="Filters\Direction.cs" />
     <Compile Include="Filters\Hamiltonian.cs" />

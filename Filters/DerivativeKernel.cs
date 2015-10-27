@@ -9,12 +9,12 @@ namespace INFOIBV.Filters
 {
     public class DerivativeKernel : BasicKernel
     {
-        private AxisDirection direction;
+        private DerivativeType type;
 
-        public DerivativeKernel(IApplicableFilter decoratingFilter, AxisDirection direction)
-            : base(decoratingFilter, direction == AxisDirection.x ? 5 : 1, direction == AxisDirection.y ? 5 : 1, constructWeights(direction))
+        public DerivativeKernel(IApplicableFilter decoratingFilter, DerivativeType type)
+            : base(decoratingFilter, DerivativeKernel.getWidth(type), DerivativeKernel.getHeight(type), constructWeights(type))
         {
-            this.direction = direction;
+            this.type = type;
         }
 
         public override int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo)
@@ -37,17 +37,57 @@ namespace INFOIBV.Filters
 
             return (int)Math.Floor(sum);
         }
-
-        private static float[,] constructWeights(AxisDirection direction)
+        
+        public override double GetMaximumProgress(int imageWidth, int imageHeight)
         {
-            if (direction == AxisDirection.x)
+            return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - (4)) * (imageHeight - (4))) * (25));
+        }
+
+        private static int getHeight(DerivativeType type)
+        {
+            switch (type)
             {
-                return new float[5, 1] { { 1f / 12f }, { -8f / 12f }, { 0f }, { 8f / 12f }, { -1f / 12f } };
+                case DerivativeType.x:
+                    return 1;
+
+                case DerivativeType.y:
+                    return 5;
+
+                case DerivativeType.xy:
+                    return 3;
             }
-            else
+            return -1; // It should never come to this!
+        }
+
+        private static int getWidth(DerivativeType type){
+            switch (type)
             {
-                return new float[1, 5] { { 1f / 12f ,  -8 / 12f ,  0f ,  8 / 12f ,  -1 / 12f } };
+                case DerivativeType.x :
+                    return 5;
+
+                case DerivativeType.y:
+                    return 1;
+
+                case DerivativeType.xy:
+                    return 3;
             }
+            return -1; // It should never come to this!
+        }
+        
+        private static float[,] constructWeights(DerivativeType type)
+        {
+            switch (type)
+            {
+                case DerivativeType.x:
+                    return new float[5, 1] { { 1f / 12f }, { -8f / 12f }, { 0f }, { 8f / 12f }, { -1f / 12f } };
+
+                case DerivativeType.y:
+                    return new float[1, 5] { { 1f / 12f, -8 / 12f, 0f, 8 / 12f, -1 / 12f } };
+
+                case DerivativeType.xy:
+                    return new float[3, 3] { {1/4, 0, -1/4} , {0,0,0} , {-1/4, 0, 1/4} } ;
+            }
+            return null; // It should never come to this!
         }
     }
 }

@@ -26,10 +26,10 @@ namespace INFOIBV.Filters
                         break;
 
                     case FilterType.Type.DerivativeKernelX:
-                        toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, AxisDirection.x);
+                        toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, DerivativeType.x);
                         break;
                     case FilterType.Type.DerivativeKernelY:
-                        toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, AxisDirection.y);
+                        toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, DerivativeType.y);
                         break;
 
                     case FilterType.Type.NormalizingKernel3:

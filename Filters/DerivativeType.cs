@@ -5,9 +5,10 @@ using System.Text;
 
 namespace INFOIBV.Filters
 {
-    public enum AxisDirection
+    public enum DerivativeType
     {
         x,
-        y
+        y,
+        xy
     }
 }
