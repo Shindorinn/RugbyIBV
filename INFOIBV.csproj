@@ -67,6 +67,7 @@
     <Compile Include="Filters\AxisDirection.cs" />
     <Compile Include="Filters\CompassOperation.cs" />
     <Compile Include="Filters\Direction.cs" />
+    <Compile Include="Filters\Hamiltonian.cs" />
     <Compile Include="Filters\IsotropicKernel.cs" />
     <Compile Include="Filters\PrewittKernel.cs" />
     <Compile Include="Filters\DoNothingKernel.cs" />
