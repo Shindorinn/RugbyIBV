@@ -80,6 +80,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Filters\DerivativeKernel.cs" />
     <Compile Include="Presentation\FilterSelectorWindow.xaml.cs">
       <DependentUpon>FilterSelectorWindow.xaml</DependentUpon>
     </Compile>
