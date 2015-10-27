@@ -63,6 +63,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\ApproximationKernel.cs" />
+    <Compile Include="Filters\CompassOperation.cs" />
+    <Compile Include="Filters\Direction.cs" />
+    <Compile Include="Filters\IsotropicKernel.cs" />
+    <Compile Include="Filters\PrewittKernel.cs" />
     <Compile Include="Filters\DoNothingKernel.cs" />
     <Compile Include="Filters\FilterFactory.cs" />
     <Compile Include="Filters\GrayScaleKernel.cs" />
@@ -74,6 +79,7 @@
     <Compile Include="Filters\GrayScaleFilter.cs" />
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\NormalizingKernel.cs" />
+    <Compile Include="Filters\SobelKernel.cs" />
     <Compile Include="Filters\ThresholdFilter.cs" />
     <Compile Include="Filters\FilterTypes.cs" />
     <Page Include="Presentation\FilterSelectorWindow.xaml">
