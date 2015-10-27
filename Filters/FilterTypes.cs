@@ -15,6 +15,7 @@ namespace INFOIBV.Filters
              
              new FilterType(FilterType.Type.DerivativeKernelX, "X Derivative Kernel"),
              new FilterType(FilterType.Type.DerivativeKernelY, "Y Derivative Kernel"),
+             new FilterType(FilterType.Type.DerivativeKernelY, "XY Derivative Kernel"),
 
              new FilterType(FilterType.Type.PrewittKernelN,  "Prewitt Kernel North"),
              new FilterType(FilterType.Type.PrewittKernelNE, "Prewitt Kernel North East"),
@@ -103,6 +104,7 @@ namespace INFOIBV.Filters
 
             DerivativeKernelX,
             DerivativeKernelY,
+            DerivativeKernelXY,
 
             PrewittKernelN,
             PrewittKernelNE,
