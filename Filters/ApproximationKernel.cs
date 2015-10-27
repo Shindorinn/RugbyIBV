@@ -32,7 +32,7 @@ namespace INFOIBV.Filters
                 }
             }
 
-            return (int)Math.Floor(sum);
+            return (int)Math.Floor(sum) + 128;
         }
 
         private static float[,] constructWeights(int width, int height, Direction compass)

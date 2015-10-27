@@ -32,6 +32,106 @@ namespace INFOIBV.Filters
                         toBeDecoratedFilter = new DerivativeKernel(toBeDecoratedFilter, DerivativeType.y);
                         break;
 
+                    case FilterType.Type.PrewittKernelN:
+                        toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.North);
+                        break;
+                    case FilterType.Type.PrewittKernelNE:
+                        toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.NorthEast);
+                        break;
+                    case FilterType.Type.PrewittKernelE:
+                        toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.East);
+                        break;
+                    case FilterType.Type.PrewittKernelSE:
+                        toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.SouthEast);
+                        break;
+                    case FilterType.Type.PrewittKernelS:
+                        toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.South);
+                        break;
+                    case FilterType.Type.PrewittKernelSW:
+                        toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.SouthWest);
+                        break;
+                    case FilterType.Type.PrewittKernelW:
+                        toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.West);
+                        break;
+                    case FilterType.Type.PrewittKernelNW:
+                        toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.NorthWest);
+                        break;
+
+                    case FilterType.Type.ApproximationKernelN:
+                        toBeDecoratedFilter = new ApproximationKernel(toBeDecoratedFilter, Direction.North);
+                        break;
+                    case FilterType.Type.ApproximationKernelNE:
+                        toBeDecoratedFilter = new ApproximationKernel(toBeDecoratedFilter, Direction.NorthEast);
+                        break;
+                    case FilterType.Type.ApproximationKernelE:
+                        toBeDecoratedFilter = new ApproximationKernel(toBeDecoratedFilter, Direction.East);
+                        break;
+                    case FilterType.Type.ApproximationKernelSE:
+                        toBeDecoratedFilter = new ApproximationKernel(toBeDecoratedFilter, Direction.SouthEast);
+                        break;
+                    case FilterType.Type.ApproximationKernelS:
+                        toBeDecoratedFilter = new ApproximationKernel(toBeDecoratedFilter, Direction.South);
+                        break;
+                    case FilterType.Type.ApproximationKernelSW:
+                        toBeDecoratedFilter = new ApproximationKernel(toBeDecoratedFilter, Direction.SouthWest);
+                        break;
+                    case FilterType.Type.ApproximationKernelW:
+                        toBeDecoratedFilter = new ApproximationKernel(toBeDecoratedFilter, Direction.West);
+                        break;
+                    case FilterType.Type.ApproximationKernelNW:
+                        toBeDecoratedFilter = new ApproximationKernel(toBeDecoratedFilter, Direction.NorthWest);
+                        break;
+
+                    case FilterType.Type.IsotropicKernelN:
+                        toBeDecoratedFilter = new IsotropicKernel(toBeDecoratedFilter, Direction.North);
+                        break;
+                    case FilterType.Type.IsotropicKernelNE:
+                        toBeDecoratedFilter = new IsotropicKernel(toBeDecoratedFilter, Direction.NorthEast);
+                        break;
+                    case FilterType.Type.IsotropicKernelE:
+                        toBeDecoratedFilter = new IsotropicKernel(toBeDecoratedFilter, Direction.East);
+                        break;
+                    case FilterType.Type.IsotropicKernelSE:
+                        toBeDecoratedFilter = new IsotropicKernel(toBeDecoratedFilter, Direction.SouthEast);
+                        break;
+                    case FilterType.Type.IsotropicKernelS:
+                        toBeDecoratedFilter = new IsotropicKernel(toBeDecoratedFilter, Direction.South);
+                        break;
+                    case FilterType.Type.IsotropicKernelSW:
+                        toBeDecoratedFilter = new IsotropicKernel(toBeDecoratedFilter, Direction.SouthWest);
+                        break;
+                    case FilterType.Type.IsotropicKernelW:
+                        toBeDecoratedFilter = new IsotropicKernel(toBeDecoratedFilter, Direction.West);
+                        break;
+                    case FilterType.Type.IsotropicKernelNW:
+                        toBeDecoratedFilter = new IsotropicKernel(toBeDecoratedFilter, Direction.NorthWest);
+                        break;
+
+                    case FilterType.Type.SobelKernelN:
+                        toBeDecoratedFilter = new SobelKernel(toBeDecoratedFilter, Direction.North);
+                        break;
+                    case FilterType.Type.SobelKernelNE:
+                        toBeDecoratedFilter = new SobelKernel(toBeDecoratedFilter, Direction.NorthEast);
+                        break;
+                    case FilterType.Type.SobelKernelE:
+                        toBeDecoratedFilter = new SobelKernel(toBeDecoratedFilter, Direction.East);
+                        break;
+                    case FilterType.Type.SobelKernelSE:
+                        toBeDecoratedFilter = new SobelKernel(toBeDecoratedFilter, Direction.SouthEast);
+                        break;
+                    case FilterType.Type.SobelKernelS:
+                        toBeDecoratedFilter = new SobelKernel(toBeDecoratedFilter, Direction.South);
+                        break;
+                    case FilterType.Type.SobelKernelSW:
+                        toBeDecoratedFilter = new SobelKernel(toBeDecoratedFilter, Direction.SouthWest);
+                        break;
+                    case FilterType.Type.SobelKernelW:
+                        toBeDecoratedFilter = new SobelKernel(toBeDecoratedFilter, Direction.West);
+                        break;
+                    case FilterType.Type.SobelKernelNW:
+                        toBeDecoratedFilter = new SobelKernel(toBeDecoratedFilter, Direction.NorthWest);
+                        break;
+
                     case FilterType.Type.NormalizingKernel3:
                         toBeDecoratedFilter = new NormalizingKernel(toBeDecoratedFilter, 3, 3);
                         break;

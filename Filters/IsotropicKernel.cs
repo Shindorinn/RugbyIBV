@@ -31,7 +31,7 @@ namespace INFOIBV.Filters
                 }
             }
 
-            return (int)Math.Floor(sum);
+            return (int)Math.Floor(sum / (((float)Math.Sqrt(2) + 2) * 2)) + 128;
         }
 
         private static float[,] constructWeights(int width, int height, Direction compass)
@@ -83,7 +83,7 @@ namespace INFOIBV.Filters
                             break;
                         case Direction.West:
                             if (x == 0)
-                                value = y == 1 ? (float)Math.Sqrt(2) : -1.0f;
+                                value = y == 1 ? (float)Math.Sqrt(2) : 1.0f;
                             else if (x == 2)
                                 value = y == 1 ? ((float)Math.Sqrt(2) * -1f) : -1.0f;
                             break;
