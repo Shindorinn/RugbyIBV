@@ -29,13 +29,13 @@ namespace INFOIBV.Filters
             int midY = (this.height - 1) / 2;
 
             // Loop over Weights
-            for (int y = 0; y < this.height; y++)
+            for (int x = 0; x < this.width; x++)
             {
-                int yOffset = y - midY;
-                for (int x = 0; x < this.width; x++)
+                int xOffset = x - midX;
+                for (int y = 0; y < this.height; y++)
                 {
-                    int xOffset = x - midX;
-                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[y, x];
+                    int yOffset = y - midY;
+                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[x, y];
                     reportProgressTo.Progress++;
                 }
             }
@@ -45,14 +45,12 @@ namespace INFOIBV.Filters
 
         private static float[,] constructWeights(int width, int height)
         {
-            // First initialize everything to 0,0
-            // [y, x]
-            float[,] toReturn = new float[height, width];
+            float[,] toReturn = new float[width, height];
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    toReturn[y, x] = 1.0f / ((float)(height * width));
+                    toReturn[x, y] = 1.0f / ((float)(height * width));
                 }
             }
             return toReturn;

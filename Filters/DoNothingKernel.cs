@@ -35,12 +35,12 @@ namespace INFOIBV.Filters
 
             // First initialize everything to 0,0
             // [y, x] apparently. see -> https://msdn.microsoft.com/en-us/library/2yd9wwz4.aspx
-            float[,] toReturn = new float[height, width];
+            float[,] toReturn = new float[width, height];
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    toReturn[y, x] = 0;
+                    toReturn[x, y] = 0;
                 }
             }
 
@@ -48,7 +48,7 @@ namespace INFOIBV.Filters
             int midY = (int)Math.Floor((float)height / 2);
             int midX = (int)Math.Floor((float)width / 2);
 
-            toReturn[midY, midX] = 1;
+            toReturn[midX, midY] = 1;
 
             return toReturn;
         }

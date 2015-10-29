@@ -24,33 +24,44 @@ namespace INFOIBV.Filters
 
         private void ConstructKernels(CompassType type)
         {
+            int i = 0;
             kernels = new BasicKernel[8];
             switch (type)
             {
                 case CompassType.Approximation:
-                    for (int i = 0; i < kernels.Length; i++)
-                        foreach (Direction compass in Enum.GetValues(typeof(Direction)))
-                            kernels[i] = new ApproximationKernel(null, compass);
+                    foreach (Direction compass in Enum.GetValues(typeof(Direction)))
+                    {
+                        kernels[i] = new ApproximationKernel(null, compass);
+                        i++;
+                    }
                     break;
                 case CompassType.Isotropic:
-                    for (int i = 0; i < kernels.Length; i++)
-                        foreach (Direction compass in Enum.GetValues(typeof(Direction)))
-                            kernels[i] = new ApproximationKernel(null, compass);
+                    foreach (Direction compass in Enum.GetValues(typeof(Direction)))
+                    {
+                        kernels[i] = new IsotropicKernel(null, compass);
+                        i++;
+                    }
                     break;
                 case CompassType.Kirsch:
-                    for (int i = 0; i < kernels.Length; i++)
-                        foreach (Direction compass in Enum.GetValues(typeof(Direction)))
-                            kernels[i] = new ApproximationKernel(null, compass);
+                    foreach (Direction compass in Enum.GetValues(typeof(Direction)))
+                    {
+                        kernels[i] = new KirschKernel(null, compass);
+                        i++;
+                    }
                     break;
                 case CompassType.Prewitt:
-                    for (int i = 0; i < kernels.Length; i++)
-                        foreach (Direction compass in Enum.GetValues(typeof(Direction)))
-                            kernels[i] = new ApproximationKernel(null, compass);
+                    foreach (Direction compass in Enum.GetValues(typeof(Direction)))
+                    {
+                        kernels[i] = new PrewittKernel(null, compass);
+                        i++;
+                    }
                     break;
                 case CompassType.Sobel:
-                    for (int i = 0; i < kernels.Length; i++)
-                        foreach (Direction compass in Enum.GetValues(typeof(Direction)))
-                            kernels[i] = new ApproximationKernel(null, compass);
+                    foreach (Direction compass in Enum.GetValues(typeof(Direction)))
+                    {
+                        kernels[i] = new SobelKernel(null, compass);
+                        i++;
+                    }
                     break;
                 default:
                     throw new InvalidOperationException("You cannot perform a CompassOperation on the specified CompassType.");
@@ -64,14 +75,15 @@ namespace INFOIBV.Filters
             int xOffset = 1;
             int yOffset = 1;
 
-            for (int y = yOffset; y < imageToProcess.GetLength(0) - yOffset; y++)
+            for (int x = xOffset; x < imageToProcess.GetLength(0) - xOffset; x++)
             {
-                for (int x = xOffset; x < imageToProcess.GetLength(1) - xOffset; x++)
+                for (int y = yOffset; y < imageToProcess.GetLength(1) - yOffset; y++)
                 {
-                    int highestValue = -1;
+                    int highestValue = 0;
                     foreach (BasicKernel kernel in kernels)
                     {
                         int kernelValue = kernel.processPixel(x, y, imageToProcess, reportProgressTo);
+                        kernelValue = kernelValue < 0 ? 0 : kernelValue > 255 ? 255 : kernelValue;
                         if (highestValue < kernelValue)
                             highestValue = kernelValue;
                     }

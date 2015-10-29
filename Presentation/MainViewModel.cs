@@ -25,6 +25,13 @@ namespace INFOIBV.Presentation
         private FilterSelectorWindow fsWindow;
         private IApplicableFilter decoratedFilter;
 
+        private OpenFileDialog openImageDialog;
+        private SaveFileDialog saveImageDialog;
+
+        private List<FilterType> currentFilterList;
+        private List<FilterType> oldFilterList;
+        private Boolean hasAppliedThisImage;
+
         public MainViewModel()
         {
             // Initial startup
@@ -40,14 +47,18 @@ namespace INFOIBV.Presentation
             // Setup for FilterSelectorWindow with ViewModel
             fsWindow = new FilterSelectorWindow() { DataContext = new FilterSelectorViewModel() };
             decoratedFilter = null;
+
+            // Setup Dialogs
+            openImageDialog = new OpenFileDialog();
+            openImageDialog.Filter = "Bitmap files|*.bmp;*.gif;*.png;*.tiff;*.jpg;*.jpeg";
+
+            saveImageDialog = new SaveFileDialog();
+            saveImageDialog.Filter = "Bitmap file|*.bmp";
         }
 
         public void LoadImage()
         {
             IsBusy = true;
-            OpenFileDialog openImageDialog = new OpenFileDialog();
-            openImageDialog.Filter = "Bitmap files|*.bmp;*.gif;*.png;*.tiff;*.jpg;*.jpeg";
-            openImageDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
             if (openImageDialog.ShowDialog().Value)
             {
@@ -55,6 +66,8 @@ namespace INFOIBV.Presentation
                 ImagePath = file; // Show filename
                 if (InputImage != null)
                     InputImage.Dispose(); // Reset image, clean it up
+
+                hasAppliedThisImage = false;
 
                 InputImage = new Bitmap(file); // Create new Bitmap from file
                 if (InputImage.Size.Height <= 0 || InputImage.Size.Width <= 0 ||
@@ -76,12 +89,37 @@ namespace INFOIBV.Presentation
         {
             IsBusy = true;
             fsWindow.ShowDialog();
-            decoratedFilter = FilterFactory.Construct(((FilterSelectorViewModel)fsWindow.DataContext).ActiveFilters.ToList());
+            currentFilterList = ((FilterSelectorViewModel)fsWindow.DataContext).ActiveFilters.ToList();
+
+            if (hasAppliedThisImage && oldFilterList != null && oldFilterList.Count <= currentFilterList.Count)
+            {
+                int i = 0;
+                bool isTheSame = true;
+                for (; i < oldFilterList.Count; i++)
+                {
+                    if (oldFilterList[i] != currentFilterList[i])
+                    {
+                        isTheSame = false;
+                        hasAppliedThisImage = false;
+                        break;
+                    }
+                }
+                if (isTheSame)
+                {
+                    List<FilterType> newFilterList = new List<FilterType>();
+                    for (; i < currentFilterList.Count; i++)
+                        newFilterList.Add(currentFilterList[i]);
+
+                    currentFilterList = newFilterList;
+                }
+            }
+
+            decoratedFilter = FilterFactory.Construct(currentFilterList);
             IsBusy = false;
 
             // Debug ?
             Console.WriteLine("The following filters have been selected: ");
-            foreach (var item in ((FilterSelectorViewModel)fsWindow.DataContext).ActiveFilters)
+            foreach (var item in currentFilterList)
             {
                 Console.WriteLine("- {0}", item);
             }
@@ -90,19 +128,28 @@ namespace INFOIBV.Presentation
         public void ApplyImage()
         {
             if (InputImage == null || decoratedFilter == null) return; // Get out if no input image or filter selected
-            if (OutputImage != null)
+            if (OutputImage != null && !hasAppliedThisImage)
             {
                 OutputImage.Dispose(); // Reset output image
-                Progress = 0; // Reset progress
+                OutputImage = new Bitmap(InputImage.Size.Width, InputImage.Size.Height);
+            }
+            else if (OutputImage == null)
+            {
+                OutputImage = new Bitmap(InputImage.Size.Width, InputImage.Size.Height);
             }
 
             IsBusy = true;
-            OutputImage = new Bitmap(InputImage.Size.Width, InputImage.Size.Height);
             System.Drawing.Color[,] InputColors = new System.Drawing.Color[InputImage.Size.Width, InputImage.Size.Height];
             System.Drawing.Color[,] OutputColors;
-            for (int x = 0; x < InputImage.Size.Width; x++)
-                for (int y = 0; y < InputImage.Size.Height; y++)
-                    InputColors[x, y] = InputImage.GetPixel(x, y);
+
+            if (hasAppliedThisImage)
+                for (int x = 0; x < OutputImage.Size.Width; x++)
+                    for (int y = 0; y < OutputImage.Size.Height; y++)
+                        InputColors[x, y] = OutputImage.GetPixel(x, y);
+            else
+                for (int x = 0; x < InputImage.Size.Width; x++)
+                    for (int y = 0; y < InputImage.Size.Height; y++)
+                        InputColors[x, y] = InputImage.GetPixel(x, y);
 
             HasProgress = Visibility.Visible;
             MaxProgress = decoratedFilter.GetMaximumProgress(InputImage.Size.Width, InputImage.Size.Height);
@@ -125,11 +172,23 @@ namespace INFOIBV.Presentation
 
                     HasProgress = Visibility.Hidden;
                     IsBusy = false;
+                    decoratedFilter = null; // Filter has been applied, a new one has to be made. Also fixes 'cached' filtering
+
+                    if (hasAppliedThisImage)
+                    {
+                        foreach (FilterType newAddition in currentFilterList)
+                            oldFilterList.Add(newAddition);
+                    }
+                    else
+                    {
+                        oldFilterList = currentFilterList;
+                        hasAppliedThisImage = true;
+                    }
 
                     // Debug for Progressbar
                     Console.WriteLine("Progress: {0}, MaxProgress: {1}", Progress, MaxProgress);
                     Console.WriteLine("Procent: {0}", (Progress / MaxProgress) * 100);
-
+                    Progress = 0; // Reset progress
                 }));
 
             });
@@ -139,10 +198,6 @@ namespace INFOIBV.Presentation
         {
             if (OutputImage == null)
                 return; // Get out if no output image
-
-            SaveFileDialog saveImageDialog = new SaveFileDialog();
-            saveImageDialog.Filter = "Bitmap file|*.bmp";
-            saveImageDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
             if (saveImageDialog.ShowDialog().Value)
                 OutputImage.Save(saveImageDialog.FileName); // Save the output image

@@ -24,13 +24,14 @@ namespace INFOIBV.Presentation
 
         public void AddToActiveFilter()
         {
-            if (SelectedInactiveFilter == null) 
+            if (SelectedInactiveFilter == null)
                 return;
 
             ActiveFilters.Add(SelectedInactiveFilter);
-            InactiveFilters.Remove(SelectedInactiveFilter);
+            //InactiveFilters.Remove(SelectedInactiveFilter);
             SelectedInactiveFilter = null;
-            UpdateLists();
+            OnPropertyChanged("InactiveFilters");
+            //UpdateLists();
         }
 
         public void RemoveFromActiveFilter()
@@ -38,10 +39,11 @@ namespace INFOIBV.Presentation
             if (SelectedActiveFilter == null)
                 return;
 
-            InactiveFilters.Add(SelectedActiveFilter);
+            //InactiveFilters.Add(SelectedActiveFilter);
             ActiveFilters.Remove(SelectedActiveFilter);
             SelectedActiveFilter = null;
-            UpdateLists();
+            OnPropertyChanged("ActiveFilters");
+            //UpdateLists();
         }
 
         private void UpdateLists()

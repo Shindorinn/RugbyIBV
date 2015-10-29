@@ -19,14 +19,15 @@ namespace INFOIBV.Filters
         public override int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
             float sum = 0;
+
             // Loop over Weights
-            for (int y = 0; y < this.height; y++)
+            for (int x = 0; x < this.width; x++)
             {
-                int yOffset = y - 1;
-                for (int x = 0; x < this.width; x++)
+                int xOffset = x - 1;
+                for (int y = 0; y < this.height; y++)
                 {
-                    int xOffset = x - 1;
-                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[y, x];
+                    int yOffset = y - 1;
+                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[x, y];
                     reportProgressTo.Progress++;
                 }
             }
@@ -36,7 +37,6 @@ namespace INFOIBV.Filters
 
         private static float[,] constructWeights(int width, int height, Direction compass)
         {
-            // [y, x]
             float[,] toReturn = new float[height, width];
             for (int x = 0; x < width; x++)
             {
@@ -95,9 +95,10 @@ namespace INFOIBV.Filters
                             break;
                     }
 
-                    toReturn[y, x] = value;
+                    toReturn[x, y] = value;
                 }
             }
+
             return toReturn;
         }
 

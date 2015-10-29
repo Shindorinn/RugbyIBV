@@ -24,13 +24,13 @@ namespace INFOIBV.Filters
             int midY = (this.height - 1) / 2;
 
             // Loop over Weights
-            for (int y = 0; y < this.height; y++)
+            for (int x = 0; x < this.width; x++)
             {
-                int yOffset = y - midY;
-                for (int x = 0; x < this.width; x++)
+                int xOffset = x - midX;
+                for (int y = 0; y < this.height; y++)
                 {
-                    int xOffset = x - midX;
-                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[x,y];
+                    int yOffset = y - midY;
+                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[x, y];
                     reportProgressTo.Progress++;
                 }
             }
@@ -41,21 +41,21 @@ namespace INFOIBV.Filters
             }
             else
             {
-                return (int)Math.Floor(sum/18) + 128;
+                return (int)Math.Floor(sum / 18) + 128;
             }
         }
-        
+
         public override double GetMaximumProgress(int imageWidth, int imageHeight)
         {
             if (this.type == DerivativeType.xy)
             { // 3x3
                 return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - (2)) * (imageHeight - (2))) * (9));
             }
-            else 
+            else
             { // 1x5 or 5x1
                 return base.GetMaximumProgress(imageWidth, imageHeight) + (((imageWidth - (4)) * (imageHeight - (4))) * (5));
             }
-            
+
         }
 
         private static int getHeight(DerivativeType type)
@@ -74,10 +74,11 @@ namespace INFOIBV.Filters
             return -1; // It should never come to this!
         }
 
-        private static int getWidth(DerivativeType type){
+        private static int getWidth(DerivativeType type)
+        {
             switch (type)
             {
-                case DerivativeType.x :
+                case DerivativeType.x:
                     return 5;
 
                 case DerivativeType.y:
@@ -88,7 +89,7 @@ namespace INFOIBV.Filters
             }
             return -1; // It should never come to this!
         }
-        
+
         private static float[,] constructWeights(DerivativeType type)
         {
             switch (type)
@@ -100,7 +101,7 @@ namespace INFOIBV.Filters
                     return new float[1, 5] { { 1f / 12f, -8 / 12f, 0f, 8 / 12f, -1 / 12f } };
 
                 case DerivativeType.xy:
-                    return new float[3, 3] { {1/4, 0, -1/4} , {0,0,0} , {-1/4, 0, 1/4} } ;
+                    return new float[3, 3] { { 1 / 4, 0, -1 / 4 }, { 0, 0, 0 }, { -1 / 4, 0, 1 / 4 } };
             }
             return null; // It should never come to this!
         }
