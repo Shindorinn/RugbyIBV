@@ -24,7 +24,7 @@ namespace INFOIBV.Filters
             this.weights = weights;
         }
 
-        public Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
+        public virtual Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
             if (decoratingKernel != null)
             {
