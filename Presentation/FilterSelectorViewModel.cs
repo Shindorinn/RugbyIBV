@@ -29,8 +29,8 @@ namespace INFOIBV.Presentation
 
             ActiveFilters.Add(SelectedInactiveFilter);
             //InactiveFilters.Remove(SelectedInactiveFilter);
-            SelectedInactiveFilter = null;
-            OnPropertyChanged("InactiveFilters");
+            //SelectedInactiveFilter = null;
+            OnPropertyChanged("ActiveFilters");
             //UpdateLists();
         }
 
