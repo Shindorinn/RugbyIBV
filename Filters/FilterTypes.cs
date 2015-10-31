@@ -9,6 +9,8 @@ namespace INFOIBV.Filters
     {
         private static readonly List<FilterType> Filters = new List<FilterType>()
         {
+             new FilterType(FilterType.Type.ErosionKernel, "Erosion"),
+
              new FilterType(FilterType.Type.GrayscaleFilter, "Grayscale"),
              new FilterType(FilterType.Type.GrayscaleKernel, "Grayscale Kernel"),
              new FilterType(FilterType.Type.DoNothingKernel, "Do-Nothing-Kernel"),
@@ -104,6 +106,8 @@ namespace INFOIBV.Filters
     {
         public enum Type
         {
+            ErosionKernel,
+
             GrayscaleFilter,
             GrayscaleKernel,
             DoNothingKernel,
