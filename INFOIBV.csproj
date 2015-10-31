@@ -34,10 +34,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -67,9 +63,11 @@
     <Compile Include="Filters\CompassType.cs" />
     <Compile Include="Filters\DerivativeType.cs" />
     <Compile Include="Filters\CompassOperation.cs" />
+    <Compile Include="Filters\DetectObjectsFilter.cs" />
     <Compile Include="Filters\Direction.cs" />
     <Compile Include="Filters\FreiChenOperator.cs" />
     <Compile Include="Filters\Hamiltonian.cs" />
+    <Compile Include="Filters\InvertFilter.cs" />
     <Compile Include="Filters\IsotropicKernel.cs" />
     <Compile Include="Filters\KirschKernel.cs" />
     <Compile Include="Filters\PrewittKernel.cs" />
@@ -85,13 +83,14 @@
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\NormalizingKernel.cs" />
     <Compile Include="Filters\SobelKernel.cs" />
+    <Compile Include="Filters\StackImageObject.cs" />
     <Compile Include="Filters\ThresholdFilter.cs" />
     <Compile Include="Filters\FilterTypes.cs" />
+    <Compile Include="Filters\DerivativeKernel.cs" />
     <Page Include="Presentation\FilterSelectorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Filters\DerivativeKernel.cs" />
     <Compile Include="Presentation\FilterSelectorWindow.xaml.cs">
       <DependentUpon>FilterSelectorWindow.xaml</DependentUpon>
     </Compile>

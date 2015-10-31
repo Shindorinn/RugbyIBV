@@ -113,6 +113,8 @@ namespace INFOIBV.Presentation
                     currentFilterList = newFilterList;
                 }
             }
+            else
+                hasAppliedThisImage = false;
 
             decoratedFilter = FilterFactory.Construct(currentFilterList);
             IsBusy = false;

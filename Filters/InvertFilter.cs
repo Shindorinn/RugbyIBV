@@ -8,14 +8,12 @@ using System.Text;
 
 namespace INFOIBV.Filters
 {
-    public class HighPassFilter : BasicFilter
+    public class InvertFilter : BasicFilter
     {
-        private int thresholdValue;
-
-        public HighPassFilter(IApplicableFilter toDecorate, int thresholdValue)
-            : base(toDecorate)
+        public InvertFilter(IApplicableFilter decorator)
+            : base(decorator)
         {
-            this.thresholdValue = thresholdValue;
+            // You need more overlords!
         }
 
         public override Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
@@ -26,15 +24,17 @@ namespace INFOIBV.Filters
             {
                 for (int y = 0; y < imageToProcess.GetLength(1); y++)
                 {
-                    if (imageToProcess[x, y].R < this.thresholdValue)
-                    {
-                        imageToProcess[x, y] = Color.Black;
-                    }
+                    imageToProcess[x,y] = InvertColor(imageToProcess[x, y]);
                     reportProgressTo.Progress++;
                 }
             }
 
             return imageToProcess;
+        }
+
+        private Color InvertColor(Color toConvert)
+        {
+            return Color.FromArgb(255 - toConvert.R, 255 - toConvert.G, 255 - toConvert.B);
         }
 
         public override double GetMaximumProgress(int imageWidth, int imageHeight)

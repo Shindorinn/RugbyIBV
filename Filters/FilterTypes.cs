@@ -11,6 +11,7 @@ namespace INFOIBV.Filters
         {
              new FilterType(FilterType.Type.GrayscaleFilter, "Grayscale"),
              new FilterType(FilterType.Type.GrayscaleKernel, "Grayscale Kernel"),
+             new FilterType(FilterType.Type.InvertFilter, "Invert Filter"),
              new FilterType(FilterType.Type.DoNothingKernel, "Do-Nothing-Kernel"),
              
              new FilterType(FilterType.Type.DerivativeKernelX, "X Derivative Kernel"),
@@ -22,6 +23,8 @@ namespace INFOIBV.Filters
              new FilterType(FilterType.Type.KirschCompassOperation, "Kirsch Compass Operation"),
              new FilterType(FilterType.Type.PrewittCompassOperation, "Prewitt Compass Operation"),
              new FilterType(FilterType.Type.SobelCompassOperation, "Sobel Compass Operation"),
+
+             new FilterType(FilterType.Type.ObjectDetection, "Object Detection"),
 
              //new FilterType(FilterType.Type.PrewittKernelN,  "Prewitt Kernel North"),
              //new FilterType(FilterType.Type.PrewittKernelNE, "Prewitt Kernel North East"),
@@ -106,6 +109,7 @@ namespace INFOIBV.Filters
         {
             GrayscaleFilter,
             GrayscaleKernel,
+            InvertFilter,
             DoNothingKernel,
 
             DerivativeKernelX,
@@ -117,6 +121,8 @@ namespace INFOIBV.Filters
             KirschCompassOperation,
             PrewittCompassOperation,
             SobelCompassOperation,
+
+            ObjectDetection,
 
             //PrewittKernelN,
             //PrewittKernelNE,

@@ -25,14 +25,7 @@ namespace INFOIBV.Filters
             {
                 for (int y = 0; y < imageToProcess.GetLength(1); y++)
                 {
-                    if (imageToProcess[x, y].R < this.thresholdValue)
-                    {
-                        imageToProcess[x, y] = Color.Black;
-                    }
-                    else
-                    {
-                        imageToProcess[x, y] = Color.White;
-                    }
+                    imageToProcess[x, y] = imageToProcess[x, y].R < this.thresholdValue ? Color.Black : Color.White;
                     reportProgressTo.Progress++;
                 }
             }

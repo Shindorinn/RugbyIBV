@@ -21,6 +21,7 @@ namespace INFOIBV.Filters
         public override Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
             imageToProcess = base.apply(imageToProcess, reportProgressTo);
+
             for (int x = 0; x < imageToProcess.GetLength(0); x++)
             {
                 for (int y = 0; y < imageToProcess.GetLength(1); y++)
@@ -28,8 +29,8 @@ namespace INFOIBV.Filters
                     if (imageToProcess[x, y].R > this.thresholdValue)
                     {
                         imageToProcess[x, y] = Color.White;
-                        reportProgressTo.Progress++;
                     }
+                    reportProgressTo.Progress++;
                 }
             }
 

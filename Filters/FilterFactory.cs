@@ -21,6 +21,9 @@ namespace INFOIBV.Filters
                     case FilterType.Type.GrayscaleKernel:
                         toBeDecoratedFilter = new GrayScaleKernel(toBeDecoratedFilter);
                         break;
+                    case FilterType.Type.InvertFilter:
+                        toBeDecoratedFilter = new InvertFilter(toBeDecoratedFilter);
+                        break;
                     case FilterType.Type.DoNothingKernel:
                         toBeDecoratedFilter = new DoNothingKernel(toBeDecoratedFilter, 3, 3);
                         break;
@@ -49,6 +52,10 @@ namespace INFOIBV.Filters
                         break;
                     case FilterType.Type.SobelCompassOperation:
                         toBeDecoratedFilter = new CompassOperation(toBeDecoratedFilter, CompassType.Sobel);
+                        break;
+
+                    case FilterType.Type.ObjectDetection:
+                        toBeDecoratedFilter = new DetectObjectsFilter(toBeDecoratedFilter);
                         break;
 
                     //case FilterType.Type.PrewittKernelN:
