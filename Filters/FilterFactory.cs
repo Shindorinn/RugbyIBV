@@ -18,6 +18,9 @@ namespace INFOIBV.Filters
                     case FilterType.Type.ErosionKernel:
                         toBeDecoratedFilter = new ErosionKernel(toBeDecoratedFilter);
                         break;
+                    case FilterType.Type.DilationKernel:
+                        toBeDecoratedFilter = new DilationKernel(toBeDecoratedFilter);
+                        break;
 
                     case FilterType.Type.GrayscaleFilter:
                         toBeDecoratedFilter = new GrayScaleFilter(toBeDecoratedFilter);

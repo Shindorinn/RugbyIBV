@@ -67,6 +67,7 @@
     <Compile Include="Filters\CompassType.cs" />
     <Compile Include="Filters\DerivativeType.cs" />
     <Compile Include="Filters\CompassOperation.cs" />
+    <Compile Include="Filters\DilationKernel.cs" />
     <Compile Include="Filters\Direction.cs" />
     <Compile Include="Filters\ErosionKernel.cs" />
     <Compile Include="Filters\FreiChenOperator.cs" />
