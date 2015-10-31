@@ -16,6 +16,32 @@ namespace INFOIBV.Filters
         {
         }
 
+        public override Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
+        {
+            if (decoratingKernel != null)
+            {
+                imageToProcess = decoratingKernel.apply(imageToProcess, reportProgressTo);
+            }
+
+            Color[,] endResultImage = new Color[imageToProcess.GetLength(0), imageToProcess.GetLength(1)];
+            Array.Copy(imageToProcess, endResultImage, imageToProcess.GetLength(0) * imageToProcess.GetLength(1));
+
+            int xOffset = (this.width - 1) / 2;
+            int yOffset = (this.height - 1) / 2;
+
+            for (int x = xOffset; x < imageToProcess.GetLength(0) - xOffset; x++) // GetLength(x), where x is the dimension, give you the length of the specified part of the array.
+            {
+                for (int y = yOffset; y < imageToProcess.GetLength(1) - yOffset; y++)
+                {
+                    int sum = processPixel(x, y, imageToProcess, reportProgressTo);
+                    //sum = sum < 0 ? 0 : sum > 255 ? 255 : sum;
+                    endResultImage[x, y] = Color.FromArgb(sum, sum, sum);
+                }
+            }
+
+            return endResultImage;
+        }
+
         public override int processPixel(int xCoordinate, int yCoordinate, Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
             float sum = 0;
@@ -30,18 +56,24 @@ namespace INFOIBV.Filters
                 {
                     int yOffset = y - midY;
                     // Need to double-check if the objects are black or white
-                    // If so, this short-hand if-statement needs to be turned around to work.
-                    sum += imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[x, y] > 1 ? 1 : 0; // Currently, reacting to white
+
+                    // Is image * weights bigger than 1 every coordinate?
+                    float result = imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[x, y];
+                    if(result >= 1){
+                        sum += 1;
+                    } 
+                    // can be optimized by skipping the rest of the operations if one of the if-statements fails
+                    // just need to calculate and move the progressbar accordingly.
                     reportProgressTo.Progress++;
                 }
             }
             if (sum >= 9) // If the kernel fits in the object, the middle pixel needs to turn black
             {
-                return 0;
+                return 255;
             }
             else
             {
-                return 255;
+                return 0;
             }
 
         }
