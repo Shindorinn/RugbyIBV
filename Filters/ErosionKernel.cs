@@ -59,7 +59,7 @@ namespace INFOIBV.Filters
 
                     // Is image * weights bigger than 1 every coordinate?
                     float result = imageToProcess[xCoordinate + xOffset, yCoordinate + yOffset].R * weights[x, y];
-                    if(result >= 1){
+                    if(result < 1){
                         sum += 1;
                     } 
                     // can be optimized by skipping the rest of the operations if one of the if-statements fails
@@ -69,11 +69,11 @@ namespace INFOIBV.Filters
             }
             if (sum >= 9) // If the kernel fits in the object, the middle pixel needs to turn black
             {
-                return 255;
+                return 0;
             }
             else
             {
-                return 0;
+                return 255;
             }
 
         }
