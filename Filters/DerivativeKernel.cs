@@ -1,4 +1,6 @@
 ﻿using INFOIBV.Presentation;
+using INFOIBV.Utilities.Enums;
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;

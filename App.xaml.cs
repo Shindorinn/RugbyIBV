@@ -13,6 +13,7 @@ namespace INFOIBV
         {
             base.OnStartup(e);
             new MainWindow() { DataContext = new MainViewModel() }.Show();
+            new FilterSettingsWindow() { DataContext = new FilterSettingsViewModel() }.Show();
         }
     }
 }

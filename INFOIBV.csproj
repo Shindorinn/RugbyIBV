@@ -60,12 +60,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\ApproximationKernel.cs" />
-    <Compile Include="Filters\CompassType.cs" />
-    <Compile Include="Filters\DerivativeType.cs" />
+    <Compile Include="Utilities\Enums\CompassType.cs" />
+    <Compile Include="Utilities\Enums\DerivativeType.cs" />
     <Compile Include="Filters\CompassOperation.cs" />
     <Compile Include="Filters\DetectObjectsFilter.cs" />
     <Compile Include="Filters\DilationKernel.cs" />
-    <Compile Include="Filters\Direction.cs" />
+    <Compile Include="Utilities\Enums\Direction.cs" />
     <Compile Include="Filters\ErosionKernel.cs" />
     <Compile Include="Filters\FreiChenOperator.cs" />
     <Compile Include="Filters\Hamiltonian.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Filters\SobelKernel.cs" />
     <Compile Include="Filters\StackImageObject.cs" />
     <Compile Include="Filters\ThresholdFilter.cs" />
-    <Compile Include="Filters\FilterTypes.cs" />
+    <Compile Include="Utilities\Enums\FilterTypes.cs" />
     <Compile Include="Filters\DerivativeKernel.cs" />
     <Page Include="Presentation\FilterSelectorWindow.xaml">
       <SubType>Designer</SubType>
@@ -97,15 +97,24 @@
       <DependentUpon>FilterSelectorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\FilterSelectorViewModel.cs" />
+    <Page Include="Presentation\FilterSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Presentation\FilterSettingsViewModel.cs" />
+    <Compile Include="Presentation\FilterSettingsWindow.xaml.cs">
+      <DependentUpon>FilterSettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Presentation\MainViewModel.cs" />
+    <Compile Include="Utilities\Enums\OperationType.cs" />
     <Compile Include="Utilities\INPC.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
   </ItemGroup>
@@ -136,6 +145,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

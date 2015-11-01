@@ -1,4 +1,4 @@
-﻿namespace INFOIBV.Filters
+﻿namespace INFOIBV.Utilities.Enums
 {
     // For the CompassKernels
     public enum Direction

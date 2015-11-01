@@ -1,5 +1,6 @@
 ﻿using INFOIBV.Filters;
 using INFOIBV.Utilities;
+using INFOIBV.Utilities.Enums;
 
 using Microsoft.Win32;
 using System;

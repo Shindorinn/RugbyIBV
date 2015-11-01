@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace INFOIBV.Filters
+﻿namespace INFOIBV.Utilities.Enums
 {
     /// <summary>
     /// List of kernels used in the compass-operator
@@ -11,9 +6,9 @@ namespace INFOIBV.Filters
     public enum CompassType
     {
         Approximation,
-        Prewitt,
         Isotropic,
-        Sobel,
-        Kirsch
+        Kirsch,
+        Prewitt,
+        Sobel
     }
 }
