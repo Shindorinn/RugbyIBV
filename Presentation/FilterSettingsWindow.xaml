@@ -1,0 +1,42 @@
+﻿<Window x:Class="INFOIBV.Presentation.FilterSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Filter Settings" Closing="Prevent_Closing"
+        ResizeMode="NoResize" Height="256" Width="465">
+    <Grid>
+        <Label Content="Threshold level:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Right" Margin="0,15,250,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=ThresholdValue}" VerticalAlignment="Top"/>
+        <Slider LargeChange="64" HorizontalAlignment="Left" Margin="10,36,0,0" Maximum="255" Minimum="0" SmallChange="16" Value="{Binding Path=ThresholdValue}" VerticalAlignment="Top" Width="200"/>
+
+        <Label Content="Type of compass operation:" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="235,35,0,0" ItemsSource="{Binding Path=CompassTypeList}" SelectedValue="{Binding Path=SelectedCompassType}" VerticalAlignment="Top" Width="120"/>
+
+        <Label Content="First round" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="95,70,0,0" ItemsSource="{Binding Path=OperationTypeList}" SelectedValue="{Binding Path=SelectedFirstOperationType}" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Number of Dilations:" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Left" Margin="130,95,0,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=FirstNumDilations}" VerticalAlignment="Top"/>
+        <Label Content="Number of Erosions:" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Left" Margin="130,115,0,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=FirstNumErosions}" VerticalAlignment="Top"/>
+
+        <Label Content="Second round" HorizontalAlignment="Left" Margin="230,70,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="315,70,0,0" ItemsSource="{Binding Path=OperationTypeList}" SelectedValue="{Binding Path=SelectedSecondOperationType}" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Number of Dilations:" HorizontalAlignment="Left" Margin="230,90,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Left" Margin="350,95,0,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=SecondNumDilations}" VerticalAlignment="Top"/>
+        <Label Content="Number of Erosions:" HorizontalAlignment="Left" Margin="230,110,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Left" Margin="350,115,0,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=SecondNumErosions}" VerticalAlignment="Top"/>
+
+        <Label Content="Third round" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="95,145,0,0" ItemsSource="{Binding Path=OperationTypeList}" SelectedValue="{Binding Path=SelectedThirdOperationType}" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Number of Dilations:" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Left" Margin="130,170,0,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=ThirdNumDilations}" VerticalAlignment="Top"/>
+        <Label Content="Number of Erosions:" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Left" Margin="130,190,0,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=ThirdNumErosions}" VerticalAlignment="Top"/>
+
+        <Label Content="Fourth round" HorizontalAlignment="Left" Margin="230,145,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="315,145,0,0" ItemsSource="{Binding Path=OperationTypeList}" SelectedValue="{Binding Path=SelectedFourthOperationType}" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Number of Dilations:" HorizontalAlignment="Left" Margin="230,165,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Left" Margin="350,170,0,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=FourthNumDilations}" VerticalAlignment="Top"/>
+        <Label Content="Number of Erosions:" HorizontalAlignment="Left" Margin="230,185,0,0" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Left" Margin="350,190,0,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=FourthNumErosions}" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
