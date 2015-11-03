@@ -33,7 +33,7 @@ namespace INFOIBV.Filters
 
             int xOffset = (this.width - 1) / 2;
             int yOffset = (this.height - 1) / 2;
-            Color[,] imageToReturn = imageToProcess;
+            Color[,] imageToReturn = imageToProcess; // Call by reference!!!!!! HELP
 
             for (int x = xOffset; x < imageToProcess.GetLength(0) - xOffset; x++) // GetLength(x), where x is the dimension, give you the length of the specified part of the array.
             {

@@ -25,7 +25,7 @@ namespace INFOIBV.Filters
             int midX = (this.width - 1) / 2;
             int midY = (this.height - 1) / 2;
 
-            // Loop over Weights
+            // Loop over Weights to calculate the convolution
             for (int x = 0; x < this.width; x++)
             {
                 int xOffset = x - midX;
@@ -37,14 +37,28 @@ namespace INFOIBV.Filters
                 }
             }
 
-            if (this.type == DerivativeType.xy)
+            float maxrange = 0;
+            float minrange = 0;
+            for (int i = 0; i < this.width; i++)
             {
-                return (int)Math.Floor(sum) + 128;
+                for (int j = 0; j < this.height; j++)
+                {
+                    if (weights[i, j] > 0)
+                    {
+                        maxrange += weights[i, j];
+                    }
+                    else
+                    {
+                        minrange += weights[i, j];
+                    }
+                }
             }
-            else
-            {
-                return (int)Math.Floor(sum / 18) + 128;
-            }
+            maxrange *= 255;
+            minrange *= 255;
+            float norm = (maxrange - minrange) / 255;
+            int answer = (int)Math.Floor((sum - minrange) / norm);
+            return answer;
+
         }
 
         public override double GetMaximumProgress(int imageWidth, int imageHeight)
@@ -100,10 +114,10 @@ namespace INFOIBV.Filters
                     return new float[5, 1] { { 1f / 12f }, { -8f / 12f }, { 0f }, { 8f / 12f }, { -1f / 12f } };
 
                 case DerivativeType.y:
-                    return new float[1, 5] { { 1f / 12f, -8 / 12f, 0f, 8 / 12f, -1 / 12f } };
+                    return new float[1, 5] { { 1f / 12f, -8f / 12f, 0f, 8f / 12f, -1f / 12f } };
 
                 case DerivativeType.xy:
-                    return new float[3, 3] { { 1 / 4, 0, -1 / 4 }, { 0, 0, 0 }, { -1 / 4, 0, 1 / 4 } };
+                    return new float[3, 3] { { 1f / 4f, 0f, -1f / 4f }, { 0f, 0f, 0f }, { -1f / 4f, 0f, 1f / 4f } };
             }
             return null; // It should never come to this!
         }
