@@ -37,27 +37,7 @@ namespace INFOIBV.Filters
                 }
             }
 
-            float maxrange = 0;
-            float minrange = 0;
-            for (int i = 0; i < this.width; i++)
-            {
-                for (int j = 0; j < this.height; j++)
-                {
-                    if (weights[i, j] > 0)
-                    {
-                        maxrange += weights[i, j];
-                    }
-                    else
-                    {
-                        minrange += weights[i, j];
-                    }
-                }
-            }
-            maxrange *= 255;
-            minrange *= 255;
-            float norm = (maxrange - minrange) / 255;
-            int answer = (int)Math.Floor((sum - minrange) / norm);
-            return answer;
+            return base.NormalizeColorSpace(sum);
 
         }
 
@@ -82,7 +62,8 @@ namespace INFOIBV.Filters
                     return 1;
 
                 case DerivativeType.y:
-                    return 5;
+                    //return 5;
+                    return 3;
 
                 case DerivativeType.xy:
                     return 3;
@@ -95,7 +76,8 @@ namespace INFOIBV.Filters
             switch (type)
             {
                 case DerivativeType.x:
-                    return 5;
+                    //return 5;
+                    return 3;
 
                 case DerivativeType.y:
                     return 1;
@@ -111,10 +93,12 @@ namespace INFOIBV.Filters
             switch (type)
             {
                 case DerivativeType.x:
-                    return new float[5, 1] { { 1f / 12f }, { -8f / 12f }, { 0f }, { 8f / 12f }, { -1f / 12f } };
+                    //return new float[5, 1] { { 1f / 12f }, { -8f / 12f }, { 0f }, { 8f / 12f }, { -1f / 12f } };
+                    return new float[3, 1] { { 1f },{ 0f },{ -1f } };
 
                 case DerivativeType.y:
-                    return new float[1, 5] { { 1f / 12f, -8f / 12f, 0f, 8f / 12f, -1f / 12f } };
+                    //return new float[1, 5] { { 1f / 12f, -8f / 12f, 0f, 8f / 12f, -1f / 12f } };
+                    return new float[1, 3] { { 1f, 0f, -1f } };
 
                 case DerivativeType.xy:
                     return new float[3, 3] { { 1f / 4f, 0f, -1f / 4f }, { 0f, 0f, 0f }, { -1f / 4f, 0f, 1f / 4f } };

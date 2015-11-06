@@ -33,7 +33,9 @@ namespace INFOIBV.Filters
 
             int xOffset = (this.width - 1) / 2;
             int yOffset = (this.height - 1) / 2;
-            Color[,] imageToReturn = imageToProcess; // Call by reference!!!!!! HELP
+
+            Color[,] imageToReturn = new Color[imageToProcess.GetLength(0), imageToProcess.GetLength(1)];
+            Array.Copy(imageToProcess, imageToReturn, imageToProcess.GetLength(0) * imageToProcess.GetLength(1));
 
             for (int x = xOffset; x < imageToProcess.GetLength(0) - xOffset; x++) // GetLength(x), where x is the dimension, give you the length of the specified part of the array.
             {
@@ -56,6 +58,30 @@ namespace INFOIBV.Filters
                 return decoratingKernel.GetMaximumProgress(imageWidth, imageHeight);
 
             return 0.0;
+        }
+
+        protected int NormalizeColorSpace(float toNormalize)
+        {
+            float maxrange = 0;
+            float minrange = 0;
+            for (int i = 0; i < this.width; i++)
+            {
+                for (int j = 0; j < this.height; j++)
+                {
+                    if (weights[i, j] > 0)
+                    {
+                        maxrange += weights[i, j];
+                    }
+                    else
+                    {
+                        minrange += weights[i, j];
+                    }
+                }
+            }
+            maxrange *= 255;
+            minrange *= 255;
+            float norm = (maxrange - minrange) / 255;
+            return (int)Math.Floor((toNormalize - minrange) / norm);
         }
     }
 }
