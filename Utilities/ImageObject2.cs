@@ -5,51 +5,11 @@ using System.Text;
 
 namespace INFOIBV.Utilities
 {
-    public class ImageObject
+    public class ImageObject2 : ImageObject
     {
-        protected int[,] pixels;
-        public int OffsetX { get; private set; }
-        public int OffsetY { get; private set; }
-
-        public ImageObject(List<ListPixel> pixelsToProcess)
+        public ImageObject2(List<ListPixel> pixelsToProcess) : base(pixelsToProcess)
         {
-            Area = 0;
-
-            OffsetX = int.MaxValue;
-            OffsetY = int.MaxValue; // To make sure it changes on the first time
-            int offsetXMax = -1;
-            int offsetYMax = -1;
-
-            for (int i = 0; i < pixelsToProcess.Count; i++)
-            {
-                if (pixelsToProcess[i].X < OffsetX)
-                    OffsetX = pixelsToProcess[i].X;
-                if (pixelsToProcess[i].Y < OffsetY)
-                    OffsetY = pixelsToProcess[i].Y;
-                if (pixelsToProcess[i].X > offsetXMax)
-                    offsetXMax = pixelsToProcess[i].X;
-                if (pixelsToProcess[i].Y > offsetYMax)
-                    offsetYMax = pixelsToProcess[i].Y;
-            }
-
-            int sizeX = offsetXMax - (OffsetX - 1);
-            int sizeY = offsetYMax - (OffsetY - 1);
-
-            pixels = new int[sizeX, sizeY];
-            foreach (var pixel in pixelsToProcess)
-                pixels[pixel.X - OffsetX, pixel.Y - OffsetY] = 1;
-
-            for (int i = 0; i < pixels.GetLength(0); i++)
-                for (int j = 0; j < pixels.GetLength(1); j++)
-                    if (pixels[i, j] == 1)
-                        continue;
-                    else
-                        pixels[i, j] = 0;
-
-            Console.WriteLine("Succesfully constructed an imageobject");
-            Console.WriteLine("OffsetX: {0}, SizeX: {1}", OffsetX, sizeX);
-            Console.WriteLine("OffsetY: {0}, SizeY: {1}", OffsetY, sizeY);
-            Console.WriteLine("Number of pixels: {0}, Number of object-pixels: {1}", pixels.Length, Area);
+            // Keep empty
         }
 
         private int _area;

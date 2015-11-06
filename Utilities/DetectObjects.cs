@@ -15,7 +15,7 @@ namespace INFOIBV.Utilities
         public DetectObjects()
         {
             // Disk in flight.
-            detectedObjects = null;
+            detectedObjects = new List<ImageObject>();
         }
 
         public void detectObjects(Color[,] imageToReturn, MainViewModel reportProgressTo)
@@ -105,8 +105,8 @@ namespace INFOIBV.Utilities
             }
 
             int sumStack = 0;
-            foreach (var stack in detectedObjects)
-                sumStack += stack.GetNumberOfPixels();
+            foreach (var imageObject in detectedObjects)
+                sumStack += imageObject.Area;
 
             int sumPixels = 0;
             foreach (var pixel in imageToReturn)
