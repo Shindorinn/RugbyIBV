@@ -72,7 +72,8 @@ namespace INFOIBV.Filters
         public override Color[,] apply(Color[,] imageToProcess, MainViewModel reportProgressTo)
         {
             imageToProcess = base.apply(imageToProcess, reportProgressTo);
-            Color[,] imageToReturn = imageToProcess;
+            Color[,] imageToReturn = new Color[imageToProcess.GetLength(0), imageToProcess.GetLength(1)];
+            Array.Copy(imageToProcess, imageToReturn, imageToProcess.GetLength(0) * imageToProcess.GetLength(1));
             int xOffset = 1;
             int yOffset = 1;
 
