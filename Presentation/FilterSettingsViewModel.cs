@@ -50,6 +50,7 @@ namespace INFOIBV.Presentation
             get { return _thresholdValue; }
             set
             {
+                value = value > 255 ? 255 : value;
                 _thresholdValue = value;
                 OnPropertyChanged("ThresholdValue");
             }

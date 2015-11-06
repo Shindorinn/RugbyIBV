@@ -28,11 +28,11 @@ namespace INFOIBV.Presentation
             if (e.DataObject.GetDataPresent(typeof(string)))
             {
                 string text = (string)e.DataObject.GetData(typeof(string));
-                if (!IsNumeric(text)) 
+                if (!IsNumeric(text))
                     e.CancelCommand();
             }
-            else 
-                e.CancelCommand(); 
+            else
+                e.CancelCommand();
         }
 
         private bool IsNumeric(string input)

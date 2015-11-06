@@ -24,8 +24,6 @@ namespace INFOIBV.Utilities.Enums
              new FilterType(FilterType.Type.PrewittCompassOperation, "Prewitt Compass Operation"),
              new FilterType(FilterType.Type.SobelCompassOperation, "Sobel Compass Operation"),
 
-             new FilterType(FilterType.Type.ObjectDetection, "Object Detection"),
-
              //new FilterType(FilterType.Type.PrewittKernelN,  "Prewitt Kernel North"),
              //new FilterType(FilterType.Type.PrewittKernelNE, "Prewitt Kernel North East"),
              //new FilterType(FilterType.Type.PrewittKernelE,  "Prewitt Kernel East"),
@@ -124,8 +122,6 @@ namespace INFOIBV.Utilities.Enums
             KirschCompassOperation,
             PrewittCompassOperation,
             SobelCompassOperation,
-
-            ObjectDetection,
 
             //PrewittKernelN,
             //PrewittKernelNE,

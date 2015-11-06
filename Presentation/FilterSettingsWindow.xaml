@@ -5,7 +5,7 @@
         ResizeMode="NoResize" Height="256" Width="465">
     <Grid>
         <Label Content="Threshold level:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Right" Margin="0,15,250,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=ThresholdValue}" VerticalAlignment="Top"/>
+        <TextBox DataObject.Pasting="TextBox_Pasting" HorizontalAlignment="Right" Margin="0,15,250,0" MaxLength="3" PreviewTextInput="CheckIfInputIsNumeric" Text="{Binding Path=ThresholdValue, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
         <Slider LargeChange="64" HorizontalAlignment="Left" Margin="10,36,0,0" Maximum="255" Minimum="0" SmallChange="16" Value="{Binding Path=ThresholdValue}" VerticalAlignment="Top" Width="200"/>
 
         <Label Content="Type of compass operation:" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top"/>

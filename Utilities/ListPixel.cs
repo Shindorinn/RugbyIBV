@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace INFOIBV.Filters
+namespace INFOIBV.Utilities
 {
-    public class StackImageObject
+    public class ListPixel
     {
-        public StackImageObject(int x, int y, bool[,] canGo)
+        public ListPixel(int x, int y, bool[,] canGo)
         {
             X = x;
             Y = y;

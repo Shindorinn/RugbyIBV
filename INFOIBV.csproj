@@ -63,7 +63,7 @@
     <Compile Include="Utilities\Enums\CompassType.cs" />
     <Compile Include="Utilities\Enums\DerivativeType.cs" />
     <Compile Include="Filters\CompassOperation.cs" />
-    <Compile Include="Filters\DetectObjectsFilter.cs" />
+    <Compile Include="Utilities\DetectObjects.cs" />
     <Compile Include="Filters\DilationKernel.cs" />
     <Compile Include="Utilities\Enums\Direction.cs" />
     <Compile Include="Filters\ErosionKernel.cs" />
@@ -85,7 +85,8 @@
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\NormalizingKernel.cs" />
     <Compile Include="Filters\SobelKernel.cs" />
-    <Compile Include="Filters\StackImageObject.cs" />
+    <Compile Include="Utilities\ImageObject.cs" />
+    <Compile Include="Utilities\ListPixel.cs" />
     <Compile Include="Filters\ThresholdFilter.cs" />
     <Compile Include="Utilities\Enums\FilterTypes.cs" />
     <Compile Include="Filters\DerivativeKernel.cs" />

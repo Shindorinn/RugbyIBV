@@ -63,10 +63,6 @@ namespace INFOIBV.Filters
                         toBeDecoratedFilter = new CompassOperation(toBeDecoratedFilter, CompassType.Sobel);
                         break;
 
-                    case FilterType.Type.ObjectDetection:
-                        toBeDecoratedFilter = new DetectObjectsFilter(toBeDecoratedFilter);
-                        break;
-
                     //case FilterType.Type.PrewittKernelN:
                     //    toBeDecoratedFilter = new PrewittKernel(toBeDecoratedFilter, Direction.North);
                     //    break;
