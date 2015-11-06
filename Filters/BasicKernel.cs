@@ -59,5 +59,29 @@ namespace INFOIBV.Filters
 
             return 0.0;
         }
+
+        protected int NormalizeColorSpace(float toNormalize)
+        {
+            float maxrange = 0;
+            float minrange = 0;
+            for (int i = 0; i < this.width; i++)
+            {
+                for (int j = 0; j < this.height; j++)
+                {
+                    if (weights[i, j] > 0)
+                    {
+                        maxrange += weights[i, j];
+                    }
+                    else
+                    {
+                        minrange += weights[i, j];
+                    }
+                }
+            }
+            maxrange *= 255;
+            minrange *= 255;
+            float norm = (maxrange - minrange) / 255;
+            return (int)Math.Floor((toNormalize - minrange) / norm);
+        }
     }
 }
