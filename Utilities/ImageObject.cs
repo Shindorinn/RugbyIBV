@@ -1,10 +1,9 @@
 ﻿using INFOIBV.Utilities.Enums;
-
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
-
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -26,6 +25,7 @@ namespace INFOIBV.Utilities
             Roundness = 0.0;
             LongestChord = null;
             LongestPerpendicularChord = null;
+            Eccentricity = 0;
             BoundingBoxArea = 0;
             Rectangularity = 0.0;
             Elongation = 0.0;
@@ -82,6 +82,25 @@ namespace INFOIBV.Utilities
             Console.WriteLine("");
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("");
+        }
+
+        public Color[,] Colorize(Color[,] input)
+        {
+            Color[,] output = (Color[,])input.Clone();
+
+
+            for (int i = -4; i < 5; i++)
+			{
+			    for (int j = -4; j < 5; j++)
+                {
+                    output[OffsetX + LongestChord.firstPixel.X + i, OffsetY + LongestChord.firstPixel.Y + j] = Color.Red;
+                    output[OffsetX + LongestChord.secondPixel.X + i, OffsetY + LongestChord.secondPixel.Y + j] = Color.Orange;
+                    output[OffsetX + LongestPerpendicularChord.firstPixel.X + i, OffsetY + LongestPerpendicularChord.firstPixel.Y + j] = Color.Blue;
+                    output[OffsetX + LongestPerpendicularChord.secondPixel.X + i, OffsetY + LongestPerpendicularChord.secondPixel.Y + j] = Color.Cyan;
+			    }
+			}
+
+            return output;
         }
 
         protected List<ListPixel> ConvertPerimeterPixelsToList()
@@ -447,8 +466,8 @@ namespace INFOIBV.Utilities
 
                     double longestDistance = Double.NegativeInfinity;
                     double distance = 0;
-                    ListPixel firstPoint = new ListPixel(0, 0, new bool[0, 0]);
-                    ListPixel secondPoint = new ListPixel(0, 0, new bool[0, 0]);
+                    ListPixel firstPoint = null;
+                    ListPixel secondPoint = null;
 
                     for (int i = 0; i < this.perimeterListPixels.Count; i++)
                     {
@@ -461,7 +480,7 @@ namespace INFOIBV.Utilities
                         for (int j = i + 1; j < this.perimeterListPixels.Count; j++)
                         {
                             ListPixel toCalcTo = this.perimeterListPixels[j];
-                            distance = Chord.calcDistance(toCalcFrom, toCalcTo); ;
+                            distance = Chord.calcDistance(toCalcFrom, toCalcTo);
                             if (distance > longestDistance)
                             {
                                 longestDistance = distance;
@@ -470,8 +489,7 @@ namespace INFOIBV.Utilities
                             }
                         }
                     }
-                    Chord toReturn = new Chord(firstPoint, secondPoint, longestDistance);
-                    _longestChord = toReturn;
+                    _longestChord = new Chord(firstPoint, secondPoint, longestDistance);
                 }
                 return _longestChord;
             }
@@ -488,10 +506,18 @@ namespace INFOIBV.Utilities
                     Chord longestchord = this.LongestChord;
                     double angle = longestchord.orientation;
 
-                    Vector<double> unitVector1 = new DenseVector(new double[] { Math.Cos(angle), Math.Sin(angle) });
-                    Vector<double> unitVector2 = new DenseVector(new double[] { Math.Cos(angle + 90), Math.Sin(angle + 90) });
+                    double uv1CosAngle = Math.Cos(angle);
+                    double uv1SinAngle = Math.Sin(angle);
+                    double uv2CosAngle = Math.Cos(angle + (Math.PI * .5)); // 90 degrees in radians
+                    double uv2SinAngle = Math.Sin(angle + (Math.PI * .5));
+
+
+                    Vector<double> unitVector1 = new DenseVector(new double[] { uv1CosAngle, uv1SinAngle });
+                    Vector<double> unitVector2 = new DenseVector(new double[] { uv2CosAngle, uv2SinAngle });
 
                     Matrix<double> transformationMatrix = DenseMatrix.OfColumnVectors(unitVector1, unitVector2);
+                    // [x , 0]
+                    // [x , 0]
 
                     List<Vector<double>> transformedListPixels = new List<Vector<double>>();
                     Dictionary<Vector<double>, ListPixel> referenceMap = new Dictionary<Vector<double>, ListPixel>();
@@ -499,8 +525,9 @@ namespace INFOIBV.Utilities
                     foreach (ListPixel pixel in this.perimeterListPixels)
                     {
                         Vector<double> convertedPixel = new DenseVector(new double[] { pixel.X, pixel.Y });
-                        transformedListPixels.Add(transformationMatrix.Multiply(convertedPixel));
-                        referenceMap.Add(convertedPixel, pixel);
+                        var transformedMatrixVector = transformationMatrix.Multiply(convertedPixel);
+                        transformedListPixels.Add(transformedMatrixVector);
+                        referenceMap.Add(transformedMatrixVector, pixel);
                     }
 
                     Vector<double> point1 = null;
@@ -520,12 +547,12 @@ namespace INFOIBV.Utilities
                         {
                             Vector<double> toCalcTo = transformedListPixels[j];
 
-                            if ((double)toCalcFrom.ToArray()[0] != (double)toCalcTo.ToArray()[0])
+                            if (Math.Round(toCalcFrom.ToArray()[0]) != Math.Round(toCalcTo.ToArray()[0]))
                             {
                                 continue;
                             }
 
-                            distance = Math.Sqrt(Math.Pow((double)toCalcTo.ToArray()[1] - (double)toCalcFrom.ToArray()[1], 2));
+                            distance = Math.Sqrt(Math.Pow(toCalcTo.ToArray()[1] - toCalcFrom.ToArray()[1], 2));
                             if (distance > longestDistance)
                             {
                                 longestDistance = distance;
@@ -540,7 +567,7 @@ namespace INFOIBV.Utilities
                     ListPixel value2;
                     referenceMap.TryGetValue(point2, out value2);
 
-                    Chord toReturn = new Chord(value1, value2);
+                    _longestPerpendicularChord = new Chord(value1, value2);
                 }
 
                 return _longestPerpendicularChord;

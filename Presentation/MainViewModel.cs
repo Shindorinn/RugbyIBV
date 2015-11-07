@@ -130,6 +130,89 @@ namespace INFOIBV.Presentation
 
         public void ApplyImage()
         {
+            if (InputImage == null /*|| decoratedFilter == null*/)
+                return; // Get out if no input image or filter selected
+
+            if (OutputImage != null && !hasAppliedThisImage)
+            {
+                OutputImage.Dispose(); // Reset output image
+                OutputImage = new Bitmap(InputImage.Size.Width, InputImage.Size.Height);
+            }
+            else if (OutputImage == null)
+            {
+                OutputImage = new Bitmap(InputImage.Size.Width, InputImage.Size.Height);
+            }
+
+            IsBusy = true;
+            System.Drawing.Color[,] InputColors = new System.Drawing.Color[InputImage.Size.Width, InputImage.Size.Height];
+            System.Drawing.Color[,] OutputColors;
+
+            if (hasAppliedThisImage)
+                for (int x = 0; x < OutputImage.Size.Width; x++)
+                    for (int y = 0; y < OutputImage.Size.Height; y++)
+                        InputColors[x, y] = OutputImage.GetPixel(x, y);
+            else
+                for (int x = 0; x < InputImage.Size.Width; x++)
+                    for (int y = 0; y < InputImage.Size.Height; y++)
+                        InputColors[x, y] = InputImage.GetPixel(x, y);
+
+            HasProgress = Visibility.Visible;
+            //MaxProgress = decoratedFilter.GetMaximumProgress(InputImage.Size.Width, InputImage.Size.Height);
+
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                // DEBUG!
+                OutputColors = new System.Drawing.Color[0, 0];
+                DetectObjects dobj = new DetectObjects();
+                dobj.detectObjects(InputColors, this);
+                var listIObj = dobj.getDetectedObjects();
+                foreach (var iObj in listIObj)
+                {
+                    OutputColors = iObj.Colorize(InputColors);
+                }
+
+                //return;
+
+                //OutputColors = decoratedFilter.apply(InputColors, this);
+
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    for (int x = 0; x < InputImage.Size.Width; x++)
+                        for (int y = 0; y < InputImage.Size.Height; y++)
+                            OutputImage.SetPixel(x, y, OutputColors[x, y]);
+
+                    NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap( // Display output image
+                                        OutputImage.GetHbitmap(),
+                                        IntPtr.Zero,
+                                        System.Windows.Int32Rect.Empty,
+                                        BitmapSizeOptions.FromWidthAndHeight(OutputImage.Size.Width, OutputImage.Size.Height));
+
+                    HasProgress = Visibility.Hidden;
+                    IsBusy = false;
+                    decoratedFilter = null; // Filter has been applied, a new one has to be made. Also fixes 'cached' filtering
+
+                    if (hasAppliedThisImage)
+                    {
+                        foreach (FilterType newAddition in currentFilterList)
+                            oldFilterList.Add(newAddition);
+                    }
+                    else
+                    {
+                        oldFilterList = currentFilterList;
+                        hasAppliedThisImage = false; // true
+                    }
+
+                    // Debug for Progressbar
+                    Console.WriteLine("Progress: {0}, MaxProgress: {1}", Progress, MaxProgress);
+                    Console.WriteLine("Procent: {0}", (Progress / MaxProgress) * 100);
+                    Progress = 0; // Reset progress
+                }));
+
+            });
+        }
+
+        public void ApplyImageOriginal()
+        {
             if (InputImage == null || decoratedFilter == null) return; // Get out if no input image or filter selected
             if (OutputImage != null && !hasAppliedThisImage)
             {

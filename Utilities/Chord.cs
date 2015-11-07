@@ -32,7 +32,7 @@ namespace INFOIBV.Utilities
 
         private double calcOrientation()
         {
-            return Math.Tan((double)secondPixel.Y - (double)firstPixel.Y / (double)secondPixel.X - (double)firstPixel.X);
+            return Math.Atan(((double)secondPixel.Y - (double)firstPixel.Y) / ((double)secondPixel.X - (double)firstPixel.X));
         }
     }
 }
