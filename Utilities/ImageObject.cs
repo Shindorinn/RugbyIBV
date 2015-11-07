@@ -564,7 +564,8 @@ namespace INFOIBV.Utilities
                     foreach (ListPixel pixel in this.perimeterListPixels)
                     {
                         Vector<double> convertedPixel = new DenseVector(new double[] { pixel.X, pixel.Y });
-                        var transformedMatrixVector = transformationMatrix.Multiply(convertedPixel);
+                        var transformedMatrixVector = new DenseVector(new double[2]);
+                        transformationMatrix.LeftMultiply(convertedPixel, transformedMatrixVector);
                         transformedListPixels.Add(transformedMatrixVector);
                         referenceMap.Add(transformedMatrixVector, pixel);
                     }
