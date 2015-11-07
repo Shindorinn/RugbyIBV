@@ -90,15 +90,15 @@ namespace INFOIBV.Utilities
 
 
             for (int i = -4; i < 5; i++)
-			{
-			    for (int j = -4; j < 5; j++)
+            {
+                for (int j = -4; j < 5; j++)
                 {
                     output[OffsetX + LongestChord.firstPixel.X + i, OffsetY + LongestChord.firstPixel.Y + j] = Color.Red;
                     output[OffsetX + LongestChord.secondPixel.X + i, OffsetY + LongestChord.secondPixel.Y + j] = Color.Orange;
                     output[OffsetX + LongestPerpendicularChord.firstPixel.X + i, OffsetY + LongestPerpendicularChord.firstPixel.Y + j] = Color.Blue;
                     output[OffsetX + LongestPerpendicularChord.secondPixel.X + i, OffsetY + LongestPerpendicularChord.secondPixel.Y + j] = Color.Cyan;
-			    }
-			}
+                }
+            }
 
             return output;
         }
@@ -503,17 +503,17 @@ namespace INFOIBV.Utilities
             {
                 if (_longestPerpendicularChord == null)
                 {
-                    Chord longestchord = this.LongestChord;
-                    double angle = longestchord.orientation;
-
+                    double angle = LongestChord.orientation;
                     double uv1CosAngle = Math.Cos(angle);
                     double uv1SinAngle = Math.Sin(angle);
-                    double uv2CosAngle = Math.Cos(angle + (Math.PI * .5)); // 90 degrees in radians
-                    double uv2SinAngle = Math.Sin(angle + (Math.PI * .5));
 
+                    double pAngle = Math.PI / 2;
+                    double[] rotationArray = new double[] { Math.Cos(pAngle), -1.0 * Math.Sin(pAngle), Math.Sin(pAngle), Math.Cos(pAngle) };
+                    Matrix<double> rotationMatrix = new DenseMatrix(2, 2, rotationArray);
 
                     Vector<double> unitVector1 = new DenseVector(new double[] { uv1CosAngle, uv1SinAngle });
-                    Vector<double> unitVector2 = new DenseVector(new double[] { uv2CosAngle, uv2SinAngle });
+                    Vector<double> unitVector2 = new DenseVector(new double[2]);
+                    rotationMatrix.LeftMultiply(unitVector1, unitVector2);
 
                     Matrix<double> transformationMatrix = DenseMatrix.OfColumnVectors(unitVector1, unitVector2);
                     // [x , 0]
