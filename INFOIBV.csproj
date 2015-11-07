@@ -60,6 +60,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\ApproximationKernel.cs" />
+    <Compile Include="Utilities\Chord.cs" />
     <Compile Include="Utilities\Enums\CompassType.cs" />
     <Compile Include="Utilities\Enums\DerivativeType.cs" />
     <Compile Include="Filters\CompassOperation.cs" />
