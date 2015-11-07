@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace INFOIBV.Utilities
 {
@@ -13,7 +15,7 @@ namespace INFOIBV.Utilities
             : base(pixelsToProcess)
         {
             // Keep empty
-
+            perimeterListPixels = null;
         }
 
         private double _compactness;
@@ -53,6 +55,11 @@ namespace INFOIBV.Utilities
             {
                 if (_longestChord == null)
                 {
+                    if (this.perimeterListPixels == null)
+                    {
+                        this.perimeterListPixels = base.ConvertPerimeterPixelsToList();
+                    }
+
                     double longestDistance = Double.NegativeInfinity;
                     double distance = 0;
                     ListPixel firstPoint = new ListPixel(0, 0, new bool[0,0]);
@@ -69,7 +76,7 @@ namespace INFOIBV.Utilities
                         for (int j = i + 1; j < this.perimeterListPixels.Count; j++)
                         {
                             ListPixel toCalcTo = this.perimeterListPixels[j];
-                            distance = Math.Sqrt(Math.Pow(toCalcTo.X - toCalcFrom.X, 2) + Math.Pow(toCalcTo.Y - toCalcFrom.Y, 2));
+                            distance = Math.Sqrt(Math.Pow((double)toCalcTo.X - (double)toCalcFrom.X, 2) + Math.Pow((double)toCalcTo.Y - (double)toCalcFrom.Y, 2));
                             if (distance > longestDistance)
                             {
                                 longestDistance = distance;
@@ -85,31 +92,27 @@ namespace INFOIBV.Utilities
             }
         }
 
-        private double _longestChordOrientation;
-        public double LongestChordOrientation
-        {
-            get
-            {
-                if (_longestChordOrientation == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _longestChordOrientation++; // Compute is Area
-
-                return _longestChordOrientation;
-            }
-            set { _longestChordOrientation = value; }
-        }
-
         private double _longestPerpendicularChord;
         public double LongestPerpendicularChord
         {
             get
             {
-                if (_longestPerpendicularChord == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _longestPerpendicularChord++; // Compute is Area
+                if (_longestPerpendicularChord == null)
+                {
+                    Chord longestchord = this.LongestChord;
+                    double angle = longestchord.orientation;
+                    
+                    Vector<double> unitVector1 = new DenseVector(new double[] { Math.Cos(angle), Math.Sin(angle) });
+                    Vector<double> unitVector2 = new DenseVector(new double[] { Math.Cos(angle + 90), Math.Sin(angle + 90) });
 
+                    Matrix<double> transformationMatrix = DenseMatrix.OfColumnVectors(unitVector1, unitVector2);
+
+                    List<Vector<double>> transformedListPixels = new List<Vector<double>>();
+
+
+
+                }
+                    
                 return _longestPerpendicularChord;
             }
             set { _longestPerpendicularChord = value; }
