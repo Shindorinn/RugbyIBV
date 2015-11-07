@@ -7,9 +7,13 @@ namespace INFOIBV.Utilities
 {
     public class ImageObject2 : ImageObject
     {
-        public ImageObject2(List<ListPixel> pixelsToProcess) : base(pixelsToProcess)
+        protected List<ListPixel> perimeterListPixels;
+
+        public ImageObject2(List<ListPixel> pixelsToProcess)
+            : base(pixelsToProcess)
         {
             // Keep empty
+
         }
 
         private double _compactness;
@@ -42,19 +46,43 @@ namespace INFOIBV.Utilities
             set { _roundness = value; }
         }
 
-        private double _longestChord;
-        public double LongestChord
+        private Chord _longestChord;
+        public Chord LongestChord
         {
             get
             {
-                if (_longestChord == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _longestChord++; // Compute is Area
+                if (_longestChord == null)
+                {
+                    double longestDistance = Double.NegativeInfinity;
+                    double distance = 0;
+                    ListPixel firstPoint = new ListPixel(0, 0, new bool[0,0]);
+                    ListPixel secondPoint = new ListPixel(0, 0, new bool[0, 0]);
 
+                    for (int i = 0; i < this.perimeterListPixels.Count; i++)
+                    {
+                        if (i + 1 >= this.perimeterListPixels.Count)
+                        {
+                            continue; // Skip the last loop
+                        }
+                        ListPixel toCalcFrom = this.perimeterListPixels[i];
+
+                        for (int j = i + 1; j < this.perimeterListPixels.Count; j++)
+                        {
+                            ListPixel toCalcTo = this.perimeterListPixels[j];
+                            distance = Math.Sqrt(Math.Pow(toCalcTo.X - toCalcFrom.X, 2) + Math.Pow(toCalcTo.Y - toCalcFrom.Y, 2));
+                            if (distance > longestDistance)
+                            {
+                                longestDistance = distance;
+                                firstPoint = toCalcFrom;
+                                secondPoint = toCalcTo;
+                            }
+                        }
+                    }
+                    Chord toReturn = new Chord(firstPoint, secondPoint, longestDistance);
+                    _longestChord = toReturn;
+                }
                 return _longestChord;
             }
-            set { _longestChord = value; }
         }
 
         private double _longestChordOrientation;
