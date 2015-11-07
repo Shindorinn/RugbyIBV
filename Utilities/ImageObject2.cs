@@ -12,36 +12,6 @@ namespace INFOIBV.Utilities
             // Keep empty
         }
 
-        private int _area;
-        public int Area
-        {
-            get
-            {
-                if (_area == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _area++;
-
-                return _area;
-            }
-            set { _area = value; }
-        }
-
-        private int _perimeter;
-        public int Perimeter
-        {
-            get
-            {
-                if (_perimeter == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _perimeter++; // Compute is Area
-
-                return _perimeter;
-            }
-            set { _perimeter = value; }
-        }
-
         private double _compactness;
         public double Compactness
         {
