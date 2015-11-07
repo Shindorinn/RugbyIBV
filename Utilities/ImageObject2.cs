@@ -92,8 +92,8 @@ namespace INFOIBV.Utilities
             }
         }
 
-        private double _longestPerpendicularChord;
-        public double LongestPerpendicularChord
+        private Chord _longestPerpendicularChord;
+        public Chord LongestPerpendicularChord
         {
             get
             {
@@ -109,7 +109,37 @@ namespace INFOIBV.Utilities
 
                     List<Vector<double>> transformedListPixels = new List<Vector<double>>();
 
+                    foreach (ListPixel pixel in this.perimeterListPixels)
+                    {
+                        Vector<double> convertedPixel = new DenseVector(new double [] {pixel.X, pixel.Y});
+                        transformedListPixels.Add(transformationMatrix.Multiply(convertedPixel));
+                    }
 
+                    Vector<double> point1;
+                    Vector<double> point2;
+                    double longestDistance = double.MinValue;
+                    double distance = double.MinValue;
+
+                    for (int i = 0; i < transformedListPixels.Count; i++)
+                    {
+                        if (i + 1 >= transformedListPixels.Count)
+                        {
+                            continue; // Skip the last loop
+                        }
+                        Vector<double> toCalcFrom = transformedListPixels[i];
+
+                        for (int j = i + 1; j < transformedListPixels.Count; j++)
+                        {
+                            Vector<double> toCalcTo = transformedListPixels[j];
+                            distance = Math.Sqrt(Math.Pow((double)toCalcTo.ToArray()[1] - (double)toCalcFrom.ToArray()[1], 2));
+                            if (distance > longestDistance)
+                            {
+                                longestDistance = distance;
+                                point1 = toCalcFrom;
+                                point2 = toCalcTo;
+                            }
+                        }
+                    }
 
                 }
                     
