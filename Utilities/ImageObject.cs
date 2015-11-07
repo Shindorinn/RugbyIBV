@@ -1,5 +1,8 @@
 ﻿using INFOIBV.Utilities.Enums;
 
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,7 @@ namespace INFOIBV.Utilities
     {
         protected int[,] pixels;
         protected int[,] perimeterPixels;
+        protected List<ListPixel> perimeterListPixels;
         public int OffsetX { get; private set; }
         public int OffsetY { get; private set; }
 
@@ -18,6 +22,14 @@ namespace INFOIBV.Utilities
         {
             Area = 0;
             Perimeter = 0;
+            Compactness = 0.0;
+            Roundness = 0.0;
+            LongestChord = null;
+            LongestPerpendicularChord = null;
+            BoundingBoxArea = 0;
+            Rectangularity = 0.0;
+            Elongation = 0.0;
+            Elongation2 = 0.0;
 
             OffsetX = int.MaxValue;
             OffsetY = int.MaxValue; // To make sure it changes on the first time
@@ -54,13 +66,37 @@ namespace INFOIBV.Utilities
             Console.WriteLine("The image object has the following properties:");
             Console.WriteLine("OffsetX: {0}, OffsetY: {1}", OffsetX, OffsetY);
             Console.WriteLine("SizeX: {0}, SizeY: {1}", sizeX, sizeY);
-            Console.WriteLine("Size of array: {0}", pixels.Length);
-            Console.WriteLine("Area: ", Area);
-            Console.WriteLine("Perimeter: ", Perimeter);
+            Console.WriteLine("Area: {0}", Area);
+            Console.WriteLine("Perimeter: {0}", Math.Round(Perimeter, 2)); // Nicely round off
+            Console.WriteLine("Compactness: {0}", Math.Round(Compactness, 2)); // Nicely round off
+            Console.WriteLine("Roundness: {0}", Math.Round(Roundness, 2)); // Nicely round off
+            Console.WriteLine("Longest Chord Info: 1st pixel.x={0}, 1st pixel.y={1}, 2nd pixel.x={2}, 2nd pixel.y={3}, Distance between points={4}, Longest Chord Orientation={5}", LongestChord.firstPixel.X, LongestChord.firstPixel.Y, LongestChord.secondPixel.X, LongestChord.secondPixel.Y, Math.Round(LongestChord.distance, 2), Math.Round(LongestChord.orientation, 2));
+            Console.WriteLine("Longest Perpendicular Chord Info: 1st pixel.x={0}, 1st pixel.y={1}, 2nd pixel.x={2}, 2nd pixel.y={3}, Distance between points={4}, Longest Perpendicular Chord Orientation={5}", LongestPerpendicularChord.firstPixel.X, LongestPerpendicularChord.firstPixel.Y, LongestPerpendicularChord.secondPixel.X, LongestPerpendicularChord.secondPixel.Y, Math.Round(LongestPerpendicularChord.distance, 2), Math.Round(LongestPerpendicularChord.orientation, 2));
+            Console.WriteLine("Eccentricity: {0}", Math.Round(Eccentricity, 2)); // Nicely round off
+            Console.WriteLine("BoundingBoxArea: {0}", BoundingBoxArea); // Nicely round off
+            Console.WriteLine("Rectangularity: {0}", Math.Round(Rectangularity, 2)); // Nicely round off
+            Console.WriteLine("Elongation: {0}", Math.Round(Elongation, 2)); // Nicely round off
+            Console.WriteLine("Elongation2: {0}", Math.Round(Elongation2, 2)); // Nicely round off
+
 
             Console.WriteLine("");
-            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("");
+        }
+
+        protected List<ListPixel> ConvertPerimeterPixelsToList()
+        {
+            if (perimeterPixels == null)
+                EstablishPerimeterPixels();
+
+            List<ListPixel> list = new List<ListPixel>();
+
+            for (int i = 0; i < perimeterPixels.GetLength(0); i++)
+                for (int j = 0; j < perimeterPixels.GetLength(1); j++)
+                    if (perimeterPixels[i, j] == 1)
+                        list.Add(new ListPixel(i, j, null));
+
+            return list;
         }
 
         protected void EstablishPerimeterPixels()
@@ -302,21 +338,6 @@ namespace INFOIBV.Utilities
             return direction;
         }
 
-        protected List<ListPixel> ConvertPerimeterPixelsToList()
-        {
-            if (perimeterPixels == null)
-                EstablishPerimeterPixels();
-
-            List<ListPixel> list = new List<ListPixel>();
-
-            for (int i = 0; i < perimeterPixels.GetLength(0); i++)
-                for (int j = 0; j < perimeterPixels.GetLength(1); j++)
-                    if (perimeterPixels[i, j] == 1)
-                        list.Add(new ListPixel(i, j, null));
-
-            return list;
-        }
-
         private void Traverse(ref int x, ref int y, Direction direction)
         {
             switch (direction)
@@ -390,9 +411,9 @@ namespace INFOIBV.Utilities
             get
             {
                 if (_compactness == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _compactness++; // Compute is Area
+                {
+                    _compactness = Math.Pow(Perimeter, 2.0) / (((double)Area * 4.0) * Math.PI);
+                }
 
                 return _compactness;
             }
@@ -405,54 +426,108 @@ namespace INFOIBV.Utilities
             get
             {
                 if (_roundness == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _roundness++; // Compute is Area
+                    _roundness = 1.0 / Compactness;
 
                 return _roundness;
             }
             set { _roundness = value; }
         }
 
-        private double _longestChord;
-        public double LongestChord
+        private Chord _longestChord;
+        public Chord LongestChord
         {
             get
             {
-                if (_longestChord == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _longestChord++; // Compute is Area
+                if (_longestChord == null)
+                {
+                    if (this.perimeterListPixels == null)
+                    {
+                        this.perimeterListPixels = ConvertPerimeterPixelsToList();
+                    }
 
+                    double longestDistance = Double.NegativeInfinity;
+                    double distance = 0;
+                    ListPixel firstPoint = new ListPixel(0, 0, new bool[0, 0]);
+                    ListPixel secondPoint = new ListPixel(0, 0, new bool[0, 0]);
+
+                    for (int i = 0; i < this.perimeterListPixels.Count; i++)
+                    {
+                        if (i + 1 >= this.perimeterListPixels.Count)
+                        {
+                            continue; // Skip the last loop
+                        }
+                        ListPixel toCalcFrom = this.perimeterListPixels[i];
+
+                        for (int j = i + 1; j < this.perimeterListPixels.Count; j++)
+                        {
+                            ListPixel toCalcTo = this.perimeterListPixels[j];
+                            distance = Math.Sqrt(Math.Pow((double)toCalcTo.X - (double)toCalcFrom.X, 2) + Math.Pow((double)toCalcTo.Y - (double)toCalcFrom.Y, 2));
+                            if (distance > longestDistance)
+                            {
+                                longestDistance = distance;
+                                firstPoint = toCalcFrom;
+                                secondPoint = toCalcTo;
+                            }
+                        }
+                    }
+                    Chord toReturn = new Chord(firstPoint, secondPoint, longestDistance);
+                    _longestChord = toReturn;
+                }
                 return _longestChord;
             }
             set { _longestChord = value; }
         }
 
-        private double _longestChordOrientation;
-        public double LongestChordOrientation
+        private Chord _longestPerpendicularChord;
+        public Chord LongestPerpendicularChord
         {
             get
             {
-                if (_longestChordOrientation == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _longestChordOrientation++; // Compute is Area
+                if (_longestPerpendicularChord == null)
+                {
+                    Chord longestchord = this.LongestChord;
+                    double angle = longestchord.orientation;
 
-                return _longestChordOrientation;
-            }
-            set { _longestChordOrientation = value; }
-        }
+                    Vector<double> unitVector1 = new DenseVector(new double[] { Math.Cos(angle), Math.Sin(angle) });
+                    Vector<double> unitVector2 = new DenseVector(new double[] { Math.Cos(angle + 90), Math.Sin(angle + 90) });
 
-        private double _longestPerpendicularChord;
-        public double LongestPerpendicularChord
-        {
-            get
-            {
-                if (_longestPerpendicularChord == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _longestPerpendicularChord++; // Compute is Area
+                    Matrix<double> transformationMatrix = DenseMatrix.OfColumnVectors(unitVector1, unitVector2);
+
+                    List<Vector<double>> transformedListPixels = new List<Vector<double>>();
+
+                    foreach (ListPixel pixel in this.perimeterListPixels)
+                    {
+                        Vector<double> convertedPixel = new DenseVector(new double[] { pixel.X, pixel.Y });
+                        transformedListPixels.Add(transformationMatrix.Multiply(convertedPixel));
+                    }
+
+                    Vector<double> point1;
+                    Vector<double> point2;
+                    double longestDistance = double.MinValue;
+                    double distance = double.MinValue;
+
+                    for (int i = 0; i < transformedListPixels.Count; i++)
+                    {
+                        if (i + 1 >= transformedListPixels.Count)
+                        {
+                            continue; // Skip the last loop
+                        }
+                        Vector<double> toCalcFrom = transformedListPixels[i];
+
+                        for (int j = i + 1; j < transformedListPixels.Count; j++)
+                        {
+                            Vector<double> toCalcTo = transformedListPixels[j];
+                            distance = Math.Sqrt(Math.Pow((double)toCalcTo.ToArray()[1] - (double)toCalcFrom.ToArray()[1], 2));
+                            if (distance > longestDistance)
+                            {
+                                longestDistance = distance;
+                                point1 = toCalcFrom;
+                                point2 = toCalcTo;
+                            }
+                        }
+                    }
+
+                }
 
                 return _longestPerpendicularChord;
             }
@@ -465,24 +540,20 @@ namespace INFOIBV.Utilities
             get
             {
                 if (_eccentricity == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _eccentricity++; // Compute is Area
+                    _eccentricity = LongestChord.distance / LongestPerpendicularChord.distance;
 
                 return _eccentricity;
             }
             set { _eccentricity = value; }
         }
 
-        private double _boundingBoxArea;
-        public double BoundingBoxArea
+        private int _boundingBoxArea;
+        public int BoundingBoxArea
         {
             get
             {
                 if (_boundingBoxArea == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _boundingBoxArea++; // Compute is Area
+                    _boundingBoxArea = pixels.Length;
 
                 return _boundingBoxArea;
             }
@@ -495,9 +566,7 @@ namespace INFOIBV.Utilities
             get
             {
                 if (_rectangularity == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _rectangularity++; // Compute is Area
+                    _rectangularity = ((double)Area) / ((double)BoundingBoxArea);
 
                 return _rectangularity;
             }
@@ -509,10 +578,13 @@ namespace INFOIBV.Utilities
         {
             get
             {
-                if (_elongation == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _elongation++; // Compute is Area
+                if (_elongation == 0) // Done wrong if BoundingBoxArea is changed (/corrected)
+                {
+                    double longestBBSide = pixels.GetLength(0) > pixels.GetLength(1) ? ((double)pixels.GetLength(0)) : ((double)pixels.GetLength(1));
+                    double shortestBBSide = pixels.GetLength(0) < pixels.GetLength(1) ? ((double)pixels.GetLength(0)) : ((double)pixels.GetLength(1));
+
+                    _elongation = longestBBSide / shortestBBSide;
+                }
 
                 return _elongation;
             }
@@ -524,44 +596,15 @@ namespace INFOIBV.Utilities
         {
             get
             {
-                if (_elongation2 == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _elongation2++; // Compute is Area
+                if (_elongation2 == 0) // Probably done wrong
+                {
+                    double shortestBBSide = pixels.GetLength(0) < pixels.GetLength(1) ? ((double)pixels.GetLength(0)) : ((double)pixels.GetLength(1));
+                    _elongation2 = ((double)Area) / Math.Pow(shortestBBSide / 2.0, 2);
+                }
 
                 return _elongation2;
             }
             set { _elongation2 = value; }
-        }
-
-        private double _curvature;
-        public double Curvature
-        {
-            get
-            {
-                if (_curvature == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _curvature++; // Compute is Area
-
-                return _curvature;
-            }
-            set { _curvature = value; }
-        }
-
-        private double _bendingEnergy;
-        public double BendingEnergy
-        {
-            get
-            {
-                if (_bendingEnergy == 0)
-                    foreach (var pixel in pixels)
-                        if (pixel == 1)
-                            _bendingEnergy++; // Compute is Area
-
-                return _bendingEnergy;
-            }
-            set { _bendingEnergy = value; }
         }
     }
 }

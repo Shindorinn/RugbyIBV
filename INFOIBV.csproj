@@ -90,7 +90,6 @@
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\NormalizingKernel.cs" />
     <Compile Include="Filters\SobelKernel.cs" />
-    <Compile Include="Utilities\ImageObject2.cs" />
     <Compile Include="Utilities\ImageObject.cs" />
     <Compile Include="Utilities\ListPixel.cs" />
     <Compile Include="Filters\ThresholdFilter.cs" />
