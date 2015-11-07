@@ -107,7 +107,9 @@ namespace INFOIBV.Utilities
                     if (CanTurn(nX, nY, newDirection, i))
                     { // Found a direction to go to
                         hasADirection = true;
-                        newDirection = Turn(nX, nY, newDirection, i);
+                        if (i != 0) // No turning needed
+                            newDirection = Turn(nX, nY, newDirection, i);
+
                         break;
                     }
                 }
@@ -131,12 +133,13 @@ namespace INFOIBV.Utilities
                         break;
                 }
 
-                Perimeter = perimeterCounter;
                 Traverse(ref nX, ref nY, newDirection); // Sets new nX and nY
                 lookingDirection = newDirection;
                 perimeterPixels[nX, nY] = 1;
 
-            } while (nX != fX && nY != fY);
+            } while (nX != fX || nY != fY);
+
+            Perimeter = perimeterCounter;
         }
 
         private bool CanTurn(int x, int y, Direction direction, int turnDirection)
@@ -174,18 +177,18 @@ namespace INFOIBV.Utilities
 
             int newNumDirection = -1;
             if (numDirection + turnDirection < 0)
-                newNumDirection = 8 - numDirection + turnDirection;
+                newNumDirection = 8 + (numDirection + turnDirection);
             else
                 newNumDirection = (numDirection + turnDirection) % 8;
 
             switch (newNumDirection)
             {
                 case 0: // North
-                    if (y - 1 > 0)
+                    if (y - 1 >= 0)
                         return pixels[x, y - 1] == 1;
                     break;
                 case 1: // NorthEast
-                    if (x + 1 < pixels.GetLength(0) && y - 1 > 0)
+                    if (x + 1 < pixels.GetLength(0) && y - 1 >= 0)
                         return pixels[x + 1, y - 1] == 1;
                     break;
                 case 2: // East
@@ -201,15 +204,15 @@ namespace INFOIBV.Utilities
                         return pixels[x, y + 1] == 1;
                     break;
                 case 5: // SouthWest
-                    if (x - 1 > 0 && y + 1 < pixels.GetLength(1))
+                    if (x - 1 >= 0 && y + 1 < pixels.GetLength(1))
                         return pixels[x - 1, y + 1] == 1;
                     break;
                 case 6: // West
-                    if (x - 1 > 0)
+                    if (x - 1 >= 0)
                         return pixels[x - 1, y] == 1;
                     break;
                 case 7: // NorthWest
-                    if (x - 1 > 0 && y - 1 > 0)
+                    if (x - 1 >= 0 && y - 1 >= 0)
                         return pixels[x - 1, y - 1] == 1;
                     break;
                 default:
@@ -254,18 +257,18 @@ namespace INFOIBV.Utilities
 
             int newNumDirection = -1;
             if (numDirection + turnDirection < 0)
-                newNumDirection = 8 - numDirection + turnDirection;
+                newNumDirection = 8 + (numDirection + turnDirection);
             else
                 newNumDirection = (numDirection + turnDirection) % 8;
 
             switch (newNumDirection)
             {
                 case 0: // North
-                    if (y - 1 > 0)
+                    if (y - 1 >= 0)
                         return pixels[x, y - 1] == 1 ? Direction.North : direction;
                     break;
                 case 1: // NorthEast
-                    if (x + 1 < pixels.GetLength(0) && y - 1 > 0)
+                    if (x + 1 < pixels.GetLength(0) && y - 1 >= 0)
                         return pixels[x + 1, y - 1] == 1 ? Direction.NorthEast : direction;
                     break;
                 case 2: // East
@@ -281,15 +284,15 @@ namespace INFOIBV.Utilities
                         return pixels[x, y + 1] == 1 ? Direction.South : direction;
                     break;
                 case 5: // SouthWest
-                    if (x - 1 > 0 && y + 1 < pixels.GetLength(1))
+                    if (x - 1 >= 0 && y + 1 < pixels.GetLength(1))
                         return pixels[x - 1, y + 1] == 1 ? Direction.SouthWest : direction;
                     break;
                 case 6: // West
-                    if (x - 1 > 0)
+                    if (x - 1 >= 0)
                         return pixels[x - 1, y] == 1 ? Direction.West : direction;
                     break;
                 case 7: // NorthWest
-                    if (x - 1 > 0 && y - 1 > 0)
+                    if (x - 1 >= 0 && y - 1 >= 0)
                         return pixels[x - 1, y - 1] == 1 ? Direction.NorthWest : direction;
                     break;
                 default:
@@ -299,42 +302,57 @@ namespace INFOIBV.Utilities
             return direction;
         }
 
+        protected List<ListPixel> ConvertPerimeterPixelsToList()
+        {
+            if (perimeterPixels == null)
+                EstablishPerimeterPixels();
+
+            List<ListPixel> list = new List<ListPixel>();
+
+            for (int i = 0; i < perimeterPixels.GetLength(0); i++)
+                for (int j = 0; j < perimeterPixels.GetLength(1); j++)
+                    if (perimeterPixels[i, j] == 1)
+                        list.Add(new ListPixel(i, j, null));
+
+            return list;
+        }
+
         private void Traverse(ref int x, ref int y, Direction direction)
         {
             switch (direction)
             {
                 case Direction.North:
                     y--;
-                    break;
+                    return;
                 case Direction.NorthEast:
                     x++;
                     y--;
-                    break;
+                    return;
                 case Direction.East:
                     x++;
-                    break;
+                    return;
                 case Direction.SouthEast:
                     x++;
                     y++;
-                    break;
+                    return;
                 case Direction.South:
                     y++;
-                    break;
+                    return;
                 case Direction.SouthWest:
                     x--;
                     y++;
-                    break;
+                    return;
                 case Direction.West:
                     x--;
-                    break;
+                    return;
                 case Direction.NorthWest:
                     x--;
-                    y++;
-                    break;
+                    y--;
+                    return;
                 default: // Shouldn't come to this. Unauthorized Direction used.
                     x = -1;
                     y = -1;
-                    break;
+                    return;
             }
         }
 
@@ -359,7 +377,7 @@ namespace INFOIBV.Utilities
             get
             {
                 if (_perimeter == 0)
-                    EstablishPerimeterPixels(true); // If needed, redo the perimeterPixels, but count this time
+                    EstablishPerimeterPixels(); // If needed, redo the perimeterPixels, but count this time
 
                 return _perimeter;
             }
