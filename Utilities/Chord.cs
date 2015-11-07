@@ -12,12 +12,22 @@ namespace INFOIBV.Utilities
         public readonly double distance;
         public readonly double orientation;
 
+        public Chord(ListPixel firstPixel, ListPixel secondPixel) : this(firstPixel, secondPixel, Chord.calcDistance(firstPixel, secondPixel))
+        {
+            // Calcs distance
+        }
+
         public Chord(ListPixel firstPixel, ListPixel secondPixel, double distance)
         {
             this.firstPixel = firstPixel;
             this.secondPixel = secondPixel;
             this.distance = distance;
             this.orientation = calcOrientation();
+        }
+
+        public static double calcDistance(ListPixel toCalcFrom, ListPixel toCalcTo)
+        {
+            return Math.Sqrt(Math.Pow((double)toCalcTo.X - (double)toCalcFrom.X, 2) + Math.Pow((double)toCalcTo.Y - (double)toCalcFrom.Y, 2));
         }
 
         private double calcOrientation()

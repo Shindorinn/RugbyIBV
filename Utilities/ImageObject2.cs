@@ -76,7 +76,7 @@ namespace INFOIBV.Utilities
                         for (int j = i + 1; j < this.perimeterListPixels.Count; j++)
                         {
                             ListPixel toCalcTo = this.perimeterListPixels[j];
-                            distance = Math.Sqrt(Math.Pow((double)toCalcTo.X - (double)toCalcFrom.X, 2) + Math.Pow((double)toCalcTo.Y - (double)toCalcFrom.Y, 2));
+                            distance = Chord.calcDistance(toCalcFrom, toCalcTo);
                             if (distance > longestDistance)
                             {
                                 longestDistance = distance;
@@ -108,15 +108,17 @@ namespace INFOIBV.Utilities
                     Matrix<double> transformationMatrix = DenseMatrix.OfColumnVectors(unitVector1, unitVector2);
 
                     List<Vector<double>> transformedListPixels = new List<Vector<double>>();
+                    Dictionary<Vector<double>, ListPixel> referenceMap = new Dictionary<Vector<double>, ListPixel>();
 
                     foreach (ListPixel pixel in this.perimeterListPixels)
                     {
                         Vector<double> convertedPixel = new DenseVector(new double [] {pixel.X, pixel.Y});
                         transformedListPixels.Add(transformationMatrix.Multiply(convertedPixel));
+                        referenceMap.Add(convertedPixel, pixel);
                     }
 
-                    Vector<double> point1;
-                    Vector<double> point2;
+                    Vector<double> point1 = null;
+                    Vector<double> point2 = null;
                     double longestDistance = double.MinValue;
                     double distance = double.MinValue;
 
@@ -131,6 +133,12 @@ namespace INFOIBV.Utilities
                         for (int j = i + 1; j < transformedListPixels.Count; j++)
                         {
                             Vector<double> toCalcTo = transformedListPixels[j];
+
+                            if ((double)toCalcFrom.ToArray()[0] != (double)toCalcTo.ToArray()[0])
+                            {
+                                continue;
+                            }
+
                             distance = Math.Sqrt(Math.Pow((double)toCalcTo.ToArray()[1] - (double)toCalcFrom.ToArray()[1], 2));
                             if (distance > longestDistance)
                             {
@@ -140,6 +148,13 @@ namespace INFOIBV.Utilities
                             }
                         }
                     }
+                    ListPixel value1;
+                    referenceMap.TryGetValue(point1, out value1);
+
+                    ListPixel value2;
+                    referenceMap.TryGetValue(point2, out value2);
+
+                    Chord toReturn = new Chord(value1, value2);
 
                 }
                     
