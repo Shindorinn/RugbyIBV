@@ -17,6 +17,7 @@ namespace INFOIBV.Utilities
         public ImageObject(List<ListPixel> pixelsToProcess)
         {
             Area = 0;
+            Perimeter = 0;
 
             OffsetX = int.MaxValue;
             OffsetY = int.MaxValue; // To make sure it changes on the first time
@@ -62,7 +63,7 @@ namespace INFOIBV.Utilities
             Console.WriteLine("");
         }
 
-        private void EstablishPerimeterPixels(bool countPerimeter)
+        protected void EstablishPerimeterPixels()
         {
             int fX = -1; // First X
             int fY = -1; // First Y
@@ -99,7 +100,6 @@ namespace INFOIBV.Utilities
             do
             {
                 Direction newDirection = lookingDirection;
-                int antiLoopCounter = 8;
                 bool hasADirection = false;
                 // 1 loop to rule them all
                 for (int i = -2; i < 3; i++)
@@ -112,35 +112,26 @@ namespace INFOIBV.Utilities
                     }
                 }
 
-                if(!hasADirection) // If you have no direction
-                { // GO BACK (to the choppa)!
-                    newDirection = Turn(nX, nY, newDirection, 4);
-                }
+                if (!hasADirection) // If you have no direction
+                    newDirection = Turn(nX, nY, newDirection, 4); // GO BACK (to the choppa)!
 
-                if (countPerimeter)
+                switch (newDirection)
                 {
-                    switch (newDirection)
-                    {
-                        case Direction.NorthEast:
-                        case Direction.SouthEast:
-                        case Direction.SouthWest:
-                        case Direction.NorthWest:
-                            perimeterCounter += Math.Sqrt(2);
-                            break;
-                        case Direction.North:
-                        case Direction.East:
-                        case Direction.South:
-                        case Direction.West:
-                            perimeterCounter += 1.0;
-                            break;
-                        default:
-                            break;
-                    }
+                    case Direction.NorthEast:
+                    case Direction.SouthEast:
+                    case Direction.SouthWest:
+                    case Direction.NorthWest:
+                        perimeterCounter += Math.Sqrt(2);
+                        break;
+                    case Direction.North:
+                    case Direction.East:
+                    case Direction.South:
+                    case Direction.West:
+                        perimeterCounter += 1.0;
+                        break;
                 }
 
-                if (countPerimeter)
-                    Perimeter = perimeterCounter;
-
+                Perimeter = perimeterCounter;
                 Traverse(ref nX, ref nY, newDirection); // Sets new nX and nY
                 lookingDirection = newDirection;
                 perimeterPixels[nX, nY] = 1;
