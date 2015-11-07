@@ -103,6 +103,45 @@ namespace INFOIBV.Utilities
             return output;
         }
 
+        public Color[,] ColorizeVectors(Color[,] input)
+        {
+            Color[,] output = (Color[,])input.Clone();
+
+            double angle = LongestChord.orientation;
+            double uv1CosAngle = Math.Cos(angle);
+            double uv1SinAngle = Math.Sin(angle);
+
+            double pAngle = Math.PI / 2;
+            double[] rotationArray = new double[] { Math.Cos(pAngle), -1.0 * Math.Sin(pAngle), Math.Sin(pAngle), Math.Cos(pAngle) };
+            Matrix<double> rotationMatrix = new DenseMatrix(2, 2, rotationArray);
+
+            Vector<double> unitVector1 = new DenseVector(new double[] { uv1CosAngle, uv1SinAngle });
+            Vector<double> unitVector2 = new DenseVector(new double[2]);
+            rotationMatrix.LeftMultiply(unitVector1, unitVector2);
+
+            double uv2CosAngle = unitVector2[0];
+            double uv2SinAngle = unitVector2[1];
+
+            for (int i = -1; i < 3; i++)
+            {
+                for (int j = 0; j < 64; j++)
+                {
+                    int uv1X = OffsetX + i + LongestChord.firstPixel.X + ((int)Math.Round(uv1CosAngle * j));
+                    int uv1Y = OffsetY + i + LongestChord.firstPixel.Y + ((int)Math.Round(uv1SinAngle * j));
+                    int uv2X = OffsetX + i + LongestChord.firstPixel.X + ((int)Math.Round(uv2CosAngle * j));
+                    int uv2Y = OffsetY + i + LongestChord.firstPixel.Y + ((int)Math.Round(uv2SinAngle * j));
+
+                    output[uv1X, uv1Y] = Color.Red;
+                    output[uv2X, uv2Y] = Color.Blue;
+
+                    //output[OffsetX + i + LongestChord.firstPixel.X, OffsetY + i + LongestChord.firstPixel.Y] = Color.Red;
+                    //output[OffsetX + i + LongestPerpendicularChord.firstPixel.X, OffsetY + i + LongestPerpendicularChord.firstPixel.Y] = Color.Blue;
+                }
+            }
+
+            return output;
+        }
+
         protected List<ListPixel> ConvertPerimeterPixelsToList()
         {
             if (perimeterPixels == null)

@@ -168,7 +168,7 @@ namespace INFOIBV.Presentation
                 var listIObj = dobj.getDetectedObjects();
                 foreach (var iObj in listIObj)
                 {
-                    OutputColors = iObj.Colorize(InputColors);
+                    OutputColors = iObj.ColorizeVectors(InputColors);
                 }
 
                 //return;
