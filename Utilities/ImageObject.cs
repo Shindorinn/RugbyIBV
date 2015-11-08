@@ -67,7 +67,7 @@ namespace INFOIBV.Utilities
             Console.WriteLine("OffsetX: {0}, OffsetY: {1}", OffsetX, OffsetY);
             Console.WriteLine("SizeX: {0}, SizeY: {1}", sizeX, sizeY);
 
-            if(sizeX == 1 && sizeY == 1)
+            if (sizeX == 1 && sizeY == 1)
             {
                 Console.WriteLine("Due to the lack of size this object will not be analysed.");
                 Console.WriteLine("");
@@ -138,8 +138,8 @@ namespace INFOIBV.Utilities
             double uv2SinAngle = unitVector2[1];
 
             int lcX = 0;
-            if(uv1CosAngle > 0)
-                if(LongestChord.firstPixel.X < LongestChord.secondPixel.X)
+            if (uv1CosAngle > 0)
+                if (LongestChord.firstPixel.X < LongestChord.secondPixel.X)
                     lcX = LongestChord.firstPixel.X;
                 else
                     lcX = LongestChord.secondPixel.X;
@@ -153,12 +153,12 @@ namespace INFOIBV.Utilities
             if (uv1SinAngle > 0)
                 if (LongestChord.firstPixel.Y < LongestChord.secondPixel.Y)
                     lcY = LongestChord.firstPixel.Y;
-                else  
+                else
                     lcY = LongestChord.secondPixel.Y;
             else
                 if (LongestChord.firstPixel.Y < LongestChord.secondPixel.Y)
                     lcY = LongestChord.secondPixel.Y;
-                else  
+                else
                     lcY = LongestChord.firstPixel.Y;
 
             for (int i = 0; i < LongestChord.distance; i++)
@@ -219,21 +219,38 @@ namespace INFOIBV.Utilities
 
             Color[,] output = (Color[,])input.Clone();
 
-            for (int i = 0; i < perimeterPixels.GetLength(0); i++)
+            for (int i = 0; i < perimeterListPixels.Count; i++)
             {
-                int firstPixelY = -1;
-                for (int j = 0; j < perimeterPixels.GetLength(1); j++)
-                {
-                    if (perimeterPixels[i, j] == 1)
-                        if (firstPixelY < 0)
-                            firstPixelY = j;
-                        else
-                        {
-                            for (int k = firstPixelY; k <= j; k++)
-                                output[OffsetX + i, OffsetY + k] = Color.Black;
+                int x1 = perimeterListPixels[i].X, y1 = perimeterListPixels[i].Y;
 
-                            firstPixelY = -1;
-                        }
+                for (int j = 0; j < perimeterListPixels.Count; j++)
+                {
+                    if (i == j)
+                        continue;
+
+                    int x2 = perimeterListPixels[j].X, y2 = perimeterListPixels[j].Y;
+
+                    double distance = Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
+                    double stepXDistance = ((double)(x2 - x1)) / distance;
+                    double stepYDistance = ((double)(y2 - y1)) / distance;
+
+                    for (int k = 0; k < distance; k++)
+                    {
+                        int uv1X = OffsetX + x1 + ((int)Math.Round(stepXDistance * k));
+                        int uv1Y = OffsetY + y1 + ((int)Math.Round(stepYDistance * k));
+
+                        if (uv1X < 0) // For safety
+                            uv1X = 0;
+                        if (uv1X > output.GetLength(0) - 1)
+                            uv1X = output.GetLength(0) - 1;
+
+                        if (uv1Y < 0)
+                            uv1Y = 0;
+                        if (uv1Y > output.GetLength(1) - 1)
+                            uv1Y = output.GetLength(1) - 1;
+
+                        output[uv1X, uv1Y] = Color.Black;
+                    }
                 }
             }
 
