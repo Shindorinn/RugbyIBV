@@ -17,6 +17,10 @@ namespace INFOIBV.Filters
             {
                 switch (filter.fType)
                 {
+                    case FilterType.Type.ClearBorderFilter:
+                        toBeDecoratedFilter = new ClearBorderFilter(toBeDecoratedFilter);
+                        break;
+
                     case FilterType.Type.ErosionKernel:
                         toBeDecoratedFilter = new ErosionKernel(toBeDecoratedFilter);
                         break;

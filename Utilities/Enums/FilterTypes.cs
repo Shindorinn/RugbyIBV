@@ -6,6 +6,8 @@ namespace INFOIBV.Utilities.Enums
     {
         private static readonly List<FilterType> Filters = new List<FilterType>()
         {
+             new FilterType(FilterType.Type.ClearBorderFilter, "Clear Border"),
+
              new FilterType(FilterType.Type.ErosionKernel, "Erosion 3x3"),
              new FilterType(FilterType.Type.DilationKernel, "Dilation 3x3"),
 
@@ -105,6 +107,8 @@ namespace INFOIBV.Utilities.Enums
     {
         public enum Type
         {
+            ClearBorderFilter,
+
             ErosionKernel,
             DilationKernel,
 
