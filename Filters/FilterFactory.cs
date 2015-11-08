@@ -20,6 +20,9 @@ namespace INFOIBV.Filters
                     case FilterType.Type.ClearBorderFilter:
                         toBeDecoratedFilter = new ClearBorderFilter(toBeDecoratedFilter);
                         break;
+                    case FilterType.Type.FillObjectFilter:
+                        toBeDecoratedFilter = new FillObjectFilter(toBeDecoratedFilter);
+                        break;
 
                     case FilterType.Type.ErosionKernel:
                         toBeDecoratedFilter = new ErosionKernel(toBeDecoratedFilter);

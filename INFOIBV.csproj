@@ -64,6 +64,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\ApproximationKernel.cs" />
+    <Compile Include="Filters\FillObjectFilter.cs" />
     <Compile Include="Filters\ClearBorderFilter.cs" />
     <Compile Include="Utilities\Chord.cs" />
     <Compile Include="Utilities\Enums\CompassType.cs" />

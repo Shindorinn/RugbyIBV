@@ -18,6 +18,12 @@ namespace INFOIBV.Presentation
             InactiveFilters = new ObservableCollection<FilterType>(FilterTypes.GetAllFilters());
             ActiveFilters = new ObservableCollection<FilterType>();
 
+            ActiveFilters.Add(new FilterType(FilterType.Type.GrayscaleFilter, "Grayscale"));
+            ActiveFilters.Add(new FilterType(FilterType.Type.SobelCompassOperation, "Sobel Compass Operation"));
+            ActiveFilters.Add(new FilterType(FilterType.Type.ThresholdFilter160, "Threshold 160"));
+            ActiveFilters.Add(new FilterType(FilterType.Type.InvertFilter, "Invert Filter"));
+            ActiveFilters.Add(new FilterType(FilterType.Type.ClearBorderFilter, "Clear Border"));
+
             // Initialization - Lists Selectors
             SelectedInactiveFilter = -1;
             SelectedActiveFilter = -1;

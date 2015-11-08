@@ -202,6 +202,34 @@ namespace INFOIBV.Utilities
             return output;
         }
 
+        public Color[,] FillObject(Color[,] input)
+        {
+            if (perimeterPixels == null)
+                return input;
+
+            Color[,] output = (Color[,])input.Clone();
+
+            for (int i = 0; i < perimeterPixels.GetLength(0); i++)
+            {
+                int firstPixelY = -1;
+                for (int j = 0; j < perimeterPixels.GetLength(1); j++)
+                {
+                    if (perimeterPixels[i, j] == 1)
+                        if (firstPixelY < 0)
+                            firstPixelY = j;
+                        else
+                        {
+                            for (int k = firstPixelY; k <= j; k++)
+                                output[OffsetX + i, OffsetY + k] = Color.Black;
+
+                            firstPixelY = -1;
+                        }
+                }
+            }
+
+            return output;
+        }
+
         protected List<ListPixel> ConvertPerimeterPixelsToList()
         {
             if (perimeterPixels == null)
