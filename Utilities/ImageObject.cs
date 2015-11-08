@@ -122,21 +122,66 @@ namespace INFOIBV.Utilities
             double uv2CosAngle = unitVector2[0];
             double uv2SinAngle = unitVector2[1];
 
-            for (int i = -1; i < 3; i++)
+            int lcX = 0;
+            if(uv1CosAngle > 0)
+                if(LongestChord.firstPixel.X < LongestChord.secondPixel.X)
+                    lcX = LongestChord.firstPixel.X;
+                else
+                    lcX = LongestChord.secondPixel.X;
+            else
+                if (LongestChord.firstPixel.X < LongestChord.secondPixel.X)
+                    lcX = LongestChord.secondPixel.X;
+                else
+                    lcX = LongestChord.firstPixel.X;
+
+            int lcY = 0;
+            if (uv1SinAngle > 0)
+                if (LongestChord.firstPixel.Y < LongestChord.secondPixel.Y)
+                    lcY = LongestChord.firstPixel.Y;
+                else  
+                    lcY = LongestChord.secondPixel.Y;
+            else
+                if (LongestChord.firstPixel.Y < LongestChord.secondPixel.Y)
+                    lcY = LongestChord.secondPixel.Y;
+                else  
+                    lcY = LongestChord.firstPixel.Y;
+
+            for (int i = 0; i < LongestChord.distance; i++)
             {
-                for (int j = 0; j < 64; j++)
-                {
-                    int uv1X = OffsetX + i + LongestChord.firstPixel.X + ((int)Math.Round(uv1CosAngle * j));
-                    int uv1Y = OffsetY + i + LongestChord.firstPixel.Y + ((int)Math.Round(uv1SinAngle * j));
-                    int uv2X = OffsetX + i + LongestChord.firstPixel.X + ((int)Math.Round(uv2CosAngle * j));
-                    int uv2Y = OffsetY + i + LongestChord.firstPixel.Y + ((int)Math.Round(uv2SinAngle * j));
+                int uv1X = OffsetX + lcX + ((int)Math.Round(uv1CosAngle * i));
+                int uv1Y = OffsetY + lcY + ((int)Math.Round(uv1SinAngle * i));
+                output[uv1X, uv1Y] = Color.Red;
+            }
 
-                    output[uv1X, uv1Y] = Color.Red;
-                    output[uv2X, uv2Y] = Color.Blue;
+            int lpcX = 0;
+            if (uv2CosAngle > 0)
+                if (LongestPerpendicularChord.firstPixel.X < LongestPerpendicularChord.secondPixel.X)
+                    lpcX = LongestPerpendicularChord.firstPixel.X;
+                else
+                    lpcX = LongestPerpendicularChord.secondPixel.X;
+            else
+                if (LongestPerpendicularChord.firstPixel.X < LongestPerpendicularChord.secondPixel.X)
+                    lpcX = LongestPerpendicularChord.secondPixel.X;
+                else
+                    lpcX = LongestPerpendicularChord.firstPixel.X;
 
-                    //output[OffsetX + i + LongestChord.firstPixel.X, OffsetY + i + LongestChord.firstPixel.Y] = Color.Red;
-                    //output[OffsetX + i + LongestPerpendicularChord.firstPixel.X, OffsetY + i + LongestPerpendicularChord.firstPixel.Y] = Color.Blue;
-                }
+            int lpcY = 0;
+            if (uv2SinAngle > 0)
+                if (LongestPerpendicularChord.firstPixel.Y < LongestPerpendicularChord.secondPixel.Y)
+                    lpcY = LongestPerpendicularChord.firstPixel.Y;
+                else
+                    lpcY = LongestPerpendicularChord.secondPixel.Y;
+            else
+                if (LongestPerpendicularChord.firstPixel.Y < LongestPerpendicularChord.secondPixel.Y)
+                    lpcY = LongestPerpendicularChord.secondPixel.Y;
+                else
+                    lpcY = LongestPerpendicularChord.firstPixel.Y;
+
+            for (int i = 0; i < LongestPerpendicularChord.distance; i++)
+            {
+                int uv2X = OffsetX + lpcX + ((int)Math.Round(uv2CosAngle * i));
+                int uv2Y = OffsetY + lpcY + ((int)Math.Round(uv2SinAngle * i));
+                output[uv2X, uv2Y] = Color.Blue;
             }
 
             return output;
@@ -528,6 +573,7 @@ namespace INFOIBV.Utilities
                             }
                         }
                     }
+
                     _longestChord = new Chord(firstPoint, secondPoint, longestDistance);
                 }
                 return _longestChord;
