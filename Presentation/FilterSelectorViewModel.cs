@@ -18,39 +18,58 @@ namespace INFOIBV.Presentation
             InactiveFilters = new ObservableCollection<FilterType>(FilterTypes.GetAllFilters());
             ActiveFilters = new ObservableCollection<FilterType>();
 
+            // Initialization - Lists Selectors
+            SelectedInactiveFilter = -1;
+            SelectedActiveFilter = -1;
+
             // Initialization - Buttons/Commands
             AddToActiveFilterCommand = new RelayCommand(a => AddToActiveFilter());
             RemoveFromActiveFilterCommand = new RelayCommand(a => RemoveFromActiveFilter());
+            MoveActiveFilterUpCommand = new RelayCommand(a => MoveActiveFilterUp(), b => HasActiveFilterSelected());
+            MoveActiveFilterDownCommand = new RelayCommand(a => MoveActiveFilterDown(), b => HasActiveFilterSelected());
         }
 
         public void AddToActiveFilter()
         {
-            if (SelectedInactiveFilter == null)
+            if (SelectedInactiveFilter < 0)
                 return;
 
-            ActiveFilters.Add(SelectedInactiveFilter);
-            //InactiveFilters.Remove(SelectedInactiveFilter);
-            //SelectedInactiveFilter = null;
+            ActiveFilters.Add(InactiveFilters[SelectedInactiveFilter]);
             OnPropertyChanged("ActiveFilters");
-            //UpdateLists();
         }
 
         public void RemoveFromActiveFilter()
         {
-            if (SelectedActiveFilter == null)
+            if (SelectedActiveFilter < 0)
                 return;
 
-            //InactiveFilters.Add(SelectedActiveFilter);
-            ActiveFilters.Remove(SelectedActiveFilter);
-            SelectedActiveFilter = null;
+            ActiveFilters.RemoveAt(SelectedActiveFilter);
             OnPropertyChanged("ActiveFilters");
-            //UpdateLists();
+
+
+            if (SelectedActiveFilter >= ActiveFilters.Count - 1)
+                SelectedActiveFilter--;
         }
 
-        private void UpdateLists()
+        public void MoveActiveFilterUp()
         {
-            OnPropertyChanged("InactiveFilters");
-            OnPropertyChanged("ActiveFilters");
+            if (SelectedActiveFilter <= 0)
+                return;
+
+            ActiveFilters.Move(SelectedActiveFilter, SelectedActiveFilter - 1);
+        }
+
+        public void MoveActiveFilterDown()
+        {
+            if (SelectedActiveFilter >= ActiveFilters.Count - 1)
+                return;
+
+            ActiveFilters.Move(SelectedActiveFilter, SelectedActiveFilter + 1);
+        }
+
+        public bool HasActiveFilterSelected()
+        {
+            return SelectedActiveFilter != -1;
         }
 
         #region Properties
@@ -61,8 +80,8 @@ namespace INFOIBV.Presentation
             set { _inactiveFilters = value; }
         }
 
-        private FilterType _selectedInactiveFilter;
-        public FilterType SelectedInactiveFilter
+        private int _selectedInactiveFilter;
+        public int SelectedInactiveFilter
         {
             get { return _selectedInactiveFilter; }
             set
@@ -79,8 +98,8 @@ namespace INFOIBV.Presentation
             set { _activeFilters = value; }
         }
 
-        private FilterType _selectedActiveFilter;
-        public FilterType SelectedActiveFilter
+        private int _selectedActiveFilter;
+        public int SelectedActiveFilter
         {
             get { return _selectedActiveFilter; }
             set
@@ -102,6 +121,20 @@ namespace INFOIBV.Presentation
         {
             get { return _removeFromActiveFilterCommand; }
             private set { _removeFromActiveFilterCommand = value; }
+        }
+
+        private RelayCommand _moveActiveFilterUpCommand;
+        public RelayCommand MoveActiveFilterUpCommand
+        {
+            get { return _moveActiveFilterUpCommand; }
+            private set { _moveActiveFilterUpCommand = value; }
+        }
+
+        private RelayCommand _moveActiveFilterDownCommand;
+        public RelayCommand MoveActiveFilterDownCommand
+        {
+            get { return _moveActiveFilterDownCommand; }
+            private set { _moveActiveFilterDownCommand = value; }
         }
         #endregion Properties
     }

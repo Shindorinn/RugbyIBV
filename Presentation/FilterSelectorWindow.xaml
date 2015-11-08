@@ -2,11 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Filter Selection" Closing="Prevent_Closing"
-        Height="262" Width="506">
+        Height="262" Width="530">
     <Grid>
-        <ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=InactiveFilters}" Margin="10,10,0,10" SelectedItem="{Binding Path=SelectedInactiveFilter}" Width="220"/>
+        <ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=InactiveFilters}" Margin="10,10,0,10" SelectedIndex="{Binding Path=SelectedInactiveFilter}" Width="220"/>
         <Button Command="{Binding Path=AddToActiveFilterCommand}" Content="+" Height="100" HorizontalAlignment="Left" Margin="235,10,0,0" VerticalAlignment="Top" Width="20"/>
         <Button Command="{Binding Path=RemoveFromActiveFilterCommand}" Content="-" HorizontalAlignment="Left" Margin="235,0,0,10" Width="20" Height="100" VerticalAlignment="Bottom"/>
-        <ListBox HorizontalAlignment="Right" ItemsSource="{Binding Path=ActiveFilters}" Margin="0,10,10,10" SelectedItem="{Binding Path=SelectedActiveFilter}" Width="220"/>
+        <Button Command="{Binding Path=MoveActiveFilterUpCommand}" Content="^" Height="100" HorizontalAlignment="Left" Margin="260,10,0,0" VerticalAlignment="Top" Width="20"/>
+        <Button Command="{Binding Path=MoveActiveFilterDownCommand}" Content="v" HorizontalAlignment="Left" Margin="260,0,0,10" Width="20" Height="100" VerticalAlignment="Bottom"/>
+        <ListBox HorizontalAlignment="Right" ItemsSource="{Binding Path=ActiveFilters}" Margin="0,10,10,10" SelectedIndex="{Binding Path=SelectedActiveFilter}" Width="220"/>
     </Grid>
 </Window>

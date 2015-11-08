@@ -86,6 +86,14 @@ namespace INFOIBV.Presentation
                                        IntPtr.Zero,
                                        System.Windows.Int32Rect.Empty,
                                        BitmapSizeOptions.FromWidthAndHeight(InputImage.Size.Width, InputImage.Size.Height));
+
+                    if (ProcessImage != null)
+                        ProcessImage.Dispose();
+                    if (OutputImage != null)
+                        OutputImage.Dispose();
+
+                    ProcessImage = null;
+                    OutputImage = null;
                 }
             }
 
@@ -192,6 +200,11 @@ namespace INFOIBV.Presentation
                         hasAppliedThisImage = true;
                     }
 
+                    if (OutputImage != null)
+                        OutputImage.Dispose();
+
+                    OutputImage = null;
+
                     decoratedFilter = null; // Filter has been applied, a new one has to be made. Also fixes 'cached' filtering
                     HasProgress = Visibility.Hidden;
                     IsBusy = false;
@@ -218,8 +231,8 @@ namespace INFOIBV.Presentation
                 OutputImage = new Bitmap(ProcessImage.Size.Width, ProcessImage.Size.Height);
 
             IsBusy = true;
-            System.Drawing.Color[,] InputColors = new System.Drawing.Color[InputImage.Size.Width, InputImage.Size.Height];
-            System.Drawing.Color[,] OutputColors = new System.Drawing.Color[0, 0];
+            System.Drawing.Color[,] InputColors = new System.Drawing.Color[ProcessImage.Size.Width, ProcessImage.Size.Height];
+            System.Drawing.Color[,] OutputColors = null;
 
             for (int x = 0; x < ProcessImage.Size.Width; x++)
                 for (int y = 0; y < ProcessImage.Size.Height; y++)
@@ -232,19 +245,20 @@ namespace INFOIBV.Presentation
                 var listIObj = dobj.getDetectedObjects();
                 foreach (var iObj in listIObj)
                 {
-                    // DEBUG?!
-                    OutputColors = iObj.ColorizeVectors(InputColors);
-                    //OutputColors = iObj.Colorize(InputColors);
+                    if (OutputColors == null)
+                        OutputColors = iObj.ColorizeVectors(InputColors);
+                    else
+                        OutputColors = iObj.ColorizeVectors(OutputColors);
                 }
 
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     for (int x = 0; x < InputImage.Size.Width; x++)
                         for (int y = 0; y < InputImage.Size.Height; y++)
-                            ProcessImage.SetPixel(x, y, OutputColors[x, y]);
+                            OutputImage.SetPixel(x, y, OutputColors[x, y]);
 
                     NewImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap( // Display output image
-                                        ProcessImage.GetHbitmap(),
+                                        OutputImage.GetHbitmap(),
                                         IntPtr.Zero,
                                         System.Windows.Int32Rect.Empty,
                                         BitmapSizeOptions.FromWidthAndHeight(ProcessImage.Size.Width, ProcessImage.Size.Height));
@@ -257,11 +271,14 @@ namespace INFOIBV.Presentation
 
         public void SaveImage()
         {
-            if (OutputImage == null)
+            if (ProcessImage == null && OutputImage == null)
                 return; // Get out if no output image
 
             if (saveImageDialog.ShowDialog().Value)
-                OutputImage.Save(saveImageDialog.FileName); // Save the output image
+                if (OutputImage != null)
+                    OutputImage.Save(saveImageDialog.FileName); // Save the output image
+                else
+                    ProcessImage.Save(saveImageDialog.FileName); // Save the process image
         }
 
         public Boolean IsNotBusy() // Necessary for buttons to go offline while work has to be done.

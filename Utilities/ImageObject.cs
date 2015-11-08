@@ -66,6 +66,17 @@ namespace INFOIBV.Utilities
             Console.WriteLine("The image object has the following properties:");
             Console.WriteLine("OffsetX: {0}, OffsetY: {1}", OffsetX, OffsetY);
             Console.WriteLine("SizeX: {0}, SizeY: {1}", sizeX, sizeY);
+
+            if(sizeX == 1 && sizeY == 1)
+            {
+                Console.WriteLine("Due to the lack of size this object will not be analysed.");
+                Console.WriteLine("");
+                Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("");
+                return;
+            }
+
+
             Console.WriteLine("Area: {0}", Area);
             Console.WriteLine("Perimeter: {0}", Math.Round(Perimeter, 2)); // Nicely round off
             Console.WriteLine("Compactness: {0}", Math.Round(Compactness, 2)); // Nicely round off
@@ -80,7 +91,7 @@ namespace INFOIBV.Utilities
 
 
             Console.WriteLine("");
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("");
         }
 
@@ -105,6 +116,10 @@ namespace INFOIBV.Utilities
 
         public Color[,] ColorizeVectors(Color[,] input)
         {
+            if (LongestChord.firstPixel == null || LongestChord.secondPixel == null
+                || LongestPerpendicularChord.firstPixel == null || LongestPerpendicularChord.secondPixel == null)
+                return input;
+
             Color[,] output = (Color[,])input.Clone();
 
             double angle = LongestChord.orientation;
@@ -241,7 +256,7 @@ namespace INFOIBV.Utilities
                 Direction newDirection = lookingDirection;
                 bool hasADirection = false;
                 // 1 loop to rule them all
-                for (int i = -2; i < 3; i++)
+                for (int i = -3; i < 4; i++)
                 {
                     if (CanTurn(nX, nY, newDirection, i))
                     { // Found a direction to go to
@@ -254,7 +269,14 @@ namespace INFOIBV.Utilities
                 }
 
                 if (!hasADirection) // If you have no direction
-                    newDirection = Turn(nX, nY, newDirection, 4); // GO BACK (to the choppa)!
+                    if (CanTurn(nX, nY, newDirection, 4))
+                        newDirection = Turn(nX, nY, newDirection, 4); // GO BACK (to the choppa)!
+                    else
+                    {
+                        perimeterPixels[nX, nY] = 1;
+                        Perimeter = perimeterCounter + 1;
+                        return; // Couldn't go anywhere
+                    }
 
                 switch (newDirection)
                 {
@@ -647,13 +669,18 @@ namespace INFOIBV.Utilities
                             }
                         }
                     }
-                    ListPixel value1;
-                    referenceMap.TryGetValue(point1, out value1);
+                    if (point1 != null && point2 != null) // No perpendicular line was found
+                    {
+                        ListPixel value1;
+                        referenceMap.TryGetValue(point1, out value1);
 
-                    ListPixel value2;
-                    referenceMap.TryGetValue(point2, out value2);
+                        ListPixel value2;
+                        referenceMap.TryGetValue(point2, out value2);
 
-                    _longestPerpendicularChord = new Chord(value1, value2);
+                        _longestPerpendicularChord = new Chord(value1, value2);
+                    }
+                    else // Error occured, no perpendicular line was found
+                        _longestPerpendicularChord = new Chord(new ListPixel(0, 0, null), new ListPixel(0, 0, null));
                 }
 
                 return _longestPerpendicularChord;

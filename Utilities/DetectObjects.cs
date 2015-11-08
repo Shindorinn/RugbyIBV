@@ -102,6 +102,8 @@ namespace INFOIBV.Utilities
                 }
             }
 
+            // Filter 'empty' objects
+
             int sumStack = 0;
             foreach (var imageObject in detectedObjects)
                 sumStack += imageObject.Area;

@@ -12,7 +12,8 @@ namespace INFOIBV.Utilities
         public readonly double distance;
         public readonly double orientation;
 
-        public Chord(ListPixel firstPixel, ListPixel secondPixel) : this(firstPixel, secondPixel, Chord.calcDistance(firstPixel, secondPixel))
+        public Chord(ListPixel firstPixel, ListPixel secondPixel)
+            : this(firstPixel, secondPixel, Chord.calcDistance(firstPixel, secondPixel))
         {
             // Calcs distance
         }
@@ -22,7 +23,11 @@ namespace INFOIBV.Utilities
             this.firstPixel = firstPixel;
             this.secondPixel = secondPixel;
             this.distance = distance;
-            this.orientation = calcOrientation();
+
+            if (firstPixel == null || secondPixel == null)
+                Console.WriteLine("Null pixels detected.");
+            else
+                this.orientation = calcOrientation();
         }
 
         public static double calcDistance(ListPixel toCalcFrom, ListPixel toCalcTo)
