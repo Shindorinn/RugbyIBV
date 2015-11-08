@@ -18,7 +18,7 @@ namespace INFOIBV.Utilities
             detectedObjects = new List<ImageObject>();
         }
 
-        public void detectObjects(Color[,] imageToReturn, MainViewModel reportProgressTo)
+        public void detectObjects(Color[,] imageToReturn)
         {
             Color[,] imageToProcess = (Color[,])imageToReturn.Clone();
 
@@ -99,8 +99,6 @@ namespace INFOIBV.Utilities
 
                         detectedObjects.Add(new ImageObject(pixelList));
                     }
-
-                    reportProgressTo.Progress++; // Do we need it?
                 }
             }
 
