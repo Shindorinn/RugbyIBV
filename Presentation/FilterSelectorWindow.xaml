@@ -2,13 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Filter Selection" Closing="Prevent_Closing"
-        Height="262" Width="530">
+        Height="262" Width="555">
     <Grid>
         <ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=InactiveFilters}" Margin="10,10,0,10" SelectedIndex="{Binding Path=SelectedInactiveFilter}" Width="220"/>
         <Button Command="{Binding Path=AddToActiveFilterCommand}" Content="+" Height="100" HorizontalAlignment="Left" Margin="235,10,0,0" VerticalAlignment="Top" Width="20"/>
         <Button Command="{Binding Path=RemoveFromActiveFilterCommand}" Content="-" HorizontalAlignment="Left" Margin="235,0,0,10" Width="20" Height="100" VerticalAlignment="Bottom"/>
-        <Button Command="{Binding Path=MoveActiveFilterUpCommand}" Content="^" Height="100" HorizontalAlignment="Left" Margin="260,10,0,0" VerticalAlignment="Top" Width="20"/>
-        <Button Command="{Binding Path=MoveActiveFilterDownCommand}" Content="v" HorizontalAlignment="Left" Margin="260,0,0,10" Width="20" Height="100" VerticalAlignment="Bottom"/>
-        <ListBox HorizontalAlignment="Right" ItemsSource="{Binding Path=ActiveFilters}" Margin="0,10,10,10" SelectedIndex="{Binding Path=SelectedActiveFilter}" Width="220"/>
+        <Button Command="{Binding Path=MoveActiveFilterUpCommand}" Content="^" Height="100" HorizontalAlignment="Right" Margin="0,10,260,0" VerticalAlignment="Top" Width="20"/>
+        <Button Command="{Binding Path=MoveActiveFilterDownCommand}" Content="v" HorizontalAlignment="Right" Margin="0,0,260,10" Width="20" Height="100" VerticalAlignment="Bottom"/>
+        <ListBox HorizontalAlignment="Right" ItemsSource="{Binding Path=ActiveFilters}" Margin="0,10,35,10" SelectedIndex="{Binding Path=SelectedActiveFilter}" Width="220"/>
+        <Button Command="{Binding Path=DeleteAllActiveFiltersCommand}" Content="Delete all filters" HorizontalAlignment="Right" Margin="0,0,30,10" Width="204" RenderTransformOrigin="1,1" Height="21" VerticalAlignment="Bottom">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="90"/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
     </Grid>
 </Window>

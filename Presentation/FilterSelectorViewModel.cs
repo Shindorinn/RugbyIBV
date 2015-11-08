@@ -27,6 +27,7 @@ namespace INFOIBV.Presentation
             RemoveFromActiveFilterCommand = new RelayCommand(a => RemoveFromActiveFilter());
             MoveActiveFilterUpCommand = new RelayCommand(a => MoveActiveFilterUp(), b => HasActiveFilterSelected());
             MoveActiveFilterDownCommand = new RelayCommand(a => MoveActiveFilterDown(), b => HasActiveFilterSelected());
+            DeleteAllActiveFiltersCommand = new RelayCommand(a => DeleteAllActiveFilters(), b => HasActiveFilters());
         }
 
         public void AddToActiveFilter()
@@ -67,9 +68,23 @@ namespace INFOIBV.Presentation
             ActiveFilters.Move(SelectedActiveFilter, SelectedActiveFilter + 1);
         }
 
+        public void DeleteAllActiveFilters()
+        {
+            if(System.Windows.MessageBox.Show("Are you sure you want to remove all active filters?", "Remove all active filters", System.Windows.MessageBoxButton.YesNo) == System.Windows.MessageBoxResult.Yes)
+            {
+                ActiveFilters.Clear();
+                SelectedActiveFilter = -1;
+            }
+        }
+
         public bool HasActiveFilterSelected()
         {
             return SelectedActiveFilter != -1;
+        }
+
+        public bool HasActiveFilters()
+        {
+            return ActiveFilters.Count > 0;
         }
 
         #region Properties
@@ -135,6 +150,13 @@ namespace INFOIBV.Presentation
         {
             get { return _moveActiveFilterDownCommand; }
             private set { _moveActiveFilterDownCommand = value; }
+        }
+
+        private RelayCommand _deleteAllActiveFiltersCommand;
+        public RelayCommand DeleteAllActiveFiltersCommand
+        {
+            get { return _deleteAllActiveFiltersCommand; }
+            private set { _deleteAllActiveFiltersCommand = value; }
         }
         #endregion Properties
     }
