@@ -11,11 +11,20 @@ namespace INFOIBV.Utilities
     public class DetectObjects
     {
         private List<ImageObject> detectedObjects;
+        private List<ImageObject> detectedBalls;
+
+        private readonly double minEccentricity = 1.50;
+        private readonly double maxEccentricity = 1.85;
+        private readonly double minRoundness = 0.69;
+        private readonly double maxRoundness = 0.85;
+        private readonly double minRectangularity = 0.70;
+        private readonly double maxRectangularity = 0.79;
 
         public DetectObjects()
         {
             // Disk in flight.
             detectedObjects = new List<ImageObject>();
+            detectedBalls = new List<ImageObject>();
         }
 
         public void detectObjects(Color[,] imageToReturn)
@@ -116,12 +125,42 @@ namespace INFOIBV.Utilities
             Console.WriteLine("Sum of black pixels: {0}", sumPixels);
         }
 
+        public void detectRugbyBall(Color[,] imageToReturn)
+        {
+            if (this.detectedObjects == null)
+            {
+                detectObjects(imageToReturn);
+            }
+
+            foreach (var imgObj in detectedObjects)
+            {
+                if (isABall(imgObj))
+                    detectedBalls.Add(imgObj);
+            }
+
+            foreach (var ball in detectedBalls)
+            {
+                ball.ColorPerimeter(imageToReturn, Color.SkyBlue);
+            }
+
+        }
+
         public List<ImageObject> getDetectedObjects()
         {
             if (detectedObjects == null)
                 Console.WriteLine("DetectedObjects is empty. Should call detectObjects() first.");
 
             return detectedObjects;
+        }
+
+        private bool isABall(ImageObject obj)
+        {
+            return (
+                this.minEccentricity < obj.Eccentricity && obj.Eccentricity < this.maxEccentricity          &&
+                this.minRectangularity < obj.Rectangularity && obj.Rectangularity < this.maxRectangularity  &&
+                this.minRoundness < obj.Roundness && obj.Roundness < this.maxRoundness
+                );
+
         }
     }
 }

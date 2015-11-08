@@ -202,6 +202,16 @@ namespace INFOIBV.Utilities
             return output;
         }
 
+        public Color[,] ColorPerimeter(Color[,] input, Color toColor)
+        {
+            foreach (var listPixel in perimeterListPixels)
+            {
+                input[listPixel.X, listPixel.Y] = toColor;
+            }
+
+            return input;
+        }
+
         public Color[,] FillObject(Color[,] input)
         {
             if (perimeterPixels == null)
