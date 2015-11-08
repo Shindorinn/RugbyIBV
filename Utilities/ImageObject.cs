@@ -206,7 +206,7 @@ namespace INFOIBV.Utilities
         {
             foreach (var listPixel in perimeterListPixels)
             {
-                input[listPixel.X, listPixel.Y] = toColor;
+                input[OffsetX + listPixel.X, OffsetY + listPixel.Y] = toColor;
             }
 
             return input;

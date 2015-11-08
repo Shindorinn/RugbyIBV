@@ -231,6 +231,7 @@ namespace INFOIBV.Presentation
                 OutputImage = new Bitmap(ProcessImage.Size.Width, ProcessImage.Size.Height);
 
             IsBusy = true;
+            System.Drawing.Color[,] OriginalColors = new System.Drawing.Color[ProcessImage.Size.Width, ProcessImage.Size.Height];
             System.Drawing.Color[,] InputColors = new System.Drawing.Color[ProcessImage.Size.Width, ProcessImage.Size.Height];
             System.Drawing.Color[,] OutputColors = null;
 
@@ -238,6 +239,10 @@ namespace INFOIBV.Presentation
                 for (int y = 0; y < ProcessImage.Size.Height; y++)
                     InputColors[x, y] = ProcessImage.GetPixel(x, y);
 
+            for (int x = 0; x < InputImage.Size.Width; x++)
+                for (int y = 0; y < InputImage.Size.Height; y++)
+                    OriginalColors[x, y] = InputImage.GetPixel(x, y);
+            
             ThreadPool.QueueUserWorkItem(o =>
             {
                 DetectObjects dobj = new DetectObjects();
@@ -247,15 +252,27 @@ namespace INFOIBV.Presentation
                     InputColors = iObj.FillObject(InputColors);
 
                 dobj = new DetectObjects();
-                dobj.detectObjects(InputColors);
-                listIObj = dobj.getDetectedObjects();
-                foreach (var iObj in listIObj)
+                dobj.detectRugbyBalls(InputColors);
+                listIObj = dobj.getDetectedBalls();
+                OutputColors = dobj.ColorTheBalls(OriginalColors);
+
+                string message = String.Format("We detected {0} object{1} which consisted of {2} rugby ball{3}",    dobj.getDetectedObjects().Count, 
+                                                                                                                    dobj.getDetectedObjects().Count != 1 ? "s" : "",
+                                                                                                                    dobj.getDetectedBalls().Count,
+                                                                                                                    dobj.getDetectedBalls().Count != 1 ? "s" : "");
+                if (dobj.getDetectedBalls().Count > 0)
+                    message += "\nDetected balls can be seen with a red outline.";
+
+                MessageBox.Show(message, "Detect rugby balls", MessageBoxButton.OK);
+
+
+                /*foreach (var iObj in listIObj) // Should be only balls
                 {
                     if (OutputColors == null)
                         OutputColors = iObj.ColorizeVectors(InputColors);
                     else
                         OutputColors = iObj.ColorizeVectors(OutputColors);
-                }
+                }*/
 
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {

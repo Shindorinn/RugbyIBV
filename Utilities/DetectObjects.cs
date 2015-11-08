@@ -125,24 +125,24 @@ namespace INFOIBV.Utilities
             Console.WriteLine("Sum of black pixels: {0}", sumPixels);
         }
 
-        public void detectRugbyBall(Color[,] imageToReturn)
+        public void detectRugbyBalls(Color[,] imageToReturn)
         {
-            if (this.detectedObjects == null)
-            {
+            if (this.detectedObjects.Count == 0)
                 detectObjects(imageToReturn);
-            }
 
             foreach (var imgObj in detectedObjects)
             {
                 if (isABall(imgObj))
                     detectedBalls.Add(imgObj);
             }
+        }
 
+        public Color[,] ColorTheBalls(Color[,] imageToColorIn)
+        {
             foreach (var ball in detectedBalls)
-            {
-                ball.ColorPerimeter(imageToReturn, Color.SkyBlue);
-            }
+                imageToColorIn = ball.ColorPerimeter(imageToColorIn, Color.Red);
 
+            return imageToColorIn;
         }
 
         public List<ImageObject> getDetectedObjects()
@@ -153,14 +153,21 @@ namespace INFOIBV.Utilities
             return detectedObjects;
         }
 
+        public List<ImageObject> getDetectedBalls()
+        {
+            if (detectedBalls == null)
+                Console.WriteLine("DetectedBalls is empty. Should call detectRugbyBalls() first.");
+
+            return detectedBalls;
+        }
+
         private bool isABall(ImageObject obj)
         {
             return (
-                this.minEccentricity < obj.Eccentricity && obj.Eccentricity < this.maxEccentricity          &&
+                this.minEccentricity < obj.Eccentricity     && obj.Eccentricity < this.maxEccentricity      &&
                 this.minRectangularity < obj.Rectangularity && obj.Rectangularity < this.maxRectangularity  &&
-                this.minRoundness < obj.Roundness && obj.Roundness < this.maxRoundness
+                this.minRoundness < obj.Roundness           && obj.Roundness < this.maxRoundness
                 );
-
         }
     }
 }
